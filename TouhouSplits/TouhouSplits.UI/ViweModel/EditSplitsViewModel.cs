@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace TouhouSplits.UI.ViweModel
 {
-    public class NewSplitsViewModel
+    public class EditSplitsViewModel
     {
         public ICommand AddSegmentCommand { get; private set; }
         public ICommand UpdateSegmentNameCommand { get; private set; }
@@ -11,7 +11,7 @@ namespace TouhouSplits.UI.ViweModel
         public ICommand RemoveSegmentCommand { get; private set; }
         public ICommand SaveSegmentCommand { get; private set; }
 
-        public NewSplitsViewModel()
+        public EditSplitsViewModel()
         {
         }
 

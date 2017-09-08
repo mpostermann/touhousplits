@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace TouhouSplits.UI.View
 {
     /// <summary>
-    /// Interaction logic for NewSplitsWindow.xaml
+    /// Interaction logic for EditSplitsWindow.xaml
     /// </summary>
-    public partial class NewSplitsWindow : Window
+    public partial class EditSplitsWindow : Window
     {
-        public NewSplitsWindow()
+        public EditSplitsWindow()
         {
             InitializeComponent();
         }
