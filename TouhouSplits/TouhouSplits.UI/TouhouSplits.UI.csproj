@@ -48,6 +48,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\NewSplitsWindow.xaml.cs">
+      <DependentUpon>NewSplitsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViweModel\MainViewModel.cs" />
+    <Compile Include="ViweModel\NewSplitsViewModel.cs" />
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -60,6 +65,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\NewSplitsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -84,8 +93,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ViweModel\" />
+    <ProjectReference Include="..\TouhouSplits.Service\TouhouSplits.Service.csproj">
+      <Project>{e128f26d-525e-4278-9706-589fdb7024be}</Project>
+      <Name>TouhouSplits.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

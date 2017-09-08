@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" SizeToContent="Height" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open Splits..."/>
+                <MenuItem Header="_Save Splits As..."/>
+                <MenuItem Header="_Close"/>
+            </MenuItem>
+            <MenuItem Header="_Game">
+                <MenuItem Header="_Hook Game"/>
+                <MenuItem Header="Start _Recording Split"/>
+            </MenuItem>
+        </Menu>
+        <StackPanel Grid.Row="1">
+            <Label>Game Title</Label>
+            <Label>Splits Title</Label>
+            <ListView >
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True">
+                        <GridViewColumn>
+                            <GridViewColumnHeader>Segment</GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn>
+                            <GridViewColumnHeader>Score</GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn>
+                            <GridViewColumnHeader>PB</GridViewColumnHeader>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label>Current Score</Label>
+        </StackPanel>
     </Grid>
 </Window>
