@@ -5,8 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
         mc:Ignorable="d"
-        Title="NewSplitsWindow" Height="300" Width="300">
+        Title="New / Edit Splits" Height="300" Width="600">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ComboBox Grid.Row="0">
+             <ComboBoxItem>Touhou 6: The Embodiment of Scarlet Devil</ComboBoxItem>
+             <ComboBoxItem>Touhou 7: Perfect Cherry Blossom</ComboBoxItem>
+             <ComboBoxItem>Touhou 8: Imperishible Night</ComboBoxItem>
+         </ComboBox>
+        <WrapPanel Grid.Row="1">
+            <Button Width="100">New Splits</Button>
+            <Button Width="100">Recent Splits...</Button>
+            <Button Width="100">Load From File...</Button>
+        </WrapPanel>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+             <Grid.ColumnDefinitions>
+                 <ColumnDefinition Width="1*"/>
+                 <ColumnDefinition Width="4*"/>
+             </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0">Add Segment Above</Button>
+            <Button Grid.Row="1" Grid.Column="0">Add Segment Below</Button>
+            <ListView Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True">
+                        <GridViewColumn>
+                            <GridViewColumnHeader>Segment</GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn>
+                            <GridViewColumnHeader>Score</GridViewColumnHeader>
+                        </GridViewColumn>
+                        <GridViewColumn>
+                            <GridViewColumnHeader>Remove</GridViewColumnHeader>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <Button>Cancel</Button>
+            <Button>Save</Button>
+            <Button>Save As...</Button>
+        </WrapPanel>
     </Grid>
 </Window>
