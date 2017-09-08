@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.Service", "TouhouSplits.Service\TouhouSplits.Service.csproj", "{E128F26D-525E-4278-9706-589FDB7024BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.UI", "TouhouSplits.UI\TouhouSplits.UI.csproj", "{F8889817-460F-4CB8-9236-EB6F1189E79D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
