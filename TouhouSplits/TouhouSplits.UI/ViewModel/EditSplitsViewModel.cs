@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace TouhouSplits.UI.ViweModel
+namespace TouhouSplits.UI.ViewModel
 {
     public class EditSplitsViewModel
     {
@@ -15,7 +16,7 @@ namespace TouhouSplits.UI.ViweModel
         {
         }
 
-        public string CurrentGame {
+        public IList<string> AvailableGames {
             get {
                 throw new NotImplementedException();
             }

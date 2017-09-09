@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
+        xmlns:vm="clr-namespace:TouhouSplits.UI.ViewModel"
         mc:Ignorable="d"
         Title="New / Edit Splits" Height="300" Width="600">
+    <Window.DataContext>
+        <vm:EditSplitsViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

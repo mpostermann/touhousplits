@@ -1,10 +1,12 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
+using TouhouSplits.UI.View;
 
-namespace TouhouSplits.UI.ViweModel
+namespace TouhouSplits.UI.ViewModel
 {
     public class MainViewModel
     {
@@ -22,6 +24,7 @@ namespace TouhouSplits.UI.ViweModel
         public MainViewModel()
         {
             _splitsFacade = new SplitsFacade();
+            LoadSplitCommand = new RelayCommand(() => LoadSplit());
         }
 
         public IList<string> AvailableGames {
@@ -52,6 +55,12 @@ namespace TouhouSplits.UI.ViweModel
             get {
                 throw new NotImplementedException();
             }
+        }
+
+        private void LoadSplit()
+        {
+            var loadSplitView = new EditSplitsWindow();
+            loadSplitView.ShowDialog();
         }
     }
 }

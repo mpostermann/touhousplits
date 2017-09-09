@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI"
+        xmlns:vm="clr-namespace:TouhouSplits.UI.ViewModel"
         mc:Ignorable="d"
         Title="Touhou Splits" SizeToContent="Height" Width="525">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,9 +20,8 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open Splits..."/>
-                <MenuItem Header="_Save Splits As..."/>
-                <MenuItem Header="_Close"/>
+                <MenuItem Header="_Open Splits..." Command="{Binding LoadSplitCommand}" />
+                <MenuItem Header="_Exit"/>
             </MenuItem>
             <MenuItem Header="_Game">
                 <MenuItem Header="_Hook Game"/>
@@ -28,7 +31,7 @@
         <StackPanel Grid.Row="1">
             <Label>Game Title</Label>
             <Label>Splits Title</Label>
-            <ListView >
+            <ListView>
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn>
