@@ -32,5 +32,11 @@ namespace TouhouSplits.UI.ViewModel
                 throw new NotImplementedException();
             }
         }
+
+        public string SplitsFilePath {
+            get {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

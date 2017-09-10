@@ -13,7 +13,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand UpdateSegmentNameCommand { get; private set; }
         public ICommand UpdateSegmentScoreCommand { get; private set; }
         public ICommand RemoveSegmentCommand { get; private set; }
-        public ICommand SaveSegmentCommand { get; private set; }
+        public ICommand SaveSplitsCommand { get; private set; }
 
         public EditSplitsViewModel(ISplits splits)
         {
@@ -27,6 +27,12 @@ namespace TouhouSplits.UI.ViewModel
         }
 
         public string CurrentSplitName {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SplitsFilePath {
             get {
                 throw new NotImplementedException();
             }
