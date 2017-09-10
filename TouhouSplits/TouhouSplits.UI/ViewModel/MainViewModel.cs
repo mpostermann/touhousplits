@@ -37,7 +37,7 @@ namespace TouhouSplits.UI.ViewModel
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
             RecentSplitsCommand = new RelayCommand(() => RecentSplits());
-            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplitsCommand());
+            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits());
         }
         
         public ISplits CurrentSplits {
@@ -119,7 +119,8 @@ namespace TouhouSplits.UI.ViewModel
 
             _currentGame.Hook.Hook();
 
-            //todo: Initialize splits builder and assign
+            //todo: Initialize splits builder and assign. If there is already a recording splits and it's better
+            //than the current splits, then swap them.
             RecordingSplits = null;
 
             //Set a poller to check the updated score
