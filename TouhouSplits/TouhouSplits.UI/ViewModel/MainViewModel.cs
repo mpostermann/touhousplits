@@ -25,8 +25,8 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
         public ICommand RecentSplitsCommand { get; private set; }
-        public ICommand NextSplitCommand { get; private set; }
-        public ICommand PreviousSplitCommand { get; private set; }
+        public ICommand NextSplitsCommand { get; private set; }
+        public ICommand PreviousSplitsCommand { get; private set; }
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
 
         public MainViewModel()
@@ -37,6 +37,8 @@ namespace TouhouSplits.UI.ViewModel
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
             RecentSplitsCommand = new RelayCommand(() => RecentSplits());
+            NextSplitsCommand = new RelayCommand(() => NextSplits());
+            PreviousSplitsCommand = new RelayCommand(() => PreviousSplits());
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits());
         }
         
@@ -99,6 +101,42 @@ namespace TouhouSplits.UI.ViewModel
                 CurrentSplits = rsViewModel.SelectedSplits;
                 _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
             }
+        }
+
+        private void NextSplits()
+        {
+            if (CurrentSplits == null) {
+                return;
+            }
+
+            /* Get the current index */
+            int index = _currentGame.SplitsManager.RecentSplits.IndexOf(CurrentSplits);
+
+            /* Get the next index */
+            int nextIndex = index + 1;
+            if (nextIndex == _currentGame.SplitsManager.RecentSplits.Count) {
+                nextIndex = 0;
+            }
+
+            CurrentSplits = _currentGame.SplitsManager.RecentSplits[nextIndex];
+        }
+
+        private void PreviousSplits()
+        {
+            if (CurrentSplits == null) {
+                return;
+            }
+
+            /* Get the current index */
+            int index = _currentGame.SplitsManager.RecentSplits.IndexOf(CurrentSplits);
+
+            /* Get the next index */
+            int nextIndex = index - 1;
+            if (nextIndex == -1) {
+                nextIndex = _currentGame.SplitsManager.RecentSplits.Count - 1;
+            }
+
+            CurrentSplits = _currentGame.SplitsManager.RecentSplits[nextIndex];
         }
 
         private void StartOrStopRecordingSplits()
