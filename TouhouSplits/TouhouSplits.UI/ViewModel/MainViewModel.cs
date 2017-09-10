@@ -184,6 +184,8 @@ namespace TouhouSplits.UI.ViewModel
             if (RecordingSplits.EndingSegment.Score > CurrentSplits.EndingSegment.Score) {
                 _currentGame.SplitsManager.SerializeSplits(RecordingSplits, _currentSplitsFilepath);
             }
+
+            _isRecording = false;
         }
     }
 }
