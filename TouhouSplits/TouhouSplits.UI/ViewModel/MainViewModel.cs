@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows.Input;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
@@ -16,21 +17,27 @@ namespace TouhouSplits.UI.ViewModel
         private IGameManager _currentGame;
         private ISplits _currentSplits;
         private ISplits _recordingSplits;
+        private Timer _recordTimer;
+
+        private string _currentSplitsFilepath;
+        private bool _isRecording;
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
         public ICommand RecentSplitsCommand { get; private set; }
         public ICommand NextSplitCommand { get; private set; }
         public ICommand PreviousSplitCommand { get; private set; }
-        public ICommand StartRecordingSplitCommand { get; private set; }
-        public ICommand StopRecordingSplitCommand { get; private set; }
+        public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
 
         public MainViewModel()
         {
             _splitsFacade = new SplitsFacade();
+            _isRecording = false;
+
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
             RecentSplitsCommand = new RelayCommand(() => RecentSplits());
+            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplitsCommand());
         }
         
         public ISplits CurrentSplits {
@@ -47,6 +54,10 @@ namespace TouhouSplits.UI.ViewModel
                 _recordingSplits = value;
                 NotifyPropertyChanged("RecordingSplits");
             }
+        }
+
+        public long CurrentScore {
+            get { return _currentGame.Hook.GetCurrentScore(); }
         }
 
         private void NewSplit()
@@ -84,6 +95,52 @@ namespace TouhouSplits.UI.ViewModel
                 var rsViewModel = (RecentSplitsViewModel)recentSplitsView.DataContext;
                 CurrentSplits = rsViewModel.SelectedSplits;
                 _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
+            }
+        }
+
+        private void StartOrStopRecordingSplits()
+        {
+            if (_isRecording) {
+                StopRecordingSplits();
+            }
+            else {
+                StartRecordingSplits();
+            }
+        }
+
+        private void StartRecordingSplits()
+        {
+            if (_currentGame == null || _currentGame.Hook == null) {
+                return;
+            }
+
+            _currentGame.Hook.Hook();
+
+            //todo: Initialize splits builder and assign
+            RecordingSplits = null;
+
+            //Set a poller to check the updated score
+            _recordTimer = new Timer(
+                (param) => NotifyPropertyChanged("CurrentScore"),
+                null,
+                0,
+                50
+            );
+
+            _isRecording = true;
+        }
+
+        private void StopRecordingSplits()
+        {
+            /* Stop the polling timer */
+            _recordTimer.Dispose();
+            _recordTimer = null;
+
+            _currentGame.Hook.Unhook();
+
+            /* If the new score is better than the previous, then save it */
+            if (RecordingSplits.EndingSegment.Score > CurrentSplits.EndingSegment.Score) {
+                _currentGame.SplitsManager.SerializeSplits(RecordingSplits, _currentSplitsFilepath);
             }
         }
     }
