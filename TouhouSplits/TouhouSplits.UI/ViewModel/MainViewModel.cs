@@ -14,8 +14,8 @@ namespace TouhouSplits.UI.ViewModel
     {
         private SplitsFacade _splitsFacade;
         private IGameManager _currentGame;
-        private ISegment _currentSegment;
-        private ISegment _recordingSegment;
+        private ISplits _currentSplits;
+        private ISplits _recordingSplits;
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
@@ -32,38 +32,20 @@ namespace TouhouSplits.UI.ViewModel
             EditSplitCommand = new RelayCommand(() => EditSplit());
             RecentSplitsCommand = new RelayCommand(() => RecentSplits());
         }
-
-        public string CurrentGameName {
-            get {
-                if (CurrentSegment == null) {
-                    return "Open a split!";
-                }
-                return CurrentSegment.ParentGameName;
-            }
-        }
-
-        public string CurrentSegmentName {
-            get {
-                if (CurrentSegment == null) {
-                    return string.Empty;
-                }
-                return CurrentSegment.SegmentName;
-            }
-        }
         
-        public ISegment CurrentSegment {
-            get { return _currentSegment; }
+        public ISplits CurrentSplits {
+            get { return _currentSplits; }
             set {
-                _currentSegment = value;
-                NotifyPropertyChanged("CurrentSegment");
+                _currentSplits = value;
+                NotifyPropertyChanged("CurrentSplits");
             }
         }
 
-        public ISegment RecordingSegment {
-            get { return _recordingSegment; }
+        public ISplits RecordingSplits {
+            get { return _recordingSplits; }
             set {
-                _recordingSegment = value;
-                NotifyPropertyChanged("RecordingSegment");
+                _recordingSplits = value;
+                NotifyPropertyChanged("RecordingSplits");
             }
         }
 
@@ -71,25 +53,25 @@ namespace TouhouSplits.UI.ViewModel
         {
             var loadSplitView = new EditSplitsWindow();
             //Todo: instantiate a new Segment
-            ISegment newSegment = null;
-            loadSplitView.DataContext = new EditSplitsViewModel(newSegment);
+            ISplits newSplit = null;
+            loadSplitView.DataContext = new EditSplitsViewModel(newSplit);
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
-                CurrentSegment = newSegment;
-                _currentGame = _splitsFacade.LoadGameManager(newSegment.ParentGameName);
+                CurrentSplits = newSplit;
+                _currentGame = _splitsFacade.LoadGameManager(newSplit.GameName);
             }
         }
 
         private void EditSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSegment);
+            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplits);
             loadSplitView.ShowDialog();
 
             /* Reload the current game if the parent game was edited */
-            if (CurrentSegment.ParentGameName != _currentGame.GameName) {
-                _currentGame = _splitsFacade.LoadGameManager(CurrentSegment.ParentGameName);
+            if (CurrentSplits.GameName != _currentGame.GameName) {
+                _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
             }
         }
 
@@ -100,8 +82,8 @@ namespace TouhouSplits.UI.ViewModel
 
             if (recentSplitsView.DialogResult == true) {
                 var rsViewModel = (RecentSplitsViewModel)recentSplitsView.DataContext;
-                CurrentSegment = rsViewModel.SelectedSegment;
-                _currentGame = _splitsFacade.LoadGameManager(CurrentSegment.ParentGameName);
+                CurrentSplits = rsViewModel.SelectedSplits;
+                _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
             }
         }
     }

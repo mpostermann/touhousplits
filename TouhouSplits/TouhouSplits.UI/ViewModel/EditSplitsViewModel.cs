@@ -7,7 +7,7 @@ namespace TouhouSplits.UI.ViewModel
 {
     public class EditSplitsViewModel
     {
-        private ISegment _segment;
+        private ISplits _splits;
 
         public ICommand AddSegmentCommand { get; private set; }
         public ICommand UpdateSegmentNameCommand { get; private set; }
@@ -15,9 +15,9 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand RemoveSegmentCommand { get; private set; }
         public ICommand SaveSegmentCommand { get; private set; }
 
-        public EditSplitsViewModel(ISegment segment)
+        public EditSplitsViewModel(ISplits splits)
         {
-            _segment = segment;
+            _splits = splits;
         }
 
         public IList<string> AvailableGames {
