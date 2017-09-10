@@ -33,7 +33,7 @@
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1">
-            <Label>Game Title</Label>
+            <Label Content="{Binding CurrentSegment.ParentGameName}"></Label>
             <Label>Splits Title</Label>
             <ListView>
                 <ListView.View>
