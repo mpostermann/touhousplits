@@ -6,14 +6,14 @@ namespace TouhouSplits.Service
 {
     public class SplitsFacade
     {
-        IList<string> AvailableGames
+        public IList<string> AvailableGames
         {
             get {
                 throw new NotImplementedException();
             }
         }
         
-        IGameManager LoadGameManager(string gameName)
+        public IGameManager LoadGameManager(string gameName)
         {
             throw new NotImplementedException();
         }

@@ -4,15 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
-        xmlns:vm="clr-namespace:TouhouSplits.UI.ViewModel"
         mc:Ignorable="d"
         Title="New / Edit Splits" Height="300" Width="600">
-    <Window.DataContext>
-        <vm:EditSplitsViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
@@ -22,12 +17,7 @@
              <ComboBoxItem>Touhou 7: Perfect Cherry Blossom</ComboBoxItem>
              <ComboBoxItem>Touhou 8: Imperishible Night</ComboBoxItem>
          </ComboBox>
-        <WrapPanel Grid.Row="1">
-            <Button Width="100">New Splits</Button>
-            <Button Width="100">Recent Splits...</Button>
-            <Button Width="100">Load From File...</Button>
-        </WrapPanel>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -55,7 +45,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+        <WrapPanel Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <Button>Cancel</Button>
             <Button>Save</Button>
             <Button>Save As...</Button>

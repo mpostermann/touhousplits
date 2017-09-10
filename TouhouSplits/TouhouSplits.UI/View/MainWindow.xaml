@@ -20,11 +20,15 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open Splits..." Command="{Binding LoadSplitCommand}" />
                 <MenuItem Header="_Exit"/>
             </MenuItem>
+            <MenuItem Header="_Splits">
+                <MenuItem Header="_Open Splits..."/>
+                <MenuItem Header="_New Splits..." Command="{Binding NewSplitCommand}" />
+                <MenuItem Header="_Edit Splits..." Command="{Binding EditSplitCommand}" />
+                <MenuItem Header="_Recent Splits..." Command="{Binding RecentSplitsCommand}" />
+            </MenuItem>
             <MenuItem Header="_Game">
-                <MenuItem Header="_Hook Game"/>
                 <MenuItem Header="Start _Recording Split"/>
             </MenuItem>
         </Menu>
