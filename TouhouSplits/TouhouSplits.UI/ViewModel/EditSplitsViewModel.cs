@@ -21,8 +21,7 @@ namespace TouhouSplits.UI.ViewModel
 
         public EditSplitsViewModel(ISplits splits, SplitsFacade facade)
         {
-            //Splits = splits.Clone();
-            Splits = splits;
+            Splits = splits.Clone();
             SplitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
