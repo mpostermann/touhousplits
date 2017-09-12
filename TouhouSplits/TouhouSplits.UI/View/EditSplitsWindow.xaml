@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
+        xmlns:conv="clr-namespace:TouhouSplits.UI.Converter"
         mc:Ignorable="d"
         Title="New / Edit Splits" Height="300" Width="600">
+    <Window.Resources>
+        <conv:AdditionConverter x:Key="AdditionConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,9 +29,9 @@
                  <ColumnDefinition Width="1*"/>
                  <ColumnDefinition Width="4*"/>
              </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0">Add Segment Above</Button>
-            <Button Grid.Row="1" Grid.Column="0">Add Segment Below</Button>
-            <ListView Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+            <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=-1}">Add Segment Above</Button>
+            <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">Add Segment Below</Button>
+            <ListView Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn>

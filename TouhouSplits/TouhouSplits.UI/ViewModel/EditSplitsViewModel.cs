@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using TouhouSplits.Service;
@@ -20,8 +21,11 @@ namespace TouhouSplits.UI.ViewModel
 
         public EditSplitsViewModel(ISplits splits, SplitsFacade facade)
         {
-            Splits = splits.Clone();
+            //Splits = splits.Clone();
+            Splits = splits;
             SplitsFacade = facade;
+
+            AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
         }
 
         public IList<string> AvailableGames {
@@ -50,6 +54,21 @@ namespace TouhouSplits.UI.ViewModel
             get {
                 throw new NotImplementedException();
             }
+        }
+
+        private void AddSegment(int index) {
+            /* Check that index is within bounds */
+            if (index < 0) {
+                index = 0;
+            }
+            else if (index > Splits.Segments.Count) {
+                index = Splits.Segments.Count;
+            }
+
+            //Todo: Construct a new segment
+            ISegment newSegment = null;
+
+            Splits.AddSegment(index, newSegment);
         }
     }
 }
