@@ -73,8 +73,8 @@ namespace TouhouSplits.UI.ViewModel
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
                 _currentSplitsFilepath = loadSplitsVm.SplitsFilePath;
-                CurrentSplits = newSplit;
-                _currentGame = _splitsFacade.LoadGameManager(newSplit.GameName);
+                CurrentSplits = loadSplitsVm.Splits;
+                _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
             }
         }
 
@@ -84,8 +84,10 @@ namespace TouhouSplits.UI.ViewModel
             loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplits, _splitsFacade);
             loadSplitView.ShowDialog();
 
-            /* Reload the current game if the parent game was edited */
-            if (CurrentSplits.GameName != _currentGame.GameName) {
+            if (loadSplitView.DialogResult == true) {
+                var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
+                _currentSplitsFilepath = loadSplitsVm.SplitsFilePath;
+                CurrentSplits = loadSplitsVm.Splits;
                 _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
             }
         }

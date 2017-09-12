@@ -8,9 +8,10 @@ namespace TouhouSplits.UI.ViewModel
 {
     public class EditSplitsViewModel : ViewModelBase
     {
-        private ISplits _splits;
-        private SplitsFacade _splitsFacade; 
-        
+        private SplitsFacade SplitsFacade;
+
+        public ISplits Splits { get; private set; }
+
         public ICommand AddSegmentCommand { get; private set; }
         public ICommand UpdateSegmentNameCommand { get; private set; }
         public ICommand UpdateSegmentScoreCommand { get; private set; }
@@ -19,28 +20,28 @@ namespace TouhouSplits.UI.ViewModel
 
         public EditSplitsViewModel(ISplits splits, SplitsFacade facade)
         {
-            _splits = splits;
-            _splitsFacade = facade;
+            Splits = splits.Clone();
+            SplitsFacade = facade;
         }
 
         public IList<string> AvailableGames {
             get {
-                return _splitsFacade.AvailableGames;
+                return SplitsFacade.AvailableGames;
             }
         }
 
         public string GameName {
-            get { return _splits.GameName; }
+            get { return Splits.GameName; }
             set {
-                _splits.GameName = value;
+                Splits.GameName = value;
                 NotifyPropertyChanged("GameName");
             }
         }
 
         public string SplitName {
-            get { return _splits.SplitName; }
+            get { return Splits.SplitName; }
             set {
-                _splits.SplitName = value;
+                Splits.SplitName = value;
                 NotifyPropertyChanged("SplitName");
             }
         }

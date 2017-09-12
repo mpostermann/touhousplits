@@ -11,5 +11,6 @@ namespace TouhouSplits.Service.Data
         void AddSegment(int index, ISegment segment);
         void RemoveSegment(int index);
         void UpdateSegment(int index, ISegment segment);
+        ISplits Clone();
     }
 }
