@@ -67,7 +67,7 @@ namespace TouhouSplits.UI.ViewModel
             var loadSplitView = new EditSplitsWindow();
             //Todo: instantiate a new Segment
             ISplits newSplit = null;
-            loadSplitView.DataContext = new EditSplitsViewModel(newSplit);
+            loadSplitView.DataContext = new EditSplitsViewModel(newSplit, _splitsFacade);
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
@@ -81,7 +81,7 @@ namespace TouhouSplits.UI.ViewModel
         private void EditSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplits);
+            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplits, _splitsFacade);
             loadSplitView.ShowDialog();
 
             /* Reload the current game if the parent game was edited */

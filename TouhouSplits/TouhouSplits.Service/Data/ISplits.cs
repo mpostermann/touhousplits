@@ -4,8 +4,8 @@ namespace TouhouSplits.Service.Data
 {
     public interface ISplits
     {
-        string GameName { get; }
-        string SplitName { get; }
+        string GameName { get; set; }
+        string SplitName { get; set; }
         IList<ISegment> Segments { get; }
         ISegment EndingSegment { get; }
         void AddSegment(int index, ISegment segment);

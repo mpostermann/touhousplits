@@ -9,15 +9,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0">
-             <ComboBoxItem>Touhou 6: The Embodiment of Scarlet Devil</ComboBoxItem>
-             <ComboBoxItem>Touhou 7: Perfect Cherry Blossom</ComboBoxItem>
-             <ComboBoxItem>Touhou 8: Imperishible Night</ComboBoxItem>
-         </ComboBox>
-        <Grid Grid.Row="1">
+        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding GameName}"/>
+        <TextBox Grid.Row="1" Text="{Binding SplitsName}"/>
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -45,7 +43,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <WrapPanel Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+        <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <Button>Cancel</Button>
             <Button>Save</Button>
             <Button>Save As...</Button>
