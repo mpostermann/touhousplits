@@ -50,7 +50,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Label Content="{Binding}"></Label>
+            <Label Content="{Binding CurrentScore}"></Label>
         </StackPanel>
     </Grid>
 </Window>
