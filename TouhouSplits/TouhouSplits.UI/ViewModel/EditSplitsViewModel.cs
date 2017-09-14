@@ -34,8 +34,8 @@ namespace TouhouSplits.UI.ViewModel
 
         public EditSplitsViewModel(ISplitsFile splits, SplitsFacade facade)
         {
-            //_splits = splits.Splits.Clone();
-            //_filepath = splits.FileInfo.FullName;
+            _splits = splits.Splits.Clone();
+            _filepath = splits.FileInfo.FullName;
 
             _splitsFacade = facade;
 
@@ -107,7 +107,7 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveSplits()
         {
-            //SaveSplits(_filepath);
+            SaveSplits(_filepath);
             InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
         }
 
