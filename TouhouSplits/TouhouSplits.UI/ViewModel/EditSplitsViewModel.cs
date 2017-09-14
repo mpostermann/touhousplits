@@ -75,7 +75,12 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        private void AddSegment(int index) {
+        public IList<ISegment> Segments {
+            get { return _splits.Segments; }
+        }
+
+        private void AddSegment(int index)
+        {
             /* Check that index is within bounds */
             if (index < 0) {
                 index = 0;

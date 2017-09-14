@@ -57,6 +57,15 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit">
+      <HintPath>..\SharedLibs\WPFToolkit\WPFToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFToolkit.Design">
+      <HintPath>..\SharedLibs\WPFToolkit\WPFToolkit.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFToolkit.VisualStudio.Design">
+      <HintPath>..\SharedLibs\WPFToolkit\WPFToolkit.VisualStudio.Design.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
