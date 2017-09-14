@@ -15,7 +15,7 @@ namespace TouhouSplits.UI.ViewModel
     {
         private SplitsFacade _splitsFacade;
         private IGameManager _currentGame;
-        private ISplits _currentSplits;
+        private ISplitsFile _currentSplitsFile;
         private ISplits _recordingSplits;
         private Timer _recordTimer;
 
@@ -42,11 +42,11 @@ namespace TouhouSplits.UI.ViewModel
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits());
         }
         
-        public ISplits CurrentSplits {
-            get { return _currentSplits; }
+        public ISplitsFile CurrentSplitsFile {
+            get { return _currentSplitsFile; }
             set {
-                _currentSplits = value;
-                NotifyPropertyChanged("CurrentSplits");
+                _currentSplitsFile = value;
+                NotifyPropertyChanged("CurrentSplitsFile");
             }
         }
 
@@ -66,27 +66,29 @@ namespace TouhouSplits.UI.ViewModel
         {
             var loadSplitView = new EditSplitsWindow();
             //Todo: instantiate a new Segment
-            ISplits newSplit = null;
-            loadSplitView.DataContext = new EditSplitsViewModel(newSplit);
+            ISplitsFile newSplits = null;
+            loadSplitView.DataContext = new EditSplitsViewModel(newSplits, _splitsFacade);
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
                 _currentSplitsFilepath = loadSplitsVm.SplitsFilePath;
-                CurrentSplits = newSplit;
-                _currentGame = _splitsFacade.LoadGameManager(newSplit.GameName);
+                CurrentSplitsFile = loadSplitsVm.SplitsFile;
+                _currentGame = _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName);
             }
         }
 
         private void EditSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplits);
+            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplitsFile, _splitsFacade);
             loadSplitView.ShowDialog();
 
-            /* Reload the current game if the parent game was edited */
-            if (CurrentSplits.GameName != _currentGame.GameName) {
-                _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
+            if (loadSplitView.DialogResult == true) {
+                var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
+                _currentSplitsFilepath = loadSplitsVm.SplitsFilePath;
+                CurrentSplitsFile = loadSplitsVm.SplitsFile;
+                _currentGame = _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName);
             }
         }
 
@@ -98,19 +100,19 @@ namespace TouhouSplits.UI.ViewModel
             if (recentSplitsView.DialogResult == true) {
                 var rsViewModel = (RecentSplitsViewModel)recentSplitsView.DataContext;
                 _currentSplitsFilepath = rsViewModel.SplitsFilePath;
-                CurrentSplits = rsViewModel.SelectedSplits;
-                _currentGame = _splitsFacade.LoadGameManager(CurrentSplits.GameName);
+                CurrentSplitsFile = rsViewModel.SelectedSplits;
+                _currentGame = _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName);
             }
         }
 
         private void NextSplits()
         {
-            if (CurrentSplits == null) {
+            if (CurrentSplitsFile == null) {
                 return;
             }
 
             /* Get the current index */
-            int index = _currentGame.SplitsManager.RecentSplits.IndexOf(CurrentSplits);
+            int index = _currentGame.SplitsManager.RecentSplits.IndexOf(CurrentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index + 1;
@@ -118,17 +120,17 @@ namespace TouhouSplits.UI.ViewModel
                 nextIndex = 0;
             }
 
-            CurrentSplits = _currentGame.SplitsManager.RecentSplits[nextIndex];
+            CurrentSplitsFile = _currentGame.SplitsManager.RecentSplits[nextIndex];
         }
 
         private void PreviousSplits()
         {
-            if (CurrentSplits == null) {
+            if (CurrentSplitsFile == null) {
                 return;
             }
 
             /* Get the current index */
-            int index = _currentGame.SplitsManager.RecentSplits.IndexOf(CurrentSplits);
+            int index = _currentGame.SplitsManager.RecentSplits.IndexOf(CurrentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index - 1;
@@ -136,7 +138,7 @@ namespace TouhouSplits.UI.ViewModel
                 nextIndex = _currentGame.SplitsManager.RecentSplits.Count - 1;
             }
 
-            CurrentSplits = _currentGame.SplitsManager.RecentSplits[nextIndex];
+            CurrentSplitsFile = _currentGame.SplitsManager.RecentSplits[nextIndex];
         }
 
         private void StartOrStopRecordingSplits()
@@ -181,7 +183,7 @@ namespace TouhouSplits.UI.ViewModel
             _currentGame.Hook.Unhook();
 
             /* If the new score is better than the previous, then save it */
-            if (RecordingSplits.EndingSegment.Score > CurrentSplits.EndingSegment.Score) {
+            if (RecordingSplits.EndingSegment.Score > CurrentSplitsFile.Splits.EndingSegment.Score) {
                 _currentGame.SplitsManager.SerializeSplits(RecordingSplits, _currentSplitsFilepath);
             }
 

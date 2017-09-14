@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\IGameConfig.cs" />
+    <Compile Include="Data\ISplitsFile.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />
     <Compile Include="Data\ISegment.cs" />
     <Compile Include="Data\ISplits.cs" />

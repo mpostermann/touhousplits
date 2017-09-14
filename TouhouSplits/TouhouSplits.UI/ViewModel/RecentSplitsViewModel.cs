@@ -27,7 +27,7 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        public ISplits SelectedSplits {
+        public ISplitsFile SelectedSplits {
             get {
                 throw new NotImplementedException();
             }
