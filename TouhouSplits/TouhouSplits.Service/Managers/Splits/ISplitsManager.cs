@@ -7,6 +7,6 @@ namespace TouhouSplits.Service.Managers.Splits
     {
         IList<ISplitsFile> RecentSplits { get; }
         ISplitsFile DeserializeSplits(string filePath);
-        void SerializeSplits(ISplits splits, string filePath);
+        ISplitsFile SerializeSplits(ISplits splits, string filePath);
     }
 }

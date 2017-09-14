@@ -9,7 +9,7 @@ namespace TouhouSplits.UI.ViewModel
 {
     public class EditSplitsViewModel : ViewModelBase
     {
-        private SplitsFacade SplitsFacade;
+        private SplitsFacade _splitsFacade;
         private ISplits _splits;
         private string _filepath;
 
@@ -20,20 +20,23 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand UpdateSegmentScoreCommand { get; private set; }
         public ICommand RemoveSegmentCommand { get; private set; }
         public ICommand SaveSplitsCommand { get; private set; }
+        public ICommand SaveSplitsAsCommand { get; private set; }
 
         public EditSplitsViewModel(ISplitsFile splits, SplitsFacade facade)
         {
             _splits = splits.Splits.Clone();
             _filepath = splits.FileInfo.FullName;
 
-            SplitsFacade = facade;
+            _splitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
+            SaveSplitsCommand = new RelayCommand(() => SaveSplits());
+            SaveSplitsAsCommand = new RelayCommand(() => SaveSplitsAs());
         }
 
         public IList<string> AvailableGames {
             get {
-                return SplitsFacade.AvailableGames;
+                return _splitsFacade.AvailableGames;
             }
         }
 
@@ -74,6 +77,26 @@ namespace TouhouSplits.UI.ViewModel
             ISegment newSegment = null;
 
             _splits.AddSegment(index, newSegment);
+        }
+
+        private void SaveSplitsAs()
+        {
+            /* Todo: get a file path */
+            string filepath = "";
+            SaveSplits(filepath);
+        }
+
+        private void SaveSplits()
+        {
+            SaveSplits(_filepath);
+        }
+
+        private void SaveSplits(string filepath)
+        {
+            var splitsManager = _splitsFacade.LoadGameManager(GameName).SplitsManager;
+            SplitsFile = splitsManager.SerializeSplits(_splits, filepath);
+            SplitsFilePath = SplitsFile.FileInfo.FullName;
+            _splits = SplitsFile.Splits;
         }
     }
 }

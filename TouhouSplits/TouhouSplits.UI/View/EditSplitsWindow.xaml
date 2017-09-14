@@ -49,8 +49,8 @@
         </Grid>
         <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <Button>Cancel</Button>
-            <Button>Save</Button>
-            <Button>Save As...</Button>
+            <Button Command="{Binding SaveSplitsCommand}">Save</Button>
+            <Button Command="{Binding SaveSplitsAsCommand}">Save As...</Button>
         </WrapPanel>
     </Grid>
 </Window>
