@@ -11,6 +11,7 @@
         Title="New / Edit Splits" Height="300" Width="600">
     <Window.Resources>
         <conv:AdditionConverter x:Key="AdditionConverter"/>
+        <BitmapImage UriSource="pack://application:,,,/Resources/Images/delete.png" x:Key="DeleteImage"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -37,6 +38,13 @@
                 <toolkit:DataGrid.Columns>
                     <toolkit:DataGridTextColumn Binding="{Binding SegmentName}" Header="Segment"/>
                     <exttoolkit:DataGridLongColumn Binding="{Binding Score}" Header="Score"/>
+                    <toolkit:DataGridTemplateColumn Width="12" IsReadOnly="True">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{StaticResource DeleteImage}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
         </Grid>
