@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:toolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
+        xmlns:exttoolkit="clr-namespace:TouhouSplits.UI.Control.DataGrid"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
@@ -32,7 +33,11 @@
              </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=-1}">Add Segment Above</Button>
             <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">Add Segment Below</Button>
-            <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Segments}">
+            <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Segments}" AutoGenerateColumns="False">
+                <toolkit:DataGrid.Columns>
+                    <toolkit:DataGridTextColumn Binding="{Binding SegmentName}" Header="Segment"/>
+                    <exttoolkit:DataGridLongColumn Binding="{Binding Score}" Header="Score"/>
+                </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
         </Grid>
         <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
