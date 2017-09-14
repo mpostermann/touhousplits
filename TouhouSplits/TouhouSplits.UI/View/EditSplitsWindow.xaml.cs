@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using TouhouSplits.UI.ViewModel;
 
 namespace TouhouSplits.UI.View
 {
@@ -18,9 +9,39 @@ namespace TouhouSplits.UI.View
     /// </summary>
     public partial class EditSplitsWindow : Window
     {
+        private bool _isClosed = false;
+
         public EditSplitsWindow()
         {
             InitializeComponent();
+
+            DataContextChanged += OnDataContextChanged;
+            Closed += OnDialogWindowClosed;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            /* Set an event handler for RequestCloseDialog */
+            if (e.NewValue is IDialogResultViewModel) {
+                var d = e.NewValue as IDialogResultViewModel;
+
+                d.RequestCloseDialog += new EventHandler<RequestCloseDialogEventArgs>(DialogResultTrueEvent);
+            }
+        }
+
+        private void DialogResultTrueEvent(object sender, RequestCloseDialogEventArgs eventargs)
+        {
+            if (_isClosed) {
+                DialogResult = false;
+            }
+            else {
+                DialogResult = eventargs.DialogResult;
+            }
+        }
+
+        private void OnDialogWindowClosed(object sender, EventArgs e)
+        {
+            _isClosed = true;
         }
     }
 }

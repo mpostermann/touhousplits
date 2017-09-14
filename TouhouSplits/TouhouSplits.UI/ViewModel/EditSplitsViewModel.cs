@@ -8,7 +8,7 @@ using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class EditSplitsViewModel : ViewModelBase
+    public class EditSplitsViewModel : ViewModelBase, IDialogResultViewModel
     {
         private SplitsFacade _splitsFacade;
         private ISplits _splits;
@@ -16,23 +16,33 @@ namespace TouhouSplits.UI.ViewModel
 
         public ISplitsFile SplitsFile { get; private set; }
 
+        public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
+        private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
+        {
+            var handler = RequestCloseDialog;
+            if (handler != null)
+                handler(this, e);
+        }
+
         public ICommand AddSegmentCommand { get; private set; }
         public ICommand UpdateSegmentNameCommand { get; private set; }
         public ICommand UpdateSegmentScoreCommand { get; private set; }
         public ICommand RemoveSegmentCommand { get; private set; }
         public ICommand SaveSplitsCommand { get; private set; }
         public ICommand SaveSplitsAsCommand { get; private set; }
+        public ICommand CloseWithoutSavingCommand { get; private set; }
 
         public EditSplitsViewModel(ISplitsFile splits, SplitsFacade facade)
         {
-            _splits = splits.Splits.Clone();
-            _filepath = splits.FileInfo.FullName;
+            //_splits = splits.Splits.Clone();
+            //_filepath = splits.FileInfo.FullName;
 
             _splitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
             SaveSplitsCommand = new RelayCommand(() => SaveSplits());
             SaveSplitsAsCommand = new RelayCommand(() => SaveSplitsAs());
+            CloseWithoutSavingCommand = new RelayCommand(() => CloseWithoutSaving());
         }
 
         public IList<string> AvailableGames {
@@ -91,12 +101,14 @@ namespace TouhouSplits.UI.ViewModel
 
             if (dialog.ShowDialog() == true) {
                 SaveSplits(dialog.FileName);
+                InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
             }
         }
 
         private void SaveSplits()
         {
-            SaveSplits(_filepath);
+            //SaveSplits(_filepath);
+            InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
         }
 
         private void SaveSplits(string filepath)
@@ -105,6 +117,11 @@ namespace TouhouSplits.UI.ViewModel
             SplitsFile = splitsManager.SerializeSplits(_splits, filepath);
             SplitsFilePath = SplitsFile.FileInfo.FullName;
             _splits = SplitsFile.Splits;
+        }
+
+        private void CloseWithoutSaving()
+        {
+            InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(false));
         }
     }
 }

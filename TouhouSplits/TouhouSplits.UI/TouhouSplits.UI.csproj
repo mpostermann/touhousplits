@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\AdditionConverter.cs" />
+    <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\RecentSplitsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

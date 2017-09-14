@@ -48,7 +48,7 @@
             </ListView>
         </Grid>
         <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <Button>Cancel</Button>
+            <Button Command="{Binding CloseWithoutSavingCommand}">Cancel</Button>
             <Button Command="{Binding SaveSplitsCommand}">Save</Button>
             <Button Command="{Binding SaveSplitsAsCommand}">Save As...</Button>
         </WrapPanel>
