@@ -59,7 +59,7 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        public string SplitName {
+        public string SplitsName {
             get { return _splits.SplitName; }
             set {
                 _splits.SplitName = value;
