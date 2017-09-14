@@ -31,8 +31,8 @@
                  <ColumnDefinition Width="1*"/>
                  <ColumnDefinition Width="4*"/>
              </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=-1}">Add Segment Above</Button>
-            <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">Add Segment Below</Button>
+            <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">Add Segment Above</Button>
+            <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=1}">Add Segment Below</Button>
             <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Segments}" AutoGenerateColumns="False">
                 <toolkit:DataGrid.Columns>
                     <toolkit:DataGridTextColumn Binding="{Binding SegmentName}" Header="Segment"/>
