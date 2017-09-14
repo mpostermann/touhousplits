@@ -5,8 +5,8 @@ namespace TouhouSplits.Service.Managers.Splits
 {
     public interface ISplitsManager
     {
-        IList<ISplits> RecentSplits { get; }
-        ISplits DeserializeSplits(string filePath);
+        IList<ISplitsFile> RecentSplits { get; }
+        ISplitsFile DeserializeSplits(string filePath);
         void SerializeSplits(ISplits splits, string filePath);
     }
 }

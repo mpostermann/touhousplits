@@ -10,8 +10,10 @@ namespace TouhouSplits.UI.ViewModel
     public class EditSplitsViewModel : ViewModelBase
     {
         private SplitsFacade SplitsFacade;
+        private ISplits _splits;
+        private string _filepath;
 
-        public ISplits Splits { get; private set; }
+        public ISplitsFile SplitsFile { get; private set; }
 
         public ICommand AddSegmentCommand { get; private set; }
         public ICommand UpdateSegmentNameCommand { get; private set; }
@@ -19,9 +21,11 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand RemoveSegmentCommand { get; private set; }
         public ICommand SaveSplitsCommand { get; private set; }
 
-        public EditSplitsViewModel(ISplits splits, SplitsFacade facade)
+        public EditSplitsViewModel(ISplitsFile splits, SplitsFacade facade)
         {
-            Splits = splits.Clone();
+            _splits = splits.Splits.Clone();
+            _filepath = splits.FileInfo.FullName;
+
             SplitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
@@ -34,24 +38,26 @@ namespace TouhouSplits.UI.ViewModel
         }
 
         public string GameName {
-            get { return Splits.GameName; }
+            get { return _splits.GameName; }
             set {
-                Splits.GameName = value;
+                _splits.GameName = value;
                 NotifyPropertyChanged("GameName");
             }
         }
 
         public string SplitName {
-            get { return Splits.SplitName; }
+            get { return _splits.SplitName; }
             set {
-                Splits.SplitName = value;
+                _splits.SplitName = value;
                 NotifyPropertyChanged("SplitName");
             }
         }
 
         public string SplitsFilePath {
-            get {
-                throw new NotImplementedException();
+            get { return _filepath; }
+            set {
+                _filepath = value;
+                NotifyPropertyChanged("SplitsFilePath");
             }
         }
 
@@ -60,14 +66,14 @@ namespace TouhouSplits.UI.ViewModel
             if (index < 0) {
                 index = 0;
             }
-            else if (index > Splits.Segments.Count) {
-                index = Splits.Segments.Count;
+            else if (index > _splits.Segments.Count) {
+                index = _splits.Segments.Count;
             }
 
             //Todo: Construct a new segment
             ISegment newSegment = null;
 
-            Splits.AddSegment(index, newSegment);
+            _splits.AddSegment(index, newSegment);
         }
     }
 }
