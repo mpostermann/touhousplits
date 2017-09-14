@@ -40,6 +40,7 @@ namespace TouhouSplits.UI.ViewModel
             _splitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
+            RemoveSegmentCommand = new RelayCommand<int>((param) => RemoveSegment(param));
             SaveSplitsCommand = new RelayCommand(() => SaveSplits());
             SaveSplitsAsCommand = new RelayCommand(() => SaveSplitsAs());
             CloseWithoutSavingCommand = new RelayCommand(() => CloseWithoutSaving());
@@ -91,8 +92,18 @@ namespace TouhouSplits.UI.ViewModel
 
             //Todo: Construct a new segment
             ISegment newSegment = null;
-
+            
             _splits.AddSegment(index, newSegment);
+            NotifyPropertyChanged("Segments");
+        }
+
+        private void RemoveSegment(int index)
+        {
+            if (index < 0)
+                return;
+
+            _splits.RemoveSegment(index);
+            NotifyPropertyChanged("Segments");
         }
 
         private void SaveSplitsAs()

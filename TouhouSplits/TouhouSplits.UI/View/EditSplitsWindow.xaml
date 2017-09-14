@@ -41,7 +41,9 @@
                     <toolkit:DataGridTemplateColumn Width="12" IsReadOnly="True">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{StaticResource DeleteImage}" />
+                                <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type toolkit:DataGrid}}, Path=DataContext.RemoveSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">
+                                    <Image Source="{StaticResource DeleteImage}" />
+                                </Button>
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
