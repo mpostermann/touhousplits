@@ -6,6 +6,8 @@ namespace TouhouSplits.Service
 {
     public class SplitsFacade
     {
+        public const string DEFAULT_FILE_EXT = ".tsf";
+
         public IList<string> AvailableGames
         {
             get {

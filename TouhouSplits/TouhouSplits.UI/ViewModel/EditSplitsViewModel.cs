@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -81,9 +82,16 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveSplitsAs()
         {
-            /* Todo: get a file path */
-            string filepath = "";
-            SaveSplits(filepath);
+            SaveFileDialog dialog = new SaveFileDialog();
+            if (!String.IsNullOrEmpty(_filepath)) {
+                dialog.FileName = _filepath;
+            }
+            dialog.DefaultExt = SplitsFacade.DEFAULT_FILE_EXT;
+            dialog.Filter = string.Format("Touhou Splits Files ({0})|*{0}", SplitsFacade.DEFAULT_FILE_EXT);
+
+            if (dialog.ShowDialog() == true) {
+                SaveSplits(dialog.FileName);
+            }
         }
 
         private void SaveSplits()
