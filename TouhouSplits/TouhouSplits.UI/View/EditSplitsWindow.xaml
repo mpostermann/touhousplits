@@ -36,9 +36,9 @@
             <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=1}">Add Segment Below</Button>
             <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Segments}" AutoGenerateColumns="False">
                 <toolkit:DataGrid.Columns>
-                    <toolkit:DataGridTextColumn Binding="{Binding SegmentName}" Header="Segment"/>
-                    <exttoolkit:DataGridLongColumn Binding="{Binding Score}" Header="Score"/>
-                    <toolkit:DataGridTemplateColumn Width="12" IsReadOnly="True">
+                    <toolkit:DataGridTextColumn Width="74*" Binding="{Binding SegmentName}" Header="Segment"/>
+                    <exttoolkit:DataGridLongColumn Width="24*"  Binding="{Binding Score}" Header="Score"/>
+                    <toolkit:DataGridTemplateColumn Width="2*" IsReadOnly="True" CanUserResize="False">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type toolkit:DataGrid}}, Path=DataContext.RemoveSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">
