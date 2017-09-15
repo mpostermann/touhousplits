@@ -27,8 +27,8 @@
             </ListView.View>
         </ListView>
         <WrapPanel Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <Button>Cancel</Button>
-            <Button>Open</Button>
+            <Button Command="{Binding CancelOpeningSplitsCommand}">Cancel</Button>
+            <Button Command="{Binding OpenSplitsCommand}">Open</Button>
         </WrapPanel>
     </Grid>
 </Window>

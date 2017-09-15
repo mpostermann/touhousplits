@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using TouhouSplits.Service;
@@ -10,6 +11,8 @@ namespace TouhouSplits.UI.ViewModel
     {
         private SplitsFacade _splitsFacade;
 
+        public ISplitsFile SelectedSplits { get; private set; }
+
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
         private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
         {
@@ -18,17 +21,20 @@ namespace TouhouSplits.UI.ViewModel
                 handler(this, e);
         }
 
-        public ICommand RemoveSplits { get; private set; }
-
+        public ICommand RemoveSplitsCommand { get; private set; }
+        public ICommand OpenSplitsCommand { get; private set; }
+        public ICommand CancelOpeningSplitsCommand { get; private set; }
+        
         public RecentSplitsViewModel(SplitsFacade facade, ISplitsFile splitsFile)
         {
             _splitsFacade = facade;
             if (splitsFile != null) {
                 CurrentGame = splitsFile.Splits.GameName;
             }
-        }
 
-        public ISplitsFile SelectedSplits { get; private set; }
+            OpenSplitsCommand = new RelayCommand<ISplitsFile>((param) => OpenSplits(param));
+            CancelOpeningSplitsCommand = new RelayCommand(() => CancelOpeningSplits());
+        }
 
         public IList<string> AvailableGames {
             get {
@@ -57,6 +63,18 @@ namespace TouhouSplits.UI.ViewModel
                 _recentSplits = value;
                 NotifyPropertyChanged("RecentSplits");
             }
+        }
+
+        private void OpenSplits(ISplitsFile file)
+        {
+            SelectedSplits = file;
+            InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+        }
+
+        private void CancelOpeningSplits()
+        {
+            SelectedSplits = null;
+            InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(false));
         }
     }
 }
