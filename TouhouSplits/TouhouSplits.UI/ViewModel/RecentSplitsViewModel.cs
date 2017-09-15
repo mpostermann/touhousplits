@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class RecentSplitsViewModel : ViewModelBase
+    public class RecentSplitsViewModel : ViewModelBase, IDialogResultViewModel
     {
         private SplitsFacade _splitsFacade;
-        
+
+        public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
+        private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
+        {
+            var handler = RequestCloseDialog;
+            if (handler != null)
+                handler(this, e);
+        }
+
         public ICommand RemoveSplits { get; private set; }
 
         public RecentSplitsViewModel(SplitsFacade facade, ISplitsFile splitsFile)
