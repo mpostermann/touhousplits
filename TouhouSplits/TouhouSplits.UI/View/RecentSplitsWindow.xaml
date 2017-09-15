@@ -7,23 +7,16 @@
         xmlns:vm="clr-namespace:TouhouSplits.UI.ViewModel"
         mc:Ignorable="d"
         Title="RecentSplitsWindow" Height="300" Width="300">
-    <Window.DataContext>
-        <vm:RecentSplitsViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0">
-            <ComboBoxItem>Touhou 6: The Embodiment of Scarlet Devil</ComboBoxItem>
-            <ComboBoxItem>Touhou 7: Perfect Cherry Blossom</ComboBoxItem>
-            <ComboBoxItem>Touhou 8: Imperishible Night</ComboBoxItem>
-        </ComboBox>
+        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding CurrentGame}"/>
         <ListView Grid.Row="1">
             <ListView.View>
-                <GridView AllowsColumnReorder="True">
+                <GridView AllowsColumnReorder="True" >
                     <GridViewColumn>
                         <GridViewColumnHeader>Segment</GridViewColumnHeader>
                     </GridViewColumn>

@@ -3,7 +3,7 @@ using TouhouSplits.Service.Config;
 
 namespace TouhouSplits.Manager.Config
 {
-    public class IConfigManager
+    public interface IConfigManager
     {
         IList<IGameConfig> AvailableGames { get; }
     }

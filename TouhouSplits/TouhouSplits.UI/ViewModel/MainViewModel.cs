@@ -95,11 +95,11 @@ namespace TouhouSplits.UI.ViewModel
         private void RecentSplits()
         {
             var recentSplitsView = new RecentSplitsWindow();
+            recentSplitsView.DataContext = new RecentSplitsViewModel(_splitsFacade, CurrentSplitsFile);
             recentSplitsView.ShowDialog();
 
             if (recentSplitsView.DialogResult == true) {
                 var rsViewModel = (RecentSplitsViewModel)recentSplitsView.DataContext;
-                _currentSplitsFilepath = rsViewModel.SplitsFilePath;
                 CurrentSplitsFile = rsViewModel.SelectedSplits;
                 _currentGame = _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName);
             }

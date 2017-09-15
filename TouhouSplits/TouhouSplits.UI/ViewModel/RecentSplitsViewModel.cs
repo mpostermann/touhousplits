@@ -1,41 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
+using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class RecentSplitsViewModel
+    public class RecentSplitsViewModel : ViewModelBase
     {
+        private SplitsFacade _splitsFacade;
+        
         public ICommand RemoveSplits { get; private set; }
 
-        public RecentSplitsViewModel()
+        public RecentSplitsViewModel(SplitsFacade facade, ISplitsFile splitsFile)
         {
+            _splitsFacade = facade;
+            if (splitsFile != null) {
+                CurrentGame = splitsFile.Splits.GameName;
+            }
         }
+
+        public ISplitsFile SelectedSplits { get; private set; }
 
         public IList<string> AvailableGames {
             get {
-                throw new NotImplementedException();
+                return _splitsFacade.AvailableGames;
             }
         }
 
-        public IList<string> RecentSplits {
+        private string _currentGame;
+        public string CurrentGame {
             get {
-                throw new NotImplementedException();
+                return _currentGame;
+            }
+            set {
+                _currentGame = value;
+                RecentSplits = _splitsFacade.LoadGameManager(_currentGame).SplitsManager.RecentSplits;
+                NotifyPropertyChanged("CurrentGame");
             }
         }
 
-        public ISplitsFile SelectedSplits {
+        private IList<ISplitsFile> _recentSplits;
+        public IList<ISplitsFile> RecentSplits {
             get {
-                throw new NotImplementedException();
+                return _recentSplits; 
             }
-        }
-
-        public string SplitsFilePath {
-            get {
-                throw new NotImplementedException();
+            set {
+                _recentSplits = value;
+                NotifyPropertyChanged("RecentSplits");
             }
         }
     }
