@@ -32,10 +32,10 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand SaveSplitsAsCommand { get; private set; }
         public ICommand CloseWithoutSavingCommand { get; private set; }
 
-        public EditSplitsViewModel(ISplitsFile splits, SplitsFacade facade)
+        public EditSplitsViewModel(string filepath, ISplits splits, SplitsFacade facade)
         {
-            _splits = splits.Splits.Clone();
-            _filepath = splits.FileInfo.FullName;
+            _splits = splits.Clone();
+            _filepath = filepath;
 
             _splitsFacade = facade;
 
@@ -65,14 +65,6 @@ namespace TouhouSplits.UI.ViewModel
             set {
                 _splits.SplitName = value;
                 NotifyPropertyChanged("SplitName");
-            }
-        }
-
-        public string SplitsFilePath {
-            get { return _filepath; }
-            set {
-                _filepath = value;
-                NotifyPropertyChanged("SplitsFilePath");
             }
         }
 
@@ -128,7 +120,6 @@ namespace TouhouSplits.UI.ViewModel
         {
             var splitsManager = _splitsFacade.LoadGameManager(GameName).SplitsManager;
             SplitsFile = splitsManager.SerializeSplits(_splits, filepath);
-            SplitsFilePath = SplitsFile.FileInfo.FullName;
             _splits = SplitsFile.Splits;
         }
 

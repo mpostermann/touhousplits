@@ -63,11 +63,11 @@ namespace TouhouSplits.UI.ViewModel
         private void NewSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            ISplitsFile newSplits = new SplitsFile(
+            loadSplitView.DataContext = new EditSplitsViewModel(
                 string.Empty,
-                new Splits()
+                new Splits(),
+                _splitsFacade
             );
-            loadSplitView.DataContext = new EditSplitsViewModel(newSplits, _splitsFacade);
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
@@ -80,7 +80,11 @@ namespace TouhouSplits.UI.ViewModel
         private void EditSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            loadSplitView.DataContext = new EditSplitsViewModel(CurrentSplitsFile, _splitsFacade);
+            loadSplitView.DataContext = new EditSplitsViewModel(
+                CurrentSplitsFile.FileInfo.FullName,
+                CurrentSplitsFile.Splits,
+                _splitsFacade
+            );
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
