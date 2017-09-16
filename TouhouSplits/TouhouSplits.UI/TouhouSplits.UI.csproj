@@ -157,6 +157,10 @@
     <Resource Include="Resources\Images\delete.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TouhouSplits.MVVM\TouhouSplits.MVVM.csproj">
+      <Project>{7d12f11c-472a-4f9c-8a6a-430f6da85364}</Project>
+      <Name>TouhouSplits.MVVM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TouhouSplits.Service\TouhouSplits.Service.csproj">
       <Project>{e128f26d-525e-4278-9706-589fdb7024be}</Project>
       <Name>TouhouSplits.Service</Name>

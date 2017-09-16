@@ -63,8 +63,10 @@ namespace TouhouSplits.UI.ViewModel
         private void NewSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            //Todo: instantiate a new Segment
-            ISplitsFile newSplits = null;
+            ISplitsFile newSplits = new SplitsFile(
+                string.Empty,
+                new Splits()
+            );
             loadSplitView.DataContext = new EditSplitsViewModel(newSplits, _splitsFacade);
             loadSplitView.ShowDialog();
 

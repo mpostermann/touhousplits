@@ -90,10 +90,7 @@ namespace TouhouSplits.UI.ViewModel
                 index = _splits.Segments.Count;
             }
 
-            //Todo: Construct a new segment
-            ISegment newSegment = null;
-            
-            _splits.AddSegment(index, newSegment);
+            _splits.AddSegment(index, new Segment());
             NotifyPropertyChanged("Segments");
         }
 

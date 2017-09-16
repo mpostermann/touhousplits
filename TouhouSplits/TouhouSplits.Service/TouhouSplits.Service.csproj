@@ -62,6 +62,9 @@
     <Compile Include="Config\GameConfig.cs" />
     <Compile Include="Config\IGameConfig.cs" />
     <Compile Include="Data\ISplitsFile.cs" />
+    <Compile Include="Data\Segment.cs" />
+    <Compile Include="Data\Splits.cs" />
+    <Compile Include="Data\SplitsFile.cs" />
     <Compile Include="Managers\Config\ConfigManager.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />
     <Compile Include="Data\ISegment.cs" />
