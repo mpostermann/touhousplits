@@ -7,7 +7,7 @@ namespace TouhouSplits.Service.Config
     {
         public string GameName { get; private set; } 
         public byte ScoreMemoryLocation { get; private set; } 
-        public Type HookStrategy { get; private set; }
+        public XElement HookConfig { get; private set; }
 
         public GameConfig(XElement configElement)
         {

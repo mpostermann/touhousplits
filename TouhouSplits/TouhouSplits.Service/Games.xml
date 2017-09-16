@@ -2,7 +2,7 @@
 <Configuration>
     <Games>
         <Game name="Touhou 6: the Embodiment of Scarlet Devil" process="東方紅魔郷|th06e|“Œ•ûg–‚‹½">
-            <Hook factory="" address="0x0047BB20" encoding="int32"/>
+            <Hook address="0x0069BCA4" encoding="int32"/>
         </Game>
     </Games>
 </Configuration>

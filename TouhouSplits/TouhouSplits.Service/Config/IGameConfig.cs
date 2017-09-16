@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Xml.Linq;
 
 namespace TouhouSplits.Service.Config
 {
@@ -6,6 +6,6 @@ namespace TouhouSplits.Service.Config
     {
         string GameName { get; }
         byte ScoreMemoryLocation { get; }
-        Type HookStrategy { get; }
+        XElement HookConfig { get; }
     }
 }
