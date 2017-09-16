@@ -1,7 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
 using System.Windows.Input;
 using TouhouSplits.Service;
@@ -18,7 +15,6 @@ namespace TouhouSplits.UI.ViewModel
         private ISplitsFile _currentSplitsFile;
         private ISplits _recordingSplits;
         private Timer _recordTimer;
-
         private bool _isRecording;
 
         public ICommand NewSplitCommand { get; private set; }
