@@ -14,6 +14,5 @@ namespace TouhouSplits.Service.Managers.Config
             /* Todo: load config XDocument and list of AvailableGames */
             throw new NotImplementedException();
         }
-
     }
 }
