@@ -1,4 +1,5 @@
-﻿using TouhouSplits.Service.Data;
+﻿using System.ComponentModel;
+using TouhouSplits.Service.Data;
 using Xunit;
 
 namespace TouhouSplits.UnitTests.Data
@@ -30,6 +31,20 @@ namespace TouhouSplits.UnitTests.Data
         }
 
         [Fact]
+        public void SettingScoreFiresPropertyChangedEvent()
+        {
+            string changedPropertyName = null;
+            var segment = new Segment();
+            segment.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+
+            segment.Score = 1;
+            Assert.Equal("Score", changedPropertyName);
+        }
+
+        [Fact]
         public void NameIsSetWithCorrectValue()
         {
             var segment = new Segment();
@@ -37,6 +52,20 @@ namespace TouhouSplits.UnitTests.Data
 
             segment.SegmentName = expectedName;
             Assert.Equal(expectedName, segment.SegmentName);
+        }
+
+        [Fact]
+        public void SettingNameFiresPropertyChangedEvent()
+        {
+            string changedPropertyName = null;
+            var segment = new Segment();
+            segment.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+
+            segment.SegmentName = "name";
+            Assert.Equal("SegmentName", changedPropertyName);
         }
     }
 }
