@@ -19,7 +19,6 @@ namespace TouhouSplits.UI.ViewModel
         private ISplits _recordingSplits;
         private Timer _recordTimer;
 
-        private string _currentSplitsFilepath;
         private bool _isRecording;
 
         public ICommand NewSplitCommand { get; private set; }
@@ -72,7 +71,6 @@ namespace TouhouSplits.UI.ViewModel
 
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
-                _currentSplitsFilepath = loadSplitsVm.SplitsFilePath;
                 CurrentSplitsFile = loadSplitsVm.SplitsFile;
                 _currentGame = _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName);
             }
@@ -86,7 +84,6 @@ namespace TouhouSplits.UI.ViewModel
 
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
-                _currentSplitsFilepath = loadSplitsVm.SplitsFilePath;
                 CurrentSplitsFile = loadSplitsVm.SplitsFile;
                 _currentGame = _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName);
             }
@@ -184,7 +181,7 @@ namespace TouhouSplits.UI.ViewModel
 
             /* If the new score is better than the previous, then save it */
             if (RecordingSplits.EndingSegment.Score > CurrentSplitsFile.Splits.EndingSegment.Score) {
-                _currentGame.SplitsManager.SerializeSplits(RecordingSplits, _currentSplitsFilepath);
+                _currentGame.SplitsManager.SerializeSplits(RecordingSplits, CurrentSplitsFile.FileInfo.FullName);
             }
 
             _isRecording = false;
