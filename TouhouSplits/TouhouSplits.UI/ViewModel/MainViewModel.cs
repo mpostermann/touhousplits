@@ -4,6 +4,7 @@ using System.Windows.Input;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
+using TouhouSplits.Service.Managers.Config;
 using TouhouSplits.Service.Managers.Game;
 using TouhouSplits.UI.View;
 
@@ -27,8 +28,7 @@ namespace TouhouSplits.UI.ViewModel
 
         public MainViewModel()
         {
-            //Todo: load configuration from file
-            IConfigManager configuration = null;
+            IConfigManager configuration = new ConfigManager();
             _splitsFacade = new SplitsFacade(configuration);
             _isRecording = false;
 
