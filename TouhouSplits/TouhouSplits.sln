@@ -1,26 +1,44 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.Service", "TouhouSplits.Service\TouhouSplits.Service.csproj", "{E128F26D-525E-4278-9706-589FDB7024BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.UI", "TouhouSplits.UI\TouhouSplits.UI.csproj", "{F8889817-460F-4CB8-9236-EB6F1189E79D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.MVVM", "TouhouSplits.MVVM\TouhouSplits.MVVM.csproj", "{7D12F11C-472A-4F9C-8A6A-430F6DA85364}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E128F26D-525E-4278-9706-589FDB7024BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E128F26D-525E-4278-9706-589FDB7024BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Debug|x86.ActiveCfg = Debug|x86
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Debug|x86.Build.0 = Debug|x86
+		{E128F26D-525E-4278-9706-589FDB7024BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E128F26D-525E-4278-9706-589FDB7024BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Release|x86.ActiveCfg = Release|x86
 		{E128F26D-525E-4278-9706-589FDB7024BE}.Release|x86.Build.0 = Release|x86
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Debug|x86.ActiveCfg = Debug|x86
 		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Debug|x86.Build.0 = Debug|x86
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Release|x86.ActiveCfg = Release|x86
 		{F8889817-460F-4CB8-9236-EB6F1189E79D}.Release|x86.Build.0 = Release|x86
+		{7D12F11C-472A-4F9C-8A6A-430F6DA85364}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7D12F11C-472A-4F9C-8A6A-430F6DA85364}.Debug|x86.ActiveCfg = Debug|x86
+		{7D12F11C-472A-4F9C-8A6A-430F6DA85364}.Debug|x86.Build.0 = Debug|x86
+		{7D12F11C-472A-4F9C-8A6A-430F6DA85364}.Release|Any CPU.ActiveCfg = Release|x86
+		{7D12F11C-472A-4F9C-8A6A-430F6DA85364}.Release|x86.ActiveCfg = Release|x86
+		{7D12F11C-472A-4F9C-8A6A-430F6DA85364}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
