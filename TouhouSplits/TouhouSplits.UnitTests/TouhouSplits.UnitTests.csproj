@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\SegmentTests.cs" />
     <Compile Include="Data\SplitsFileTests.cs" />
     <Compile Include="Managers\Game\GameManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
