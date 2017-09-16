@@ -7,7 +7,6 @@ namespace TouhouSplits.Service.Config
     {
         string GameName { get; }
         IList<string> Processes { get; }
-        byte ScoreMemoryLocation { get; }
         XElement HookConfig { get; }
     }
 }
