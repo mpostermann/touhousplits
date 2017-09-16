@@ -35,7 +35,7 @@ namespace TouhouSplits.Service
         {
             foreach (IGameConfig config in _gameConfigs) {
                 if (config.GameName == gameName.Trim()) {
-                    return null;
+                    return new GameManager(config);
                 }
             }
             throw new NotSupportedException(string.Format("The game \"{0}\" is not supported.", gameName));

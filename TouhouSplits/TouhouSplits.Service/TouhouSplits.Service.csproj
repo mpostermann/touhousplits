@@ -67,6 +67,7 @@
     <Compile Include="Data\ISegment.cs" />
     <Compile Include="Data\ISplits.cs" />
     <Compile Include="Hook\IHookStrategy.cs" />
+    <Compile Include="Managers\Game\GameManager.cs" />
     <Compile Include="Managers\Game\IGameManager.cs" />
     <Compile Include="Managers\Splits\ISplitsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
