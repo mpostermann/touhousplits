@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using System.Threading;
 using System.Windows.Input;
+using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers.Game;
@@ -26,7 +27,9 @@ namespace TouhouSplits.UI.ViewModel
 
         public MainViewModel()
         {
-            _splitsFacade = new SplitsFacade();
+            //Todo: load configuration from file
+            IConfigManager configuration = null;
+            _splitsFacade = new SplitsFacade(configuration);
             _isRecording = false;
 
             NewSplitCommand = new RelayCommand(() => NewSplit());
