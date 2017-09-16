@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies>
+  <assembly name="C:\Users\Paul\Documents\MPOstermann_Repository\TouhouSplits\TouhouSplits\TouhouSplits.UnitTests\bin\x86\Debug\TouhouSplits.UnitTests.DLL" environment="32-bit .NET 4.0.30319.42000 [collection-per-class, parallel (8 threads)]" test-framework="xUnit.net 2.2.0.3545" run-date="2017-09-15" run-time="23:37:04" config-file="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe.Config" total="1" passed="0" failed="1" skipped="0" time="0.179" errors="0">
+    <errors />
+    <collection total="1" passed="0" failed="1" skipped="0" name="Test collection for TouhouSplits.UnitTests.Service.Config.GameConfigTests" time="0.092">
+      <test name="TouhouSplits.UnitTests.Service.Config.GameConfigTests.IsGameNameSet" type="TouhouSplits.UnitTests.Service.Config.GameConfigTests" method="IsGameNameSet" time="0.092241" result="Fail">
+        <failure exception-type="System.NotImplementedException">
+          <message><![CDATA[System.NotImplementedException : The method or operation is not implemented.]]></message>
+          <stack-trace><![CDATA[   at TouhouSplits.Service.Config.GameConfig..ctor(XElement configElement) in C:\Users\Paul\Documents\MPOstermann_Repository\TouhouSplits\TouhouSplits\TouhouSplits.Service\Config\GameConfig.cs:line 14
+   at TouhouSplits.UnitTests.Service.Config.GameConfigTests.IsGameNameSet() in C:\Users\Paul\Documents\MPOstermann_Repository\TouhouSplits\TouhouSplits\TouhouSplits.UnitTests\Service\Config\GameConfigTests.cs:line 22]]></stack-trace>
+        </failure>
+      </test>
+    </collection>
+  </assembly>
+</assemblies>
