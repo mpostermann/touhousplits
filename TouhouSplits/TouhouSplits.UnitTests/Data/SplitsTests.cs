@@ -45,15 +45,6 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void SettingGameNameFiresPropertyChangedEvent()
         {
-            var splits = new Splits();
-            string expectedSplitName = "Some splits name";
-            splits.SplitName = expectedSplitName;
-            Assert.Equal(expectedSplitName, splits.GameName);
-        }
-
-        [Fact]
-        public void SplitNameIsSetWithCorrectValue()
-        {
             string changedPropertyName = null;
             var splits = new Splits();
             splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
@@ -61,8 +52,17 @@ namespace TouhouSplits.UnitTests.Data
                 changedPropertyName = e.PropertyName;
             };
 
-            splits.SplitName = "Some split name";
-            Assert.Equal("SplitName", changedPropertyName);
+            splits.GameName = "Some game name";
+            Assert.Equal("GameName", changedPropertyName);
+        }
+
+        [Fact]
+        public void SplitNameIsSetWithCorrectValue()
+        {
+            var splits = new Splits();
+            string expectedSplitName = "Some splits name";
+            splits.SplitName = expectedSplitName;
+            Assert.Equal(expectedSplitName, splits.SplitName);
         }
 
 
@@ -127,7 +127,7 @@ namespace TouhouSplits.UnitTests.Data
             var segment1 = Substitute.For<ISegment>();
 
             splits.AddSegment(0, segment0);
-            splits.AddSegment(0, segment1);
+            splits.AddSegment(1, segment1);
             Assert.Equal(segment0, splits.Segments[0]);
             Assert.Equal(segment1, splits.Segments[1]);
         }
@@ -144,15 +144,15 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void AddingSegmentFiresSegmentPropertyChangedEvent()
         {
-            string changedPropertyName = null;
+            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
             {
-                changedPropertyName = e.PropertyName;
+                changedProperties.Add(e.PropertyName);
             };
 
             splits.AddSegment(0, Substitute.For<ISegment>());
-            Assert.Equal("Segments", changedPropertyName);
+            Assert.True(changedProperties.Contains("Segments"));
         }
 
         [Fact]
@@ -270,16 +270,16 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void RemovingSegmentFiresSegmentPropertyChangedEvent()
         {
-            string changedPropertyName = null;
+            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
 
             splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
             {
-                changedPropertyName = e.PropertyName;
+                changedProperties.Add(e.PropertyName);
             };
             splits.RemoveSegment(0);
-            Assert.Equal("Segments", changedPropertyName);
+            Assert.True(changedProperties.Contains("Segments"));
         }
 
         [Fact]
@@ -376,16 +376,16 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void UpdatingSegmentFiresSegmentPropertyChangedEvent()
         {
-            string changedPropertyName = null;
+            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
 
             splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
             {
-                changedPropertyName = e.PropertyName;
+                changedProperties.Add(e.PropertyName); 
             };
             splits.UpdateSegment(0, Substitute.For<ISegment>());
-            Assert.Equal("Segments", changedPropertyName);
+            Assert.True(changedProperties.Contains("Segments"));
         }
 
         [Fact]
