@@ -423,13 +423,19 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void EndingSegmentIsNullWhenSegmentsListIsEmpty()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            Assert.Equal(null, splits.EndingSegment);
         }
 
         [Fact]
         public void EndingSegmentReturnsCorrectSegmentWhenSegmentsListIsNonEmpty()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            var endingSegment = Substitute.For<ISegment>();
+            splits.AddSegment(1, endingSegment);
+            Assert.Equal(endingSegment, splits.EndingSegment);
         }
 
         [Fact]
