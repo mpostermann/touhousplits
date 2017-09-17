@@ -115,6 +115,24 @@ namespace TouhouSplits.UnitTests.Data
         }
 
         [Fact]
+        public void AddingSegmentFiresSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void AddingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void AddingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
         public void RemoveSegmentRemovesSegmentFromList()
         {
             throw new NotImplementedException();
@@ -155,6 +173,24 @@ namespace TouhouSplits.UnitTests.Data
         }
 
         [Fact]
+        public void RemovingSegmentFiresSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void RemovingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void RemovingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
         public void CorrectSegmentIsUpdatedWhenUpdatingMiddleOfList()
         {
             throw new NotImplementedException();
@@ -179,7 +215,61 @@ namespace TouhouSplits.UnitTests.Data
         }
 
         [Fact]
+        public void UpdatingSegmentFiresSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void UpdaingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void UpdatingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
         public void EndingSegmentIsNullWhenSegmentsListIsEmpty()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void EndingSegmentReturnsCorrectSegmentWhenSegmentsListIsNonEmpty()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void CloneReturnsANewInstance()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void CloneHasTheSameGameName()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void CloneHasTheSameSplitName()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void CloneHasADifferentSegmentsListInstance()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void CloneHasSegmentsListWithEquivalentSegments()
         {
             throw new NotImplementedException();
         }
