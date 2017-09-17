@@ -144,25 +144,70 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void AddingSegmentFiresSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            string changedPropertyName = null;
+            var splits = new Splits();
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            Assert.Equal("Segments", changedPropertyName);
+        }
+
+        [Fact]
+        public void AddingSegmentToEmptyListFiresEndingSegmentPropertyChangedEvent()
+        {
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            Assert.True(changedProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void AddingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            Assert.True(changedProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void AddingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            Assert.False(changedProperties.Contains("EndingSegment")); 
         }
 
         [Fact]
         public void RemoveSegmentRemovesSegmentFromList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            splits.RemoveSegment(0);
+            Assert.Equal(0, splits.Segments.Count);
         }
 
         [Fact]
@@ -184,79 +229,195 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void CorrectSegmentIsRemovedWhenRemovingFromEndOfList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var segment0 = Substitute.For<ISegment>();
+            var segment1 = Substitute.For<ISegment>();
+            var segment2 = Substitute.For<ISegment>();
+            splits.AddSegment(0, segment0);
+            splits.AddSegment(1, segment1);
+            splits.AddSegment(2, segment2);
+
+            splits.RemoveSegment(2);
+            Assert.Equal(segment0, splits.Segments[0]);
+            Assert.Equal(segment1, splits.Segments[1]);
         }
 
         [Fact]
         public void CorrectSegmentIsRemovedWhenRemovingFromBeginningOfList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var segment0 = Substitute.For<ISegment>();
+            var segment1 = Substitute.For<ISegment>();
+            var segment2 = Substitute.For<ISegment>();
+            splits.AddSegment(0, segment0);
+            splits.AddSegment(1, segment1);
+            splits.AddSegment(2, segment2);
+
+            splits.RemoveSegment(0);
+            Assert.Equal(segment1, splits.Segments[0]);
+            Assert.Equal(segment2, splits.Segments[1]);
         }
 
         [Fact]
         public void ExceptionIsThrowWhenRemovingSegmentOutOfBounds()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            Assert.Throws<IndexOutOfRangeException>(() => splits.RemoveSegment(1));
         }
 
         [Fact]
         public void RemovingSegmentFiresSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            string changedPropertyName = null;
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+            splits.RemoveSegment(0);
+            Assert.Equal("Segments", changedPropertyName);
         }
 
         [Fact]
         public void RemovingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.RemoveSegment(0);
+            Assert.True(changedProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void RemovingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.RemoveSegment(0);
+            Assert.False(changedProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void CorrectSegmentIsUpdatedWhenUpdatingMiddleOfList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var segment0 = Substitute.For<ISegment>();
+            var segment2 = Substitute.For<ISegment>();
+            splits.AddSegment(0, segment0);
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            splits.AddSegment(2, segment2);
+
+            var segment1 = Substitute.For<ISegment>();
+            splits.UpdateSegment(1, segment1);
+            Assert.Equal(segment0, splits.Segments[0]);
+            Assert.Equal(segment1, splits.Segments[1]);
+            Assert.Equal(segment2, splits.Segments[2]);
         }
 
         [Fact]
         public void CorrectSegmentIsUpdatedWhenUpdatingEndOfList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var segment0 = Substitute.For<ISegment>();
+            var segment1 = Substitute.For<ISegment>();
+            splits.AddSegment(0, segment0);
+            splits.AddSegment(1, segment1);
+            splits.AddSegment(2, Substitute.For<ISegment>());
+            
+            var segment2 = Substitute.For<ISegment>();
+            splits.UpdateSegment(2, segment2);
+            Assert.Equal(segment0, splits.Segments[0]);
+            Assert.Equal(segment1, splits.Segments[1]);
+            Assert.Equal(segment2, splits.Segments[2]);
         }
 
         [Fact]
         public void CorrectSegmentIsUpdatedWhenUpdatingBeginningOfList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var segment1 = Substitute.For<ISegment>();
+            var segment2 = Substitute.For<ISegment>();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.AddSegment(1, segment1);
+            splits.AddSegment(2, segment2);
+
+            var segment0 = Substitute.For<ISegment>();
+            splits.UpdateSegment(0, segment0);
+            Assert.Equal(segment0, splits.Segments[0]);
+            Assert.Equal(segment1, splits.Segments[1]);
+            Assert.Equal(segment2, splits.Segments[2]);
         }
 
         [Fact]
         public void ExceptionIsThrowWhenUpdatingSegmentOutOfBounds()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            Assert.Throws<IndexOutOfRangeException>(() => splits.UpdateSegment(1, Substitute.For<ISegment>()));
         }
 
         [Fact]
         public void UpdatingSegmentFiresSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            string changedPropertyName = null;
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+            splits.UpdateSegment(0, Substitute.For<ISegment>());
+            Assert.Equal("Segments", changedPropertyName);
         }
 
         [Fact]
         public void UpdaingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.UpdateSegment(1, Substitute.For<ISegment>());
+            Assert.True(changedProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void UpdatingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            IList<string> changedProperties = new List<string>();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+            splits.AddSegment(1, Substitute.For<ISegment>());
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+
+            splits.UpdateSegment(0, Substitute.For<ISegment>());
+            Assert.False(changedProperties.Contains("EndingSegment"));
         }
 
         [Fact]
