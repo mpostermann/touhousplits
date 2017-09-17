@@ -441,31 +441,56 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void CloneReturnsANewInstance()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var clone = splits.Clone();
+            Assert.NotEqual(splits, clone);
         }
 
         [Fact]
         public void CloneHasTheSameGameName()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            string gameName = "Some game name";
+            splits.GameName = gameName;
+
+            var clone = splits.Clone();
+            Assert.Equal(gameName, clone.GameName);
         }
 
         [Fact]
         public void CloneHasTheSameSplitName()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            string splitName = "Some split name";
+            splits.SplitName = splitName;
+
+            var clone = splits.Clone();
+            Assert.Equal(splitName, clone.SplitName);
         }
 
         [Fact]
         public void CloneHasADifferentSegmentsListInstance()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            splits.AddSegment(0, Substitute.For<ISegment>());
+
+            var clone = splits.Clone();
+            Assert.NotEqual(splits.Segments, clone.Segments);
+            Assert.NotEqual(splits.Segments[0], clone.Segments[0]);
         }
 
         [Fact]
         public void CloneHasSegmentsListWithEquivalentSegments()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            var segment = Substitute.For<ISegment>();
+            segment.Score = 1561;
+            segment.SegmentName = "Some segment";
+            splits.AddSegment(0, segment);
+
+            var clone = splits.Clone();
+            Assert.Equal(segment.SegmentName, clone.Segments[0].SegmentName);
+            Assert.Equal(segment.Score, clone.Segments[0].Score);
         }
     }
 }
