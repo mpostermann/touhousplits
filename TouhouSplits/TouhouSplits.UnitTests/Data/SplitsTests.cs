@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,43 +15,69 @@ namespace TouhouSplits.UnitTests.Data
         [Fact]
         public void IsInitializedWithDefaultGameName() 
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            Assert.Equal(null, splits.GameName);
         }
 
         [Fact]
         public void IsInitializedWithDefaultSplitName()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            Assert.Equal(null, splits.SplitName);
         }
 
         [Fact]
         public void IsInitializedWithEmptySegmentsList()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            Assert.Equal(0, splits.Segments.Count);
         }
 
         [Fact]
         public void GameNameIsSetWithCorrectValue()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            string expectedGameName = "Some game name";
+            splits.GameName = expectedGameName;
+            Assert.Equal(expectedGameName, splits.GameName);
         }
 
         [Fact]
         public void SettingGameNameFiresPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            var splits = new Splits();
+            string expectedSplitName = "Some splits name";
+            splits.SplitName = expectedSplitName;
+            Assert.Equal(expectedSplitName, splits.GameName);
         }
 
         [Fact]
         public void SplitNameIsSetWithCorrectValue()
         {
-            throw new NotImplementedException();
+            string changedPropertyName = null;
+            var splits = new Splits();
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+
+            splits.SplitName = "Some split name";
+            Assert.Equal("SplitName", changedPropertyName);
         }
+
 
         [Fact]
         public void SettingSplitNameFiresPropertyChangedEvent()
         {
-            throw new NotImplementedException();
+            string changedPropertyName = null;
+            var splits = new Splits();
+            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                changedPropertyName = e.PropertyName;
+            };
+
+            splits.SplitName = "Some split name";
+            Assert.Equal("SplitName", changedPropertyName);
         }
 
         [Fact]
