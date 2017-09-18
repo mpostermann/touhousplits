@@ -138,7 +138,7 @@ namespace TouhouSplits.UnitTests.Data
             var splits = new Splits();
             var segment = Substitute.For<ISegment>();
 
-            Assert.Throws<IndexOutOfRangeException>(() => splits.AddSegment(1, segment));
+            Assert.Throws<ArgumentOutOfRangeException>(() => splits.AddSegment(1, segment));
         }
 
         [Fact]
@@ -264,7 +264,7 @@ namespace TouhouSplits.UnitTests.Data
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
 
-            Assert.Throws<IndexOutOfRangeException>(() => splits.RemoveSegment(1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => splits.RemoveSegment(1));
         }
 
         [Fact]
@@ -370,7 +370,7 @@ namespace TouhouSplits.UnitTests.Data
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
 
-            Assert.Throws<IndexOutOfRangeException>(() => splits.UpdateSegment(1, Substitute.For<ISegment>()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => splits.UpdateSegment(1, Substitute.For<ISegment>()));
         }
 
         [Fact]
