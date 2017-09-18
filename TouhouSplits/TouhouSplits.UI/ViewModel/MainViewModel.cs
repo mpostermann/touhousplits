@@ -10,14 +10,15 @@ using TouhouSplits.UI.View;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel
     {
         private SplitsFacade _splitsFacade;
         private IGameManager _currentGame;
-        private ISplitsFile _currentSplitsFile;
-        private ISplits _recordingSplits;
         private Timer _recordTimer;
         private bool _isRecording;
+
+        public ISplitsFile CurrentSplitsFile { get; private set; }
+        public ISplits RecordingSplits { get; private set; }
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
@@ -38,26 +39,6 @@ namespace TouhouSplits.UI.ViewModel
             NextSplitsCommand = new RelayCommand(() => NextSplits());
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits());
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits());
-        }
-        
-        public ISplitsFile CurrentSplitsFile {
-            get { return _currentSplitsFile; }
-            set {
-                _currentSplitsFile = value;
-                NotifyPropertyChanged("CurrentSplitsFile");
-            }
-        }
-
-        public ISplits RecordingSplits {
-            get { return _recordingSplits; }
-            set {
-                _recordingSplits = value;
-                NotifyPropertyChanged("RecordingSplits");
-            }
-        }
-
-        public long CurrentScore {
-            get { return _currentGame.Hook.GetCurrentScore(); }
         }
 
         private void NewSplit()
@@ -164,14 +145,6 @@ namespace TouhouSplits.UI.ViewModel
             //todo: Initialize splits builder and assign. If there is already a recording splits and it's better
             //than the current splits, then swap them.
             RecordingSplits = null;
-
-            //Set a poller to check the updated score
-            _recordTimer = new Timer(
-                (param) => NotifyPropertyChanged("CurrentScore"),
-                null,
-                0,
-                50
-            );
 
             _isRecording = true;
         }

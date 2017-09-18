@@ -8,13 +8,13 @@ using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class EditSplitsViewModel : ViewModelBase, IDialogResultViewModel
+    public class EditSplitsViewModel : IDialogResultViewModel
     {
         private SplitsFacade _splitsFacade;
-        private ISplits _splits;
         private string _filepath;
 
         public ISplitsFile SplitsFile { get; private set; }
+        public ISplits Splits { get; private set; }
 
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
         private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
@@ -34,9 +34,8 @@ namespace TouhouSplits.UI.ViewModel
 
         public EditSplitsViewModel(string filepath, ISplits splits, SplitsFacade facade)
         {
-            _splits = splits.Clone();
+            Splits = splits.Clone();
             _filepath = filepath;
-
             _splitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
@@ -52,38 +51,17 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        public string GameName {
-            get { return _splits.GameName; }
-            set {
-                _splits.GameName = value;
-                NotifyPropertyChanged("GameName");
-            }
-        }
-
-        public string SplitsName {
-            get { return _splits.SplitName; }
-            set {
-                _splits.SplitName = value;
-                NotifyPropertyChanged("SplitName");
-            }
-        }
-
-        public IList<ISegment> Segments {
-            get { return _splits.Segments; }
-        }
-
         private void AddSegment(int index)
         {
             /* Check that index is within bounds */
             if (index < 0) {
                 index = 0;
             }
-            else if (index > _splits.Segments.Count) {
-                index = _splits.Segments.Count;
+            else if (index > Splits.Segments.Count) {
+                index = Splits.Segments.Count;
             }
 
-            _splits.AddSegment(index, new Segment());
-            NotifyPropertyChanged("Segments");
+            Splits.AddSegment(index, new Segment());
         }
 
         private void RemoveSegment(int index)
@@ -91,8 +69,7 @@ namespace TouhouSplits.UI.ViewModel
             if (index < 0)
                 return;
 
-            _splits.RemoveSegment(index);
-            NotifyPropertyChanged("Segments");
+            Splits.RemoveSegment(index);
         }
 
         private void SaveSplitsAs()
@@ -118,9 +95,8 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveSplits(string filepath)
         {
-            var splitsManager = _splitsFacade.LoadGameManager(GameName).SplitsManager;
-            SplitsFile = splitsManager.SerializeSplits(_splits, filepath);
-            _splits = SplitsFile.Splits;
+            var splitsManager = _splitsFacade.LoadGameManager(Splits.GameName).SplitsManager;
+            SplitsFile = splitsManager.SerializeSplits(Splits, filepath);
         }
 
         private void CloseWithoutSaving()

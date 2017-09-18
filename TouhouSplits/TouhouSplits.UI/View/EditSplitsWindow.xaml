@@ -20,8 +20,8 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding GameName}"/>
-        <TextBox Grid.Row="1" Text="{Binding SplitsName}"/>
+        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding Splits.GameName}"/>
+        <TextBox Grid.Row="1" Text="{Binding Splits.SplitName}"/>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -34,7 +34,7 @@
              </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">Add Segment Above</Button>
             <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=1}">Add Segment Below</Button>
-            <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Segments}" AutoGenerateColumns="False">
+            <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Splits.Segments}" AutoGenerateColumns="False">
                 <toolkit:DataGrid.Columns>
                     <toolkit:DataGridTextColumn Width="74*" Binding="{Binding SegmentName}" Header="Segment"/>
                     <exttoolkit:DataGridLongColumn Width="24*"  Binding="{Binding Score}" Header="Score"/>
