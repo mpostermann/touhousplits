@@ -13,7 +13,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding CurrentGame}"/>
+        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding CurrentGame.GameName}"/>
         <ListView Grid.Row="1">
             <ListView.View>
                 <GridView AllowsColumnReorder="True" >

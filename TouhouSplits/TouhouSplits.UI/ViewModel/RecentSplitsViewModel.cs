@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
-using TouhouSplits.Service.Managers.Game;
+using TouhouSplits.UI.Model;
 
 namespace TouhouSplits.UI.ViewModel
 {
     public class RecentSplitsViewModel : IDialogResultViewModel
     {
         private SplitsFacade _splitsFacade;
-        private IGameManager _gameManager;
 
+        public Game CurrentGame { get; set; }
         public ISplitsFile SelectedSplits { get; private set; }
 
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
@@ -27,11 +27,13 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand OpenSplitsCommand { get; private set; }
         public ICommand CancelOpeningSplitsCommand { get; private set; }
         
-        public RecentSplitsViewModel(SplitsFacade facade, ISplitsFile splitsFile)
+        public RecentSplitsViewModel(SplitsFacade facade, Game game)
         {
             _splitsFacade = facade;
-            if (splitsFile != null) {
-                _gameManager = _splitsFacade.LoadGameManager(splitsFile.Splits.GameName);
+            CurrentGame = game;
+
+            if (CurrentGame == null) {
+                CurrentGame = new Game(_splitsFacade, _splitsFacade.LoadGameManager(AvailableGames[0]));
             }
 
             OpenSplitsCommand = new RelayCommand<ISplitsFile>((param) => OpenSplits(param));
@@ -41,15 +43,6 @@ namespace TouhouSplits.UI.ViewModel
         public IList<string> AvailableGames {
             get {
                 return _splitsFacade.AvailableGames;
-            }
-        }
-
-        public string CurrentGame {
-            get {
-                return _gameManager.GameName;
-            }
-            set {
-                _gameManager = _splitsFacade.LoadGameManager(value);
             }
         }
 
