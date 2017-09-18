@@ -33,7 +33,7 @@ namespace TouhouSplits.Service.Data
 
         public ISegment EndingSegment {
             get {
-                if (_segments == null) {
+                if (_segments == null || _segments.Count == 0) {
                     return null;
                 }
                 int index = _segments.Count - 1;
