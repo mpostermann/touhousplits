@@ -77,7 +77,10 @@ namespace TouhouSplits.Service.Data
             clone.GameName = this.GameName;
             clone.SplitName = this.SplitName;
             foreach (ISegment segment in this._segments) {
-                clone._segments.Add(segment);
+                clone._segments.Add(new Segment() {
+                    SegmentName = segment.SegmentName,
+                    Score = segment.Score
+                });
             }
             return clone;
         }
