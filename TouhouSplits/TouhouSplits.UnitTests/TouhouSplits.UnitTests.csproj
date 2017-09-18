@@ -66,11 +66,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\SegmentTests.cs" />
+    <Compile Include="Data\SplitsFileTests.cs" />
+    <Compile Include="Data\SplitsTests.cs" />
     <Compile Include="Managers\Game\GameManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Config\GameConfigTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TouhouSplits.MVVM\TouhouSplits.MVVM.csproj">
+      <Project>{7d12f11c-472a-4f9c-8a6a-430f6da85364}</Project>
+      <Name>TouhouSplits.MVVM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TouhouSplits.Service\TouhouSplits.Service.csproj">
       <Project>{E128F26D-525E-4278-9706-589FDB7024BE}</Project>
       <Name>TouhouSplits.Service</Name>
