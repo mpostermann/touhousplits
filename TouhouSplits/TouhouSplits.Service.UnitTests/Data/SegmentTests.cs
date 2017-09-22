@@ -8,21 +8,21 @@ namespace TouhouSplits.Service.UnitTests.Data
     public class SegmentTests
     {
         [Fact]
-        public void SegmentIsInitializedWithDefaultScore()
+        public void Default_Score_Is_Zero()
         {
             var segment = new Segment();
             Assert.Equal(0, segment.Score);
         }
 
         [Fact]
-        public void SegmentIsInitializedWithDefaultName()
+        public void Default_SegmentName_Is_Null()
         {
             var segment = new Segment();
             Assert.Equal(null, segment.SegmentName);
         }
 
         [Fact]
-        public void ScoreIsSetWithCorrectValue()
+        public void Get_Score_Returns_Last_Set_Value()
         {
             var segment = new Segment();
             long expectedValue = 15676;
@@ -32,7 +32,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SettingScoreFiresPropertyChangedEvent()
+        public void Set_Score_Fires_PropertyChangedEvent()
         {
             var segment = new Segment();
             var eventCatcher = new NotifyPropertyChangedCatcher();
@@ -43,7 +43,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void NameIsSetWithCorrectValue()
+        public void Get_Name_Returns_Last_Set_Value()
         {
             var segment = new Segment();
             string expectedName = "I am a segment. ";
@@ -53,7 +53,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SettingNameFiresPropertyChangedEvent()
+        public void Set_Name_Fires_PropertyChangedEvent()
         {
             var segment = new Segment();
             var eventCatcher = new NotifyPropertyChangedCatcher();

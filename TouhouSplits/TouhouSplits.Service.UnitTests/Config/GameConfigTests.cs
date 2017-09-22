@@ -12,7 +12,7 @@ namespace TouhouSplits.Service.UnitTests.Config
 </Game>";
 
         [Fact]
-        public void IsGameNameSet()
+        public void Constructor_Parses_GameName_From_name_Attribute()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             var config = new GameConfig(xml);
@@ -20,7 +20,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void IsExceptionThrownIfGameAttributeIsMissing()
+        public void Constructor_Throws_Exception_If_name_Attribute_Is_Missing()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             xml.Attribute("name").Remove();
@@ -28,7 +28,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void IsExceptionThrownIfGameNameIsEmptyString()
+        public void Constructor_Throws_Exception_If_name_Attribute_Is_Empty()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             xml.Attribute("name").Value = string.Empty;
@@ -36,7 +36,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void AreProcessesSet()
+        public void Constructor_Parses_Pipe_Delimited_process_Attribute()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             var config = new GameConfig(xml);
@@ -45,7 +45,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void IsExceptionThrownIfProcessAttributeIsMissing()
+        public void Constructor_Throws_Exception_If_process_Attribute_Is_Missing()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             xml.Attribute("process").Remove();
@@ -53,7 +53,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void IsExceptionThrownIfProcessAttributeIsEmptyString()
+        public void Constructor_Throws_Exception_If_process_Attribute_Is_Empty()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             xml.Attribute("process").Value = string.Empty;
@@ -61,7 +61,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
         
         [Fact]
-        public void IsHookConfigSet()
+        public void Constructor_Loads_Hook_Child_Node()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             var config = new GameConfig(xml);
@@ -71,7 +71,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void IsExceptionThrownIfHookConfigIsMissing()
+        public void Constructor_Throws_Exception_If_Hook_Node_Is_Missing()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             xml.Element("Hook").Remove();

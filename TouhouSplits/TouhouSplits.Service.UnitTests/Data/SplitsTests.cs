@@ -11,28 +11,28 @@ namespace TouhouSplits.Service.UnitTests.Data
     public class SplitsTests
     {
         [Fact]
-        public void IsInitializedWithDefaultGameName() 
+        public void Default_GameName_Is_Null() 
         {
             var splits = new Splits();
             Assert.Equal(null, splits.GameName);
         }
 
         [Fact]
-        public void IsInitializedWithDefaultSplitName()
+        public void Default_SplitName_Is_Null()
         {
             var splits = new Splits();
             Assert.Equal(null, splits.SplitName);
         }
 
         [Fact]
-        public void IsInitializedWithEmptySegmentsList()
+        public void Default_Segments_List_Is_Empty()
         {
             var splits = new Splits();
             Assert.Equal(0, splits.Segments.Count);
         }
 
         [Fact]
-        public void GameNameIsSetWithCorrectValue()
+        public void Get_GameName_Returns_Last_Set_Value()
         {
             var splits = new Splits();
             string expectedGameName = "Some game name";
@@ -41,7 +41,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SettingGameNameFiresPropertyChangedEvent()
+        public void Set_GameName_Fires_PropertyChangedEvent()
         {
             var splits = new Splits();
             var eventCatcher = new NotifyPropertyChangedCatcher();
@@ -52,7 +52,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SplitNameIsSetWithCorrectValue()
+        public void Get_SplitName_Returns_Last_Set_Value()
         {
             var splits = new Splits();
             string expectedSplitName = "Some splits name";
@@ -62,7 +62,7 @@ namespace TouhouSplits.Service.UnitTests.Data
 
 
         [Fact]
-        public void SettingSplitNameFiresPropertyChangedEvent()
+        public void Set_SplitName_Fires_PropertyChangedEvent()
         {
             var splits = new Splits();
             var eventCatcher = new NotifyPropertyChangedCatcher();
@@ -73,7 +73,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SegmentIsAddedToEmptyList()
+        public void AddSegment_Adds_Segment_To_Empty_List()
         {
             var splits = new Splits();
             var segment = Substitute.For<ISegment>();
@@ -83,7 +83,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SegmentIsAddedInCorrectOrderWhenInsertedInMiddleOfList()
+        public void AddSegment_Inserts_Segment_When_Added_In_Middle_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -99,7 +99,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SegmentIsAddedInCorrectOrderWhenInsertedAtStartOfList()
+        public void AddSegment_Inserts_Segment_When_Inserted_At_Start_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -112,7 +112,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void SegmentIsAddedInCorrectOrderWhenInsertedAtEndOfList()
+        public void AddSegment_Adds_Segment_To_The_End_When_Added_At_End_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -125,7 +125,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void ExceptionIsThrowWhenAddingSegmentOutOfBounds()
+        public void AddSegment_Throws_Exception_When_Index_Is_Out_Of_Bounds()
         {
             var splits = new Splits();
             var segment = Substitute.For<ISegment>();
@@ -134,7 +134,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void AddingSegmentFiresSegmentPropertyChangedEvent()
+        public void AddSegment_Fires_Segment_PropertyChangedEvent()
         {
             var eventCatcher = new NotifyPropertyChangedCatcher();
             var splits = new Splits();
@@ -145,7 +145,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void AddingSegmentToEmptyListFiresEndingSegmentPropertyChangedEvent()
+        public void AddSegment_To_Empty_List_Fires_EndingSegment_PropertyChangedEvent()
         {
             var eventCatcher = new NotifyPropertyChangedCatcher();
             var splits = new Splits();
@@ -156,7 +156,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void AddingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
+        public void AddSegment_At_End_Of_List_Fires_EndingSegment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -168,7 +168,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void AddingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
+        public void AddSegment_In_Middle_Of_List_Does_Not_Fire_EndingSegment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -181,7 +181,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void RemoveSegmentRemovesSegmentFromList()
+        public void RemoveSegment_Removes_Segment_From_List()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -191,7 +191,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CorrectSegmentIsRemovedWhenRemovingFromMiddleOfList()
+        public void RemoveSegment_Removes_Segment_From_Middle_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -207,7 +207,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CorrectSegmentIsRemovedWhenRemovingFromEndOfList()
+        public void RemoveSegment_Removes_Segment_From_End_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -223,7 +223,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CorrectSegmentIsRemovedWhenRemovingFromBeginningOfList()
+        public void RemoveSegment_Removes_Segment_From_Beginning_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -239,7 +239,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void ExceptionIsThrowWhenRemovingSegmentOutOfBounds()
+        public void RemoveSegment_Throws_Exception_When_Index_Is_Out_Of_Bounds()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -248,7 +248,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void RemovingSegmentFiresSegmentPropertyChangedEvent()
+        public void RemoveSegment_First_Segment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -260,7 +260,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void RemovingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
+        public void RemoveSegment_At_End_Of_List_First_EndingSegment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -272,7 +272,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void RemovingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
+        public void RemoveSegment_In_Middle_Of_List_Does_Not_Fire_EndingSegment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -285,7 +285,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CorrectSegmentIsUpdatedWhenUpdatingMiddleOfList()
+        public void UpdateSegment_Updates_Segment_In_Middle_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -302,7 +302,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CorrectSegmentIsUpdatedWhenUpdatingEndOfList()
+        public void UpdateSegment_Updates_Segment_At_End_Of_List()
         {
             var splits = new Splits();
             var segment0 = Substitute.For<ISegment>();
@@ -319,7 +319,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CorrectSegmentIsUpdatedWhenUpdatingBeginningOfList()
+        public void UpdateSegment_Updates_Segment_At_Beginning_Of_List()
         {
             var splits = new Splits();
             var segment1 = Substitute.For<ISegment>();
@@ -336,7 +336,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void ExceptionIsThrowWhenUpdatingSegmentOutOfBounds()
+        public void UpdateSegment_Throws_Exception_When_Index_Is_Out_Of_Bounds()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -345,7 +345,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void UpdatingSegmentFiresSegmentPropertyChangedEvent()
+        public void UpdateSegment_Fires_Segment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -357,7 +357,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void UpdaingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
+        public void UpdateSegment_At_End_Of_List_Fires_EndingSegment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -370,7 +370,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void UpdatingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
+        public void UpdateSegment_In_Middle_Of_List_Does_Not_Fire_EndingSegment_PropertyChangedEvent()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -383,14 +383,14 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void EndingSegmentIsNullWhenSegmentsListIsEmpty()
+        public void EndingSegment_Is_Null_When_Segments_List_Is_Empty()
         {
             var splits = new Splits();
             Assert.Equal(null, splits.EndingSegment);
         }
 
         [Fact]
-        public void EndingSegmentReturnsCorrectSegmentWhenSegmentsListIsNonEmpty()
+        public void EndingSegment_Returns_Segment_At_End_Of_List()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -401,7 +401,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CloneReturnsANewInstance()
+        public void Clone_Returns_A_New_Instance()
         {
             var splits = new Splits();
             var clone = splits.Clone();
@@ -409,7 +409,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CloneHasTheSameGameName()
+        public void Clone_Has_The_Same_GameName()
         {
             var splits = new Splits();
             string gameName = "Some game name";
@@ -420,7 +420,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CloneHasTheSameSplitName()
+        public void Clone_Has_The_Same_SplitName()
         {
             var splits = new Splits();
             string splitName = "Some split name";
@@ -431,7 +431,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CloneHasADifferentSegmentsListInstance()
+        public void Clone_Has_A_New_Segments_List_Instance()
         {
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
@@ -442,17 +442,24 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void CloneHasSegmentsListWithEquivalentSegments()
+        public void Clone_Has_Segments_List_With_Equivalent_Segments()
         {
             var splits = new Splits();
-            var segment = Substitute.For<ISegment>();
-            segment.Score = 1561;
-            segment.SegmentName = "Some segment";
-            splits.AddSegment(0, segment);
+            var segment0 = Substitute.For<ISegment>();
+            segment0.Score = 1561;
+            segment0.SegmentName = "Some segment";
+            splits.AddSegment(0, segment0);
+            var segment1 = Substitute.For<ISegment>();
+            segment1.Score = 897116;
+            segment1.SegmentName = "Some segment stage 2";
+            splits.AddSegment(1, segment1);
+
 
             var clone = splits.Clone();
-            Assert.Equal(segment.SegmentName, clone.Segments[0].SegmentName);
-            Assert.Equal(segment.Score, clone.Segments[0].Score);
+            Assert.Equal("Some segment", clone.Segments[0].SegmentName);
+            Assert.Equal(1561, clone.Segments[0].Score);
+            Assert.Equal("Some segment stage 2", clone.Segments[1].SegmentName);
+            Assert.Equal(897116, clone.Segments[1].Score);
         }
     }
 }
