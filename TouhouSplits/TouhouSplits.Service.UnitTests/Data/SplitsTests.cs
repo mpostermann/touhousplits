@@ -43,15 +43,12 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void SettingGameNameFiresPropertyChangedEvent()
         {
-            string changedPropertyName = null;
             var splits = new Splits();
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedPropertyName = e.PropertyName;
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.GameName = "Some game name";
-            Assert.Equal("GameName", changedPropertyName);
+            Assert.True(eventCatcher.CaughtProperties.Contains("GameName"));
         }
 
         [Fact]
@@ -67,15 +64,12 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void SettingSplitNameFiresPropertyChangedEvent()
         {
-            string changedPropertyName = null;
             var splits = new Splits();
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedPropertyName = e.PropertyName;
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.SplitName = "Some split name";
-            Assert.Equal("SplitName", changedPropertyName);
+            Assert.True(eventCatcher.CaughtProperties.Contains("SplitName"));
         }
 
         [Fact]
@@ -153,46 +147,37 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void AddingSegmentToEmptyListFiresEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
+            var eventCatcher = new NotifyPropertyChangedCatcher();
             var splits = new Splits();
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.AddSegment(0, Substitute.For<ISegment>());
-            Assert.True(changedProperties.Contains("EndingSegment"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void AddingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.AddSegment(1, Substitute.For<ISegment>());
-            Assert.True(changedProperties.Contains("EndingSegment"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void AddingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
             splits.AddSegment(1, Substitute.For<ISegment>());
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.AddSegment(1, Substitute.For<ISegment>());
-            Assert.False(changedProperties.Contains("EndingSegment")); 
+            Assert.False(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]
@@ -265,47 +250,38 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void RemovingSegmentFiresSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
             splits.RemoveSegment(0);
-            Assert.True(changedProperties.Contains("Segments"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("Segments"));
         }
 
         [Fact]
         public void RemovingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.RemoveSegment(0);
-            Assert.True(changedProperties.Contains("EndingSegment"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void RemovingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
             splits.AddSegment(1, Substitute.For<ISegment>());
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.RemoveSegment(0);
-            Assert.False(changedProperties.Contains("EndingSegment"));
+            Assert.False(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]
@@ -371,48 +347,39 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void UpdatingSegmentFiresSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName); 
-            };
             splits.UpdateSegment(0, Substitute.For<ISegment>());
-            Assert.True(changedProperties.Contains("Segments"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("Segments"));
         }
 
         [Fact]
         public void UpdaingSegmentAtEndOfListFiresEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
             splits.AddSegment(1, Substitute.For<ISegment>());
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.UpdateSegment(1, Substitute.For<ISegment>());
-            Assert.True(changedProperties.Contains("EndingSegment"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]
         public void UpdatingSegmentInMiddleOfListDoesNotFireEndingSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
             splits.AddSegment(1, Substitute.For<ISegment>());
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.UpdateSegment(0, Substitute.For<ISegment>());
-            Assert.False(changedProperties.Contains("EndingSegment"));
+            Assert.False(eventCatcher.CaughtProperties.Contains("EndingSegment"));
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using TouhouSplits.Service.Data;
+using TouhouSplits.UnitTests.Utils;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Data
@@ -33,15 +34,12 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void SettingScoreFiresPropertyChangedEvent()
         {
-            string changedPropertyName = null;
             var segment = new Segment();
-            segment.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedPropertyName = e.PropertyName;
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            segment.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             segment.Score = 1;
-            Assert.Equal("Score", changedPropertyName);
+            Assert.True(eventCatcher.CaughtProperties.Contains("Score"));
         }
 
         [Fact]
@@ -57,15 +55,12 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void SettingNameFiresPropertyChangedEvent()
         {
-            string changedPropertyName = null;
             var segment = new Segment();
-            segment.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedPropertyName = e.PropertyName;
-            };
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            segment.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             segment.SegmentName = "name";
-            Assert.Equal("SegmentName", changedPropertyName);
+            Assert.True(eventCatcher.CaughtProperties.Contains("SegmentName"));
         }
     }
 }
