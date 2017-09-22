@@ -1,7 +1,5 @@
 ﻿using NSubstitute;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using TouhouSplits.Service.Data;
 using TouhouSplits.UnitTests.Utils;
 using Xunit;
@@ -412,22 +410,20 @@ namespace TouhouSplits.Service.UnitTests.Data
         public void Clone_Has_The_Same_GameName()
         {
             var splits = new Splits();
-            string gameName = "Some game name";
-            splits.GameName = gameName;
+            splits.GameName = "Some game name";
 
             var clone = splits.Clone();
-            Assert.Equal(gameName, clone.GameName);
+            Assert.Equal("Some game name", clone.GameName);
         }
 
         [Fact]
         public void Clone_Has_The_Same_SplitName()
         {
             var splits = new Splits();
-            string splitName = "Some split name";
-            splits.SplitName = splitName;
+            splits.SplitName = "Some split name";
 
             var clone = splits.Clone();
-            Assert.Equal(splitName, clone.SplitName);
+            Assert.Equal("Some split name", clone.SplitName);
         }
 
         [Fact]

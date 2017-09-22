@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using TouhouSplits.Service.Data;
+﻿using TouhouSplits.Service.Data;
 using TouhouSplits.UnitTests.Utils;
 using Xunit;
 
@@ -25,10 +24,8 @@ namespace TouhouSplits.Service.UnitTests.Data
         public void Get_Score_Returns_Last_Set_Value()
         {
             var segment = new Segment();
-            long expectedValue = 15676;
-
-            segment.Score = expectedValue;
-            Assert.Equal(expectedValue, segment.Score);
+            segment.Score = 15676;
+            Assert.Equal(15676, segment.Score);
         }
 
         [Fact]
@@ -46,10 +43,8 @@ namespace TouhouSplits.Service.UnitTests.Data
         public void Get_Name_Returns_Last_Set_Value()
         {
             var segment = new Segment();
-            string expectedName = "I am a segment. ";
-
-            segment.SegmentName = expectedName;
-            Assert.Equal(expectedName, segment.SegmentName);
+            segment.SegmentName = "I am a segment. ";
+            Assert.Equal("I am a segment. ", segment.SegmentName);
         }
 
         [Fact]
