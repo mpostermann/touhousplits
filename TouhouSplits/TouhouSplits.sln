@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.Service.UnitTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{99FE4E47-0681-4E0F-A68C-1BA334D93886}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.UI.UnitTests", "TouhouSplits.UI.UnitTests\TouhouSplits.UI.UnitTests.csproj", "{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,12 +51,19 @@ Global
 		{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F}.Release|Any CPU.ActiveCfg = Release|x86
 		{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F}.Release|x86.ActiveCfg = Release|x86
 		{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F}.Release|x86.Build.0 = Release|x86
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}.Debug|x86.ActiveCfg = Debug|x86
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}.Debug|x86.Build.0 = Debug|x86
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}.Release|Any CPU.ActiveCfg = Release|x86
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}.Release|x86.ActiveCfg = Release|x86
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F} = {99FE4E47-0681-4E0F-A68C-1BA334D93886}
+		{7817825B-91BE-4C1A-BDB6-AAA535DD6DF8} = {99FE4E47-0681-4E0F-A68C-1BA334D93886}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAB8980B-FFB3-4EB3-9517-571378EAE04F}
