@@ -1,8 +1,13 @@
-﻿using System;
+﻿using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TouhouSplits.Service;
+using TouhouSplits.Service.Managers.Game;
+using TouhouSplits.UI.Model;
+using TouhouSplits.UnitTests.Utils;
 using Xunit;
 
 namespace TouhouSplits.UI.UnitTests.Model
@@ -12,13 +17,29 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void Set_GameName_Fires_NotifyPropertyChanged_Event_For_GameManager()
         {
-            throw new NotImplementedException();
+            var game = new Game(
+                Substitute.For<ISplitsFacade>(),
+                Substitute.For<IGameManager>()
+            );
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            game.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            game.GameName = "Some game name";
+            Assert.True(eventCatcher.CaughtProperties.Contains("GameManager"));
         }
 
         [Fact]
         public void Set_GameName_Fires_NotifyPropertyChanged_Event_For_RecentSplits()
         {
-            throw new NotImplementedException();
+            var game = new Game(
+                Substitute.For<ISplitsFacade>(),
+                Substitute.For<IGameManager>()
+            );
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            game.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            game.GameName = "Some game name";
+            Assert.True(eventCatcher.CaughtProperties.Contains("RecentSplits"));
         }
 
         [Fact]

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using TouhouSplits.Service.Data;
+using TouhouSplits.UnitTests.Utils;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Data
@@ -141,15 +142,12 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void AddingSegmentFiresSegmentPropertyChangedEvent()
         {
-            IList<string> changedProperties = new List<string>();
+            var eventCatcher = new NotifyPropertyChangedCatcher();
             var splits = new Splits();
-            splits.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-            {
-                changedProperties.Add(e.PropertyName);
-            };
+            splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             splits.AddSegment(0, Substitute.For<ISegment>());
-            Assert.True(changedProperties.Contains("Segments"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("Segments"));
         }
 
         [Fact]

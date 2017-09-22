@@ -82,6 +82,10 @@
       <Project>{E128F26D-525E-4278-9706-589FDB7024BE}</Project>
       <Name>TouhouSplits.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TouhouSplits.UnitTests.Utils\TouhouSplits.UnitTests.Utils.csproj">
+      <Project>{2680d961-6e49-4d76-8e96-a706ff2ef5c9}</Project>
+      <Name>TouhouSplits.UnitTests.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

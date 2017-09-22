@@ -72,9 +72,16 @@
       <Project>{f8889817-460f-4cb8-9236-eb6f1189e79d}</Project>
       <Name>TouhouSplits.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TouhouSplits.UnitTests.Utils\TouhouSplits.UnitTests.Utils.csproj">
+      <Project>{2680d961-6e49-4d76-8e96-a706ff2ef5c9}</Project>
+      <Name>TouhouSplits.UnitTests.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
