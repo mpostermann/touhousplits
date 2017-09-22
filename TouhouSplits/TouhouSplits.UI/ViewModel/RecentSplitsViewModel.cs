@@ -10,7 +10,7 @@ namespace TouhouSplits.UI.ViewModel
 {
     public class RecentSplitsViewModel : IDialogResultViewModel
     {
-        private SplitsFacade _splitsFacade;
+        private ISplitsFacade _splitsFacade;
 
         public Game CurrentGame { get; set; }
         public ISplitsFile SelectedSplits { get; private set; }
@@ -27,7 +27,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand OpenSplitsCommand { get; private set; }
         public ICommand CancelOpeningSplitsCommand { get; private set; }
         
-        public RecentSplitsViewModel(SplitsFacade facade, Game game)
+        public RecentSplitsViewModel(ISplitsFacade facade, Game game)
         {
             _splitsFacade = facade;
             CurrentGame = game;

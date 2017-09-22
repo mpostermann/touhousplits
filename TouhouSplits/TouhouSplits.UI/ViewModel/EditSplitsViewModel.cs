@@ -10,7 +10,7 @@ namespace TouhouSplits.UI.ViewModel
 {
     public class EditSplitsViewModel : IDialogResultViewModel
     {
-        private SplitsFacade _splitsFacade;
+        private ISplitsFacade _splitsFacade;
         private string _filepath;
 
         public ISplitsFile SplitsFile { get; private set; }
@@ -32,7 +32,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand SaveSplitsAsCommand { get; private set; }
         public ICommand CloseWithoutSavingCommand { get; private set; }
 
-        public EditSplitsViewModel(string filepath, ISplits splits, SplitsFacade facade)
+        public EditSplitsViewModel(string filepath, ISplits splits, ISplitsFacade facade)
         {
             Splits = splits.Clone();
             _filepath = filepath;

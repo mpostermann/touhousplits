@@ -65,6 +65,7 @@
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
     <Compile Include="Data\SplitsFile.cs" />
+    <Compile Include="ISplitsFacade.cs" />
     <Compile Include="Managers\Config\ConfigManager.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />
     <Compile Include="Data\ISegment.cs" />

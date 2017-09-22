@@ -11,7 +11,7 @@ namespace TouhouSplits.UI.ViewModel
 {
     public class MainViewModel
     {
-        private SplitsFacade _splitsFacade;
+        private ISplitsFacade _splitsFacade;
 
         public Game CurrentGame { get; private set; }
         public ISplitsFile CurrentSplitsFile { get; private set; }

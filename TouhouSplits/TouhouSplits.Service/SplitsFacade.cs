@@ -6,7 +6,7 @@ using TouhouSplits.Service.Managers.Game;
 
 namespace TouhouSplits.Service
 {
-    public class SplitsFacade
+    public class SplitsFacade : ISplitsFacade
     {
         public const string DEFAULT_FILE_EXT = ".tsf";
 

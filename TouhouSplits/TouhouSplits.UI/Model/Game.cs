@@ -10,7 +10,7 @@ namespace TouhouSplits.UI.Model
 {
     public class Game : ModelBase
     {
-        private SplitsFacade _facade;
+        private ISplitsFacade _facade;
         private IGameManager _gameManager;
         private Timer _timer;
 
@@ -38,7 +38,7 @@ namespace TouhouSplits.UI.Model
             }
         }
 
-        public Game(SplitsFacade facade, IGameManager manager)
+        public Game(ISplitsFacade facade, IGameManager manager)
         {
             _facade = facade;
             _gameManager = manager;
