@@ -8,7 +8,7 @@
     <ProjectGuid>{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TouhouSplits.UnitTests</RootNamespace>
+    <RootNamespace>TouhouSplits.Service.UnitTests</RootNamespace>
     <AssemblyName>TouhouSplits.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -71,7 +71,7 @@
     <Compile Include="Data\SplitsTests.cs" />
     <Compile Include="Managers\Game\GameManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\Config\GameConfigTests.cs" />
+    <Compile Include="Config\GameConfigTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TouhouSplits.MVVM\TouhouSplits.MVVM.csproj">

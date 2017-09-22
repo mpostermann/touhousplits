@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.UI", "TouhouSp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.MVVM", "TouhouSplits.MVVM\TouhouSplits.MVVM.csproj", "{7D12F11C-472A-4F9C-8A6A-430F6DA85364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.UnitTests", "TouhouSplits.UnitTests\TouhouSplits.UnitTests.csproj", "{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouhouSplits.Service.UnitTests", "TouhouSplits.UnitTests\TouhouSplits.Service.UnitTests.csproj", "{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{99FE4E47-0681-4E0F-A68C-1BA334D93886}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDF4FB68-D41C-45E2-8ABD-FD25A103BB9F} = {99FE4E47-0681-4E0F-A68C-1BA334D93886}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAB8980B-FFB3-4EB3-9517-571378EAE04F}

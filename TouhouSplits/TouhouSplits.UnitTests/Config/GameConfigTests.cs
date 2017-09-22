@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using TouhouSplits.Service.Config;
 using Xunit;
 
-namespace TouhouSplits.UnitTests.Service.Config
+namespace TouhouSplits.Service.UnitTests.Config
 {
     public class GameConfigTests
     {

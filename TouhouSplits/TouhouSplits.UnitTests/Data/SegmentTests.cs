@@ -2,7 +2,7 @@
 using TouhouSplits.Service.Data;
 using Xunit;
 
-namespace TouhouSplits.UnitTests.Data
+namespace TouhouSplits.Service.UnitTests.Data
 {
     public class SegmentTests
     {

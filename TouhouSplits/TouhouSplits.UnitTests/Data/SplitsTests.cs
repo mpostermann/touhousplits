@@ -2,13 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TouhouSplits.Service.Data;
 using Xunit;
 
-namespace TouhouSplits.UnitTests.Data
+namespace TouhouSplits.Service.UnitTests.Data
 {
     public class SplitsTests
     {

@@ -3,7 +3,7 @@ using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Managers.Game;
 using Xunit;
 
-namespace TouhouSplits.UnitTests.Managers.Game
+namespace TouhouSplits.Service.UnitTests.Managers.Game
 {
     public class GameManagerTests
     {
