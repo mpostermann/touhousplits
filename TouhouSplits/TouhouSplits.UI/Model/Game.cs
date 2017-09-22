@@ -62,8 +62,10 @@ namespace TouhouSplits.UI.Model
         public void StopScorePoller()
         {
             _gameManager.Hook.Unhook();
-            _timer.Dispose();
-            _timer = null;
+            if (_timer != null) {
+                _timer.Dispose();
+                _timer = null;
+            }
             IsPolling = false;
         }
     }
