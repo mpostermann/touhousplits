@@ -65,6 +65,8 @@
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
     <Compile Include="Data\SplitsFile.cs" />
+    <Compile Include="Hook\EncodingEnum.cs" />
+    <Compile Include="Hook\Kernel32HookStrategy.cs" />
     <Compile Include="ISplitsFacade.cs" />
     <Compile Include="Managers\Config\ConfigManager.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />

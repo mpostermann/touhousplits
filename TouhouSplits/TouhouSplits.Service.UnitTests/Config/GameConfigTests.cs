@@ -7,8 +7,8 @@ namespace TouhouSplits.Service.UnitTests.Config
 {
     public class GameConfigTests
     {
-        private const string VALID_CONFIG = @"<Game name=""Some game name"" process=""process1|process2|"">
-  <Hook address=""0x0069BCA4"" encoding=""int32""/>
+        private const string VALID_CONFIG = @"<Game name=""Some game name"">
+  <Hook process=""process1|process2|"" address=""0x0069BCA4"" encoding=""int32""/>
 </Game>";
 
         [Fact]

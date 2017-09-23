@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TouhouSplits.MVVM;
+﻿using TouhouSplits.MVVM;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Hook;
 using TouhouSplits.Service.Managers.Splits;
@@ -20,6 +16,7 @@ namespace TouhouSplits.Service.Managers.Game
         public GameManager(IGameConfig config)
         {
             _config = config;
+            Hook = new Kernel32HookStrategy(config.HookConfig);
         }
     }
 }
