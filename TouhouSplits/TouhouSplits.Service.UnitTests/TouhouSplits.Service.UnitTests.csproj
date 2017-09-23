@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Hook\Kernel32HookConfigTests.cs" />
     <Compile Include="Data\SegmentTests.cs" />
     <Compile Include="Data\SplitsFileTests.cs" />
     <Compile Include="Data\SplitsTests.cs" />
