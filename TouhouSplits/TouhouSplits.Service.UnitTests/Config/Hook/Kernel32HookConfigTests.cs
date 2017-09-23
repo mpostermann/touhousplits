@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using System.Xml.Linq;
 using TouhouSplits.Service.Config.Hook;
 using Xunit;
@@ -19,51 +14,68 @@ namespace TouhouSplits.Service.UnitTests.Config.Hook
         [Fact]
         public void Address_Returns_Int_From_address_Attribute()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            var config = new Kernel32HookConfig(xml);
+            Assert.Equal(0x0069BCA4, config.Address);
         }
 
         [Fact]
         public void Constructor_Throws_Exception_If_address_Attribute_Is_Missing()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.Attribute("address").Remove();
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
         }
 
         [Fact]
         public void Constructor_Throws_Exception_If_address_Attribute_Is_Empty()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.SetAttributeValue("address", string.Empty);
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
         }
 
         [Fact]
         public void Constructor_Throws_Exception_If_address_Attribute_Is_Not_An_Int()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.SetAttributeValue("address", "One");
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
         }
 
         [Theory]
         [InlineData("int32")]
         [InlineData("int64")]
-        public void Encoding_Returns_Encoding_From_encoding_Attribute()
+        public void Encoding_Returns_Encoding_From_encoding_Attribute(string encoding)
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.SetAttributeValue("encoding", encoding);
+            var config = new Kernel32HookConfig(xml);
+            Assert.Equal(encoding, config.Encoding.ToString().Trim().ToLower());
         }
 
         [Fact]
         public void Constructor_Throws_Exception_If_encoding_Attribute_Is_Missing()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.Attribute("encoding").Remove();
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
         }
 
         [Fact]
         public void Constructor_Throws_Exception_If_encoding_Attribute_Is_Empty()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.SetAttributeValue("encoding", string.Empty);
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
         }
 
         [Fact]
         public void Constructor_Throws_Exception_If_encoding_Attribute_Is_Not_Parseable()
         {
-            throw new NotImplementedException();
+            XElement xml = DefaultValidXml();
+            xml.SetAttributeValue("encoding", "int33");
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
         }
 
         [Fact]
