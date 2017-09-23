@@ -68,6 +68,7 @@
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
     <Compile Include="Data\SplitsFile.cs" />
+    <Compile Include="FilePaths.cs" />
     <Compile Include="Hook\EncodingEnum.cs" />
     <Compile Include="Hook\HookStrategyFactory.cs" />
     <Compile Include="Hook\IHookStrategyFactory.cs" />

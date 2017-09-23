@@ -78,8 +78,8 @@ namespace TouhouSplits.UI.ViewModel
             if (!String.IsNullOrEmpty(_filepath)) {
                 dialog.FileName = _filepath;
             }
-            dialog.DefaultExt = SplitsFacade.DEFAULT_FILE_EXT;
-            dialog.Filter = string.Format("Touhou Splits Files ({0})|*{0}", SplitsFacade.DEFAULT_FILE_EXT);
+            dialog.DefaultExt = FilePaths.EXT_SPLITS_FILE;
+            dialog.Filter = string.Format("Touhou Splits Files ({0})|*{0}", FilePaths.EXT_SPLITS_FILE);
 
             if (dialog.ShowDialog() == true) {
                 SaveSplits(dialog.FileName);

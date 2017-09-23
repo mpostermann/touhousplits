@@ -11,8 +11,6 @@ namespace TouhouSplits.Service
 {
     public class SplitsFacade : ISplitsFacade
     {
-        public const string DEFAULT_FILE_EXT = ".tsf";
-
         private IList<IGameConfig> _gameConfigs;
 
         public SplitsFacade(IConfigManager configManager)

@@ -10,7 +10,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void FileInfo_Has_FullName_Matching_Path_Set_In_Constructor()
         {
-            string path = string.Format("directory/file.{0}", SplitsFacade.DEFAULT_FILE_EXT);
+            string path = string.Format("directory/file.{0}", FilePaths.EXT_SPLITS_FILE);
             var file = new SplitsFile(path, null);
 
             FileInfo expectedFileInfo = new FileInfo(path);
