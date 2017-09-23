@@ -39,10 +39,12 @@ namespace TouhouSplits.Service.UnitTests.Config
         [Fact]
         public void Constructor_Parse_Recent_Filepath_from_recentslist_Attribute()
         {
+            FilePaths.SetAppConfigDirectory("root");
             XElement xml = XElement.Parse(VALID_CONFIG);
             var config = new GameConfig(xml);
+            FilePaths.ResetAppConfigDirectoryToDefault();
 
-            var expectedFile = new FileInfo("%APPDATA%/TouhouSplits/Recent/gamename.trs");
+            var expectedFile = new FileInfo(@"root\Recent\gamename.trs");
             Assert.Equal(expectedFile.FullName, config.RecentSplitsList.FullName);
         }
 
