@@ -20,7 +20,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                Substitute.For<IJsonSerializer<List<SplitsFile>>>()
+                Substitute.For<IFileSerializer<List<SplitsFile>>>()
             );
             Assert.Equal("Some game name", manager.GameName);
         }

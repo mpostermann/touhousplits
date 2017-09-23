@@ -3,7 +3,7 @@ using System.Runtime.Serialization.Json;
 
 namespace TouhouSplits.Service.Serialization
 {
-    public class JsonSerializer<T> : IJsonSerializer<T>
+    public class JsonSerializer<T> : IFileSerializer<T>
     {
         public T Deserialize(string filepath)
         {

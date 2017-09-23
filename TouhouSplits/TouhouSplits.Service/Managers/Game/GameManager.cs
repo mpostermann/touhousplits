@@ -15,7 +15,7 @@ namespace TouhouSplits.Service.Managers.Game
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
 
-        public GameManager(IGameConfig config, IHookStrategyFactory hookFactory, IJsonSerializer<List<SplitsFile>> recentSplitsSerializer)
+        public GameManager(IGameConfig config, IHookStrategyFactory hookFactory, IFileSerializer<List<SplitsFile>> recentSplitsSerializer)
         {
             _config = config;
             Hook = hookFactory.Create(config.HookConfig);
