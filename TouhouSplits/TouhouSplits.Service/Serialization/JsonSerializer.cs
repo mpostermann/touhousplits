@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Runtime.Serialization.Json;
 
 namespace TouhouSplits.Service.Serialization
 {
@@ -6,12 +7,18 @@ namespace TouhouSplits.Service.Serialization
     {
         public T Deserialize(string filepath)
         {
-            throw new NotImplementedException();
+            using (FileStream stream = File.OpenRead(filepath)) {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                return (T)serializer.ReadObject(stream);
+            }
         }
 
         public void Serialize(T obj, string filepath)
         {
-            throw new NotImplementedException();
+            using (FileStream stream = File.Open(filepath, FileMode.OpenOrCreate, FileAccess.Write)) {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
+                serializer.WriteObject(stream, obj);
+            }
         }
     }
 }

@@ -50,6 +50,8 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
             Assert.Equal(100, deserializedSplits.Segments[0].Score);
             Assert.Equal("Segment 1", deserializedSplits.Segments[1].SegmentName);
             Assert.Equal(200, deserializedSplits.Segments[1].Score);
+            Assert.Equal("Segment 1", deserializedSplits.EndingSegment.SegmentName);
+            Assert.Equal(200, deserializedSplits.EndingSegment.Score);
         }
     }
 }

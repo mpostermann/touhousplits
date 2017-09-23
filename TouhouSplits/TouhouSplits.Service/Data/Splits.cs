@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using TouhouSplits.MVVM;
 
 namespace TouhouSplits.Service.Data
 {
+    [DataContract, KnownType(typeof(Segment))]
     public class Splits : ModelBase, ISplits
     {
         public Splits()
@@ -10,6 +12,7 @@ namespace TouhouSplits.Service.Data
             _segments = new List<ISegment>();
         }
 
+        [DataMember]
         private string _gameName;
         public string GameName {
             get { return _gameName; }
@@ -19,6 +22,7 @@ namespace TouhouSplits.Service.Data
             }
         }
 
+        [DataMember]
         private string _splitName;
         public string SplitName {
             get { return _splitName; }
@@ -28,6 +32,7 @@ namespace TouhouSplits.Service.Data
             }
         }
 
+        [DataMember]
         private List<ISegment> _segments;
         public IList<ISegment> Segments { get { return _segments.AsReadOnly(); } }
 

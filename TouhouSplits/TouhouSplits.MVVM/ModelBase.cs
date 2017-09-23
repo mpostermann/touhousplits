@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace TouhouSplits.MVVM
 {
+    [Serializable]
     public class ModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
