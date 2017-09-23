@@ -1,7 +1,9 @@
-﻿using TouhouSplits.MVVM;
+﻿using System;
+using System.Collections.Generic;
+using TouhouSplits.MVVM;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
-using TouhouSplits.Service.Managers.Splits;
 
 namespace TouhouSplits.Service.Managers.Game
 {
@@ -10,7 +12,6 @@ namespace TouhouSplits.Service.Managers.Game
         private IGameConfig _config;
 
         public string GameName { get { return _config.GameName; } } 
-        public ISplitsManager SplitsManager { get; private set; } 
         public IHookStrategy Hook { get; private set; } 
 
         public GameManager(IGameConfig config, IHookStrategyFactory hookFactory)
@@ -18,5 +19,18 @@ namespace TouhouSplits.Service.Managers.Game
             _config = config;
             Hook = hookFactory.Create(config.HookConfig);
         }
+
+        public IList<ISplitsFile> RecentSplits => throw new NotImplementedException();
+
+        public ISplitsFile SerializeSplits(ISplits splits, string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISplitsFile DeserializeSplits(string filePath)
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Xml.Linq;
 
 namespace TouhouSplits.Service.Config
@@ -8,11 +10,13 @@ namespace TouhouSplits.Service.Config
     {
         public string GameName { get; private set; }
         public XElement HookConfig { get; private set; }
+        public IList<FileInfo> RecentSplitsPaths { get; private set; }
 
         public GameConfig(XElement configElement)
         {
             GameName = GetGameName(configElement);
             HookConfig = GetHook(configElement);
+            RecentSplitsPaths = GetRecentFiles();
         }
 
         private static string GetGameName(XElement configElement)
@@ -31,6 +35,11 @@ namespace TouhouSplits.Service.Config
                 throw new ConfigurationErrorsException("Element \"Hook\" is missing.");
             }
             return configElement.Element("Hook");
+        }
+
+        private IList<FileInfo> GetRecentFiles()
+        {
+            throw new NotImplementedException();
         }
     }
 }

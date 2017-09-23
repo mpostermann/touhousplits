@@ -1,12 +1,15 @@
-﻿using TouhouSplits.Service.Hook;
-using TouhouSplits.Service.Managers.Splits;
+﻿using System.Collections.Generic;
+using TouhouSplits.Service.Data;
+using TouhouSplits.Service.Hook;
 
 namespace TouhouSplits.Service.Managers.Game
 {
     public interface IGameManager
     {
         string GameName { get; }
-        ISplitsManager SplitsManager { get; }
         IHookStrategy Hook { get; }
+        IList<ISplitsFile> RecentSplits { get; }
+        ISplitsFile SerializeSplits(ISplits splits, string filePath);
+        ISplitsFile DeserializeSplits(string filePath);
     }
 }

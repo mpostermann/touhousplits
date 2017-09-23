@@ -4,50 +4,47 @@ using TouhouSplits.MVVM;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers.Game;
-using TouhouSplits.Service.Managers.Splits;
 
 namespace TouhouSplits.UI.Model
 {
     public class Game : ModelBase
     {
         private ISplitsFacade _facade;
-        private IGameManager _gameManager;
         private Timer _timer;
+
+        public Game(ISplitsFacade facade, IGameManager manager)
+        {
+            _facade = facade;
+            GameManager = manager;
+            IsPolling = false;
+        }
 
         public string GameName {
             get {
-                return _gameManager.GameName;
+                return GameManager.GameName;
             }
             set {
-                _gameManager = _facade.LoadGameManager(value);
-                NotifyPropertyChanged("GameManager");
+                GameManager = _facade.LoadGameManager(value);
                 NotifyPropertyChanged("RecentSplits");
             }
         }
 
-        public ISplitsManager SplitsManager { get { return _gameManager.SplitsManager; } }
-        public IList<ISplitsFile> RecentSplits { get { return _gameManager.SplitsManager.RecentSplits; } }
+        public IGameManager GameManager { get; private set; }
+        public IList<ISplitsFile> RecentSplits { get { return GameManager.RecentSplits; } }
         public bool IsPolling { get; private set; }
 
         public long CurrentScore {
             get {
                 if (IsPolling) {
-                    return _gameManager.Hook.GetCurrentScore();
+                    return GameManager.Hook.GetCurrentScore();
                 }
                 return -1;
             }
         }
 
-        public Game(ISplitsFacade facade, IGameManager manager)
-        {
-            _facade = facade;
-            _gameManager = manager;
-            IsPolling = false;
-        }
-
         public void StartScorePoller()
         {
-            _gameManager.Hook.Hook();
+            GameManager.Hook.Hook();
 
             // Set a poller to check the updated score
             _timer = new Timer(
@@ -61,7 +58,7 @@ namespace TouhouSplits.UI.Model
 
         public void StopScorePoller()
         {
-            _gameManager.Hook.Unhook();
+            GameManager.Hook.Unhook();
             if (_timer != null) {
                 _timer.Dispose();
                 _timer = null;

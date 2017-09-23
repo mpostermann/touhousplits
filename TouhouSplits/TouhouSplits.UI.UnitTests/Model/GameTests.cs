@@ -15,20 +15,6 @@ namespace TouhouSplits.UI.UnitTests.Model
     public class GameTests
     {
         [Fact]
-        public void Set_GameName_Fires_NotifyPropertyChanged_Event_For_GameManager()
-        {
-            var game = new Game(
-                Substitute.For<ISplitsFacade>(),
-                Substitute.For<IGameManager>()
-            );
-            var eventCatcher = new NotifyPropertyChangedCatcher();
-            game.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
-
-            game.GameName = "Some game name";
-            Assert.True(eventCatcher.CaughtProperties.Contains("GameManager"));
-        }
-
-        [Fact]
         public void Set_GameName_Fires_NotifyPropertyChanged_Event_For_RecentSplits()
         {
             var game = new Game(
