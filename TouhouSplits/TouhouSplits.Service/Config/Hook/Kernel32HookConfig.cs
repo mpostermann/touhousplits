@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Xml.Linq;
 using TouhouSplits.Service.Hook;
 
@@ -12,7 +13,49 @@ namespace TouhouSplits.Service.Config.Hook
 
         public Kernel32HookConfig(XElement configElement)
         {
-            throw new NotImplementedException();
+            Address = ParseAddress(configElement);
+            Encoding = ParseEncoding(configElement);
+            ProcessNames = ParseProcessNames(configElement);
+        }
+
+        private static int ParseAddress(XElement configElement)
+        {
+            if (configElement.Attribute("address") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("address").Value)) {
+                throw new ConfigurationErrorsException("Attribute \"address\" is missing");
+            }
+            try {
+                return int.Parse(configElement.Attribute("address").Value, System.Globalization.NumberStyles.HexNumber);
+            }
+            catch (Exception e) {
+                throw new ConfigurationErrorsException("Cannot parse \"address\" attribute as an int.", e);
+            }
+        }
+
+        private static EncodingEnum ParseEncoding(XElement configElement)
+        {
+            if (configElement.Attribute("encoding") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("encoding").Value)) {
+                throw new ConfigurationErrorsException("Attribute \"encoding\" is missing");
+            }
+            string parsedEncoding = configElement.Attribute("encoding").Value.Trim().ToLower();
+            switch (parsedEncoding) {
+                case "int32":
+                    return EncodingEnum.int32;
+                case "int64":
+                    return EncodingEnum.int64;
+                default:
+                    throw new ConfigurationErrorsException(string.Format("Encoding type \"{0}\" is not supported", parsedEncoding));
+            }
+        }
+
+        private static string[] ParseProcessNames(XElement configElement)
+        {
+            if (configElement.Attribute("process") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("process").Value)) {
+                throw new ConfigurationErrorsException("Attribute \"process\" is missing");
+            }
+            return configElement.Attribute("process").Value.Split('|');
         }
     }
 }
