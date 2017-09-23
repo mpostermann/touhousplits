@@ -13,10 +13,10 @@ namespace TouhouSplits.Service.Managers.Game
         public ISplitsManager SplitsManager { get; private set; } 
         public IHookStrategy Hook { get; private set; } 
 
-        public GameManager(IGameConfig config)
+        public GameManager(IGameConfig config, IHookStrategyFactory hookFactory)
         {
             _config = config;
-            Hook = new Kernel32HookStrategy(config.HookConfig);
+            Hook = hookFactory.Create(config.HookConfig);
         }
     }
 }

@@ -60,13 +60,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\GameConfig.cs" />
+    <Compile Include="Config\Hook\IKernel32HookConfig.cs" />
+    <Compile Include="Config\Hook\Kernel32HookConfig.cs" />
     <Compile Include="Config\IGameConfig.cs" />
     <Compile Include="Data\ISplitsFile.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
     <Compile Include="Data\SplitsFile.cs" />
     <Compile Include="Hook\EncodingEnum.cs" />
-    <Compile Include="Hook\Kernel32HookStrategy.cs" />
+    <Compile Include="Hook\HookStrategyFactory.cs" />
+    <Compile Include="Hook\IHookStrategyFactory.cs" />
+    <Compile Include="Hook\Impl\Kernel32HookStrategy.cs" />
     <Compile Include="ISplitsFacade.cs" />
     <Compile Include="Managers\Config\ConfigManager.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />

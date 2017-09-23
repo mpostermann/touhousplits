@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Hook;
 using TouhouSplits.Service.Managers.Game;
 using Xunit;
 
@@ -13,7 +14,10 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             var config = Substitute.For<IGameConfig>();
             config.GameName.Returns("Some game name");
 
-            var manager = new GameManager(config);
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>()
+            );
             Assert.Equal("Some game name", manager.GameName);
         }
     }
