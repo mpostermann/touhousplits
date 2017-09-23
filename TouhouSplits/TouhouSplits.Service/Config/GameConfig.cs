@@ -38,7 +38,14 @@ namespace TouhouSplits.Service.Config
 
         private static FileInfo GetRecentSplitsList(XElement configElement)
         {
-            throw new NotImplementedException();
+            if (configElement.Attribute("recentslist") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("recentslist").Value)) {
+                throw new ConfigurationErrorsException("Element \"recentslist\" is missing.");
+            }
+            return new FileInfo(Path.Combine(
+                FilePaths.DIR_RECENT_SPLITS_LIST,
+                configElement.Attribute("recentslist").Value
+            ));
         }
     }
 }
