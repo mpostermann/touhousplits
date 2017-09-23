@@ -7,7 +7,7 @@ namespace TouhouSplits.Service.Config
     public interface IGameConfig
     {
         string GameName { get; }
-        IList<FileInfo> RecentSplitsPaths { get; }
+        FileInfo RecentSplitsList { get; }
         XElement HookConfig { get; }
     }
 }

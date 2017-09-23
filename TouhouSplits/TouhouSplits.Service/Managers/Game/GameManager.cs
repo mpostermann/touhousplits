@@ -4,6 +4,7 @@ using TouhouSplits.MVVM;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
+using TouhouSplits.Service.Serialization;
 
 namespace TouhouSplits.Service.Managers.Game
 {
@@ -14,7 +15,7 @@ namespace TouhouSplits.Service.Managers.Game
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
 
-        public GameManager(IGameConfig config, IHookStrategyFactory hookFactory)
+        public GameManager(IGameConfig config, IHookStrategyFactory hookFactory, IJsonSerializer<List<SplitsFile>> recentSplitsSerializer)
         {
             _config = config;
             Hook = hookFactory.Create(config.HookConfig);

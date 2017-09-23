@@ -1,7 +1,10 @@
 ﻿using NSubstitute;
+using System.Collections.Generic;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
 using TouhouSplits.Service.Managers.Game;
+using TouhouSplits.Service.Serialization;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Managers.Game
@@ -16,7 +19,8 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 
             var manager = new GameManager(
                 config,
-                Substitute.For<IHookStrategyFactory>()
+                Substitute.For<IHookStrategyFactory>(),
+                Substitute.For<IJsonSerializer<List<SplitsFile>>>()
             );
             Assert.Equal("Some game name", manager.GameName);
         }

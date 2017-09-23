@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
 using TouhouSplits.Service.Managers.Game;
+using TouhouSplits.Service.Serialization;
 
 namespace TouhouSplits.Service
 {
@@ -36,7 +38,7 @@ namespace TouhouSplits.Service
         {
             foreach (IGameConfig config in _gameConfigs) {
                 if (config.GameName == gameName.Trim()) {
-                    return new GameManager(config, HookStrategyFactory.GetInstance());
+                    return new GameManager(config, HookStrategyFactory.GetInstance(), new JsonSerializer<List<SplitsFile>>());
                 }
             }
             throw new NotSupportedException(string.Format("The game \"{0}\" is not supported.", gameName));
