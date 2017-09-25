@@ -46,7 +46,23 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void RecentSplits_Returns_Splits_Loaded_From_Serializer()
         {
-            throw new NotImplementedException();
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(
+                config.RecentSplitsList.FullName,
+                "path0",
+                "path1",
+                "path2"
+            );
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializer,
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
+
+            Assert.Equal(new FileInfo("path0").FullName, manager.RecentSplits[0].FileInfo.FullName);
+            Assert.Equal(new FileInfo("path1").FullName, manager.RecentSplits[1].FileInfo.FullName);
+            Assert.Equal(new FileInfo("path2").FullName, manager.RecentSplits[2].FileInfo.FullName);
         }
     }
 }
