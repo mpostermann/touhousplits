@@ -171,11 +171,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 
             manager.SerializeSplits(new Splits(), "existing splits path");
             Assert.Equal(1, manager.RecentSplits.Count);
-            Assert.Equal(new FileInfo("new splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
+            Assert.Equal(new FileInfo("existing splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
         }
 
         [Fact]
-        public void SerializeSplits_Invokes_RecentSplitsSerializer_If_Serialization_Fails()
+        public void SerializeSplits_Does_Not_Invokes_RecentSplitsSerializer_If_Serialization_Fails()
         {
             var config = CreateConfig("Some game name");
             var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "good splits path", "bad splits path");
@@ -196,16 +196,16 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             }
             catch {
                 var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
-                Assert.False(splitsPaths.Contains("bad splits path"));
-                recentSplitsSerializerMock.Received().Serialize(splitsPaths, config.RecentSplitsList.FullName);
+                Assert.True(splitsPaths.Contains("bad splits path"));
+                recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
             }
         }
 
         [Fact]
-        public void SerializeSplits_Removes_Splits_From_RecentSplits_If_Deserialization_Fails()
+        public void SerializeSplits_Does_Not_Add_To_RecentSplits_If_Serialization_Fails()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "good splits path", "bad splits path");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "good splits path");
             var splitsSerializer = Substitute.For<IFileSerializer<ISplits>>();
             var manager = new GameManager(
                 config,
@@ -214,8 +214,145 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 splitsSerializer
             );
 
+            var badSplits = new Splits();
+            splitsSerializer
+                .When(n => n.Serialize(badSplits, "bad splits path"))
+                .Do(n => { throw new Exception(); });
+            try {
+                manager.SerializeSplits(badSplits, "bad splits path");
+            }
+            catch {
+                Assert.Equal(1, manager.RecentSplits.Count);
+                Assert.Equal(new FileInfo("good splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
+            }
+        }
+
+        [Fact]
+        public void DeserializeSplits_Invokes_SplitsSerializer()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName);
+            var splitsSerializerMock = Substitute.For<IFileSerializer<ISplits>>();
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializer,
+                splitsSerializerMock
+            );
+
+            manager.DeserializeSplits("some splits path");
+            splitsSerializerMock.Received().Deserialize("some splits path");
+        }
+
+        [Fact]
+        public void DeserializeSplits_Invokes_RecentSplitsSerializer_If_Filepath_Is_Not_Already_In_List()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName);
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializerMock,
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
+
+            manager.DeserializeSplits("some splits path");
+            var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
+            Assert.True(splitsPaths.Contains(new FileInfo("some splits path").FullName));
+            recentSplitsSerializerMock.Received().Serialize(splitsPaths, config.RecentSplitsList.FullName);
+        }
+
+        [Fact]
+        public void DeserializeSplits_Does_Not_Invokes_RecentSplitsSerializer_If_Filepath_Is_Already_In_List()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "existing splits path");
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializerMock,
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
+
+            manager.DeserializeSplits("existing splits path");
+            var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
+            Assert.Equal(1, splitsPaths.Count);
+            recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
+        }
+
+        [Fact]
+        public void DeserializeSplits_Adds_Splits_To_RecentSplits_If_Filepath_Is_Not_Already_In_List()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName);
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializer,
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
+
+            manager.DeserializeSplits("new splits path");
+            Assert.Equal(1, manager.RecentSplits.Count);
+            Assert.Equal(new FileInfo("new splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
+        }
+
+        [Fact]
+        public void DeserializeSplits_Does_Not_Add_Splits_To_RecentSplits_If_Filepath_Is_Already_In_List()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "existing splits path");
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializer,
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
+
+            manager.DeserializeSplits("existing splits path");
+            Assert.Equal(1, manager.RecentSplits.Count);
+            Assert.Equal(new FileInfo("existing splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
+        }
+
+        [Fact]
+        public void DeserializeSplits_Does_Not_Invokes_RecentSplitsSerializer_If_Serialization_Fails()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "good splits path", "bad splits path");
+            var splitsSerializer = Substitute.For<IFileSerializer<ISplits>>();
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializerMock,
+                splitsSerializer
+            );
 
             splitsSerializer.Deserialize("bad splits path").Returns(n => { throw new Exception(); } );
+            try {
+                manager.DeserializeSplits("bad splits path");
+            }
+            catch {
+                var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
+                Assert.True(splitsPaths.Contains("bad splits path"));
+                recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
+            }
+        }
+
+        [Fact]
+        public void DeserializeSplits_Does_Not_Add_To_RecentSplits_If_Serialization_Fails()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList.FullName, "good splits path");
+            var splitsSerializer = Substitute.For<IFileSerializer<ISplits>>();
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializer,
+                splitsSerializer
+            );
+
+            var badSplits = new Splits();
+            splitsSerializer.Deserialize("bad splits path").Returns(n => { throw new Exception(); });
             try {
                 manager.DeserializeSplits("bad splits path");
             }
