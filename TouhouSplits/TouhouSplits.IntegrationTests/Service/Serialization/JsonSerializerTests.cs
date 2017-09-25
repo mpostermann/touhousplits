@@ -53,5 +53,34 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
             Assert.Equal("Segment 1", deserializedSplits.EndingSegment.SegmentName);
             Assert.Equal(2002, deserializedSplits.EndingSegment.Score);
         }
+
+        [Fact]
+        public void Serialized_String_List_Is_Deserialized_With_Save_Values()
+        {
+            string testfilepath = "Serialized_String_List_Is_Deserialized_With_Save_Values.json";
+
+            var list = new List<string>();
+            list.Add("Value 0");
+            list.Add("Value 1");
+            list.Add("Value 2");
+            var serializer = new JsonSerializer<List<string>>();
+
+            List<string> deserializedList;
+            try {
+                serializer.Serialize(list, testfilepath);
+                deserializedList = serializer.Deserialize(testfilepath);
+            }
+            catch (Exception e) {
+                File.Delete(testfilepath);
+                throw;
+            }
+            finally {
+                File.Delete(testfilepath);
+            }
+
+            Assert.Equal("Value 0", deserializedList[0]);
+            Assert.Equal("Value 1", deserializedList[1]);
+            Assert.Equal("Value 2", deserializedList[2]);
+        }
     }
 }
