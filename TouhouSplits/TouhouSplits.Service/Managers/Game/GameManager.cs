@@ -9,10 +9,11 @@ using TouhouSplits.Service.Serialization;
 
 namespace TouhouSplits.Service.Managers.Game
 {
-    public class GameManager : ModelBase, IGameManager
+    public class GameManager : IGameManager
     {
         private IGameConfig _config;
         private IFileSerializer<List<string>> _recentSplitsSerializer;
+        private IFileSerializer<ISplits> _splitsSerializer;
 
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
@@ -26,17 +27,18 @@ namespace TouhouSplits.Service.Managers.Game
         {
             _config = config;
             _recentSplitsSerializer = recentSplitsSerializer;
+            _splitsSerializer = splitsSerializer;
             Hook = hookFactory.Create(config.HookConfig);
-            RecentSplits = LoadRecentSplits(_config.RecentSplitsList, _recentSplitsSerializer, splitsSerializer);
+            RecentSplits = LoadRecentSplits(_config.RecentSplitsList, _recentSplitsSerializer, _splitsSerializer);
         }
 
         private static List<ISplitsFile> LoadRecentSplits(
             FileInfo recentSplitsFile,
-            IFileSerializer<List<string>> serializer,
+            IFileSerializer<List<string>> recentSplitsSerializer,
             IFileSerializer<ISplits> splitsSerializer)
         {
             List<ISplitsFile> recentSplits = new List<ISplitsFile>();
-            List<string> recentSplitsPaths = serializer.Deserialize(recentSplitsFile.FullName);
+            List<string> recentSplitsPaths = recentSplitsSerializer.Deserialize(recentSplitsFile.FullName);
             foreach (string path in recentSplitsPaths) {
                 recentSplits.Add(new SplitsFile(
                     path,
@@ -48,12 +50,28 @@ namespace TouhouSplits.Service.Managers.Game
 
         public ISplitsFile SerializeSplits(ISplits splits, string filePath)
         {
-            throw new NotImplementedException();
+            _splitsSerializer.Serialize(splits, filePath);
+            return AddToRecentSplits(splits, filePath);
         }
 
         public ISplitsFile DeserializeSplits(string filePath)
         {
-            throw new NotImplementedException();
+            var splits = _splitsSerializer.Deserialize(filePath);
+            return AddToRecentSplits(splits, filePath);
+        }
+
+        private ISplitsFile AddToRecentSplits(ISplits splits, string filePath)
+        {
+            /* Update recent splits file */
+            List<string> recentSplitsPaths = _recentSplitsSerializer.Deserialize(_config.RecentSplitsList.FullName);
+            recentSplitsPaths.Add(filePath);
+            _recentSplitsSerializer.Serialize(recentSplitsPaths, filePath);
+
+            /* Update the recent splits in-memory list */
+            var splitsFile = new SplitsFile(filePath, _splitsSerializer);
+            RecentSplits.Add(new SplitsFile(filePath, _splitsSerializer));
+
+            return splitsFile;
         }
         
     }
