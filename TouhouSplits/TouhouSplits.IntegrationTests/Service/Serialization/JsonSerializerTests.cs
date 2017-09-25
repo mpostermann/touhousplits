@@ -22,11 +22,11 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
             splits.SplitName = "Some split name";
             splits.AddSegment(0, new Segment() {
                 SegmentName = "Segment 0",
-                Score = 100
+                Score = 1001
             });
             splits.AddSegment(1, new Segment() {
                 SegmentName = "Segment 1",
-                Score = 200
+                Score = 2002
             });
             var serializer = new JsonSerializer<Splits>();
 
@@ -47,11 +47,11 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
             Assert.Equal("Some split name", deserializedSplits.SplitName);
             Assert.Equal(2, deserializedSplits.Segments.Count);
             Assert.Equal("Segment 0", deserializedSplits.Segments[0].SegmentName);
-            Assert.Equal(100, deserializedSplits.Segments[0].Score);
+            Assert.Equal(1001, deserializedSplits.Segments[0].Score);
             Assert.Equal("Segment 1", deserializedSplits.Segments[1].SegmentName);
-            Assert.Equal(200, deserializedSplits.Segments[1].Score);
+            Assert.Equal(2002, deserializedSplits.Segments[1].Score);
             Assert.Equal("Segment 1", deserializedSplits.EndingSegment.SegmentName);
-            Assert.Equal(200, deserializedSplits.EndingSegment.Score);
+            Assert.Equal(2002, deserializedSplits.EndingSegment.Score);
         }
     }
 }
