@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
 using TouhouSplits.Service.Managers.Game;
 using TouhouSplits.Service.Serialization;
@@ -37,7 +38,8 @@ namespace TouhouSplits.Service
                 if (config.GameName == gameName.Trim()) {
                     return new GameManager(config,
                         HookStrategyFactory.GetInstance(),
-                        new JsonSerializer<List<string>>()
+                        new JsonSerializer<List<string>>(),
+                        new JsonSerializer<ISplits>()
                     );
                 }
             }
