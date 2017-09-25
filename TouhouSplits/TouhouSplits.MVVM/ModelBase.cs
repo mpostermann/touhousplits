@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace TouhouSplits.MVVM
 {
-    [Serializable]
+    [DataContract]
     public class ModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
