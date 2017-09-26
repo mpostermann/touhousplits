@@ -60,16 +60,27 @@ namespace TouhouSplits.Service.Managers.Game
             return AddToRecentSplits(splits, filePath);
         }
 
+        /// <summary>
+        /// Adds a splits to the recent splits list, if it's not already in it.
+        /// </summary>
         private ISplitsFile AddToRecentSplits(ISplits splits, string filePath)
         {
+            var splitsFile = new SplitsFile(filePath, _splitsSerializer);
+
+            /* Check if the in-memory list contains this file already - if it does then return it */
+            foreach (ISplitsFile file in RecentSplits) {
+                if (file.FileInfo.FullName == splitsFile.FileInfo.FullName) {
+                    return file;
+                }
+            }
+
             /* Update recent splits file */
             List<string> recentSplitsPaths = _recentSplitsSerializer.Deserialize(_config.RecentSplitsList.FullName);
-            recentSplitsPaths.Add(filePath);
-            _recentSplitsSerializer.Serialize(recentSplitsPaths, filePath);
+            recentSplitsPaths.Add(splitsFile.FileInfo.FullName);
+            _recentSplitsSerializer.Serialize(recentSplitsPaths, _config.RecentSplitsList.FullName);
 
             /* Update the recent splits in-memory list */
-            var splitsFile = new SplitsFile(filePath, _splitsSerializer);
-            RecentSplits.Add(new SplitsFile(filePath, _splitsSerializer));
+            RecentSplits.Add(splitsFile);
 
             return splitsFile;
         }
