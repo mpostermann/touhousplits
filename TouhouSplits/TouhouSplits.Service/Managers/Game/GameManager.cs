@@ -65,7 +65,7 @@ namespace TouhouSplits.Service.Managers.Game
         /// </summary>
         private ISplitsFile AddToRecentSplits(ISplits splits, string filePath)
         {
-            var splitsFile = new SplitsFile(filePath, _splitsSerializer);
+            var splitsFile = new SplitsFile(filePath, splits);
 
             /* Check if the in-memory list contains this file already - if it does then return it */
             foreach (ISplitsFile file in RecentSplits) {

@@ -8,9 +8,14 @@ namespace TouhouSplits.Service.Data
         private IFileSerializer<ISplits> _serializer;
         
         public FileInfo FileInfo { get; private set; }
+
+        private ISplits _splits;
         public ISplits Splits {
             get {
-                return _serializer.Deserialize(FileInfo.FullName);
+                if (_splits == null) {
+                    _splits = _serializer.Deserialize(FileInfo.FullName);
+                }
+                return _splits;
             }
         }
 
@@ -18,6 +23,12 @@ namespace TouhouSplits.Service.Data
         {
             FileInfo = new FileInfo(filepath);
             _serializer = serializer;
+        }
+
+        public SplitsFile(string filepath, ISplits splits)
+        {
+            FileInfo = new FileInfo(filepath);
+            _splits = splits;
         }
     }
 }

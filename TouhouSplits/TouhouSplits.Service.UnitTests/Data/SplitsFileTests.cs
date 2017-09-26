@@ -19,7 +19,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void Get_Splits_Invokes_Deserializer()
+        public void Get_Splits_First_Use_Invokes_Deserializer_If_Constructed_Without_A_Splits_Instance()
         {
             FileInfo path = new FileInfo("somepath.someExtension");
             var serializerMock = Substitute.For<IFileSerializer<ISplits>>();
@@ -27,6 +27,27 @@ namespace TouhouSplits.Service.UnitTests.Data
 
             var splits = file.Splits;
             serializerMock.Received().Deserialize(path.FullName);
+        }
+
+        [Fact]
+        public void Get_Splits_Subsequent_Use_Does_Not_Invoke_Deserializer_If_Constructed_Without_A_Splits_Instance()
+        {
+            FileInfo path = new FileInfo("somepath.someExtension");
+            var serializerMock = Substitute.For<IFileSerializer<ISplits>>();
+            var file = new SplitsFile(path.FullName, serializerMock);
+
+            var splits0 = file.Splits;
+            var splits1 = file.Splits;
+            serializerMock.Received(1).Deserialize(path.FullName);
+        }
+
+        [Fact]
+        public void Get_Splits_Returns_Instance_Passed_In_Constructor()
+        {
+            var splits = Substitute.For<ISplits>();
+            var file = new SplitsFile("somepath.someExtension", splits);
+
+            Assert.Equal(splits, file.Splits);
         }
     }
 }
