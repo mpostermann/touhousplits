@@ -69,7 +69,7 @@ namespace TouhouSplits.Service.Managers.Game
 
             /* Check if the in-memory list contains this file already - if it does then return it */
             foreach (ISplitsFile file in RecentSplits) {
-                if (file.FileInfo.FullName == splitsFile.FileInfo.FullName) {
+                if (file.FileInfo.FullName.Trim().ToLower() == splitsFile.FileInfo.FullName.Trim().ToLower()) {
                     return file;
                 }
             }
