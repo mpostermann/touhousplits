@@ -31,7 +31,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             );
 
             var splits = file.Splits;
-            serializerMock.Received().Deserialize(path.FullName);
+            serializerMock.Received().Deserialize(path);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace TouhouSplits.Service.UnitTests.Data
 
             var splits0 = file.Splits;
             var splits1 = file.Splits;
-            serializerMock.Received(1).Deserialize(path.FullName);
+            serializerMock.Received(1).Deserialize(path);
         }
 
         [Fact]

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using TouhouSplits.MVVM;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
@@ -38,7 +36,7 @@ namespace TouhouSplits.Service.Managers.Game
             IFileSerializer<ISplits> splitsSerializer)
         {
             List<ISplitsFile> recentSplits = new List<ISplitsFile>();
-            List<string> recentSplitsPaths = recentSplitsSerializer.Deserialize(recentSplitsFile.FullName);
+            List<string> recentSplitsPaths = recentSplitsSerializer.Deserialize(recentSplitsFile);
             foreach (string path in recentSplitsPaths) {
                 recentSplits.Add(new SplitsFile(
                     new FileInfo(path),
@@ -50,13 +48,13 @@ namespace TouhouSplits.Service.Managers.Game
 
         public ISplitsFile SerializeSplits(ISplits splits, FileInfo filePath)
         {
-            _splitsSerializer.Serialize(splits, filePath.FullName);
+            _splitsSerializer.Serialize(splits, filePath);
             return AddToRecentSplits(splits, filePath);
         }
 
         public ISplitsFile DeserializeSplits(FileInfo filePath)
         {
-            var splits = _splitsSerializer.Deserialize(filePath.FullName);
+            var splits = _splitsSerializer.Deserialize(filePath);
             return AddToRecentSplits(splits, filePath);
         }
 
@@ -75,9 +73,9 @@ namespace TouhouSplits.Service.Managers.Game
             }
 
             /* Update recent splits file */
-            List<string> recentSplitsPaths = _recentSplitsSerializer.Deserialize(_config.RecentSplitsList.FullName);
+            List<string> recentSplitsPaths = _recentSplitsSerializer.Deserialize(_config.RecentSplitsList);
             recentSplitsPaths.Add(splitsFile.FileInfo.FullName);
-            _recentSplitsSerializer.Serialize(recentSplitsPaths, _config.RecentSplitsList.FullName);
+            _recentSplitsSerializer.Serialize(recentSplitsPaths, _config.RecentSplitsList);
 
             /* Update the recent splits in-memory list */
             RecentSplits.Add(splitsFile);

@@ -13,7 +13,7 @@ namespace TouhouSplits.Service.Data
         public ISplits Splits {
             get {
                 if (_splits == null) {
-                    _splits = _serializer.Deserialize(FileInfo.FullName);
+                    _splits = _serializer.Deserialize(FileInfo);
                 }
                 return _splits;
             }

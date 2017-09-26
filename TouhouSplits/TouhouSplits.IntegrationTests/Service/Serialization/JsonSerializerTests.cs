@@ -15,7 +15,7 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
         [Fact]
         public void Serialized_Splits_Is_Deserialized_With_Same_Values()
         {
-            string testfilepath = "Serialized_Splits_Is_Deserialized_With_Same_Values.json";
+            FileInfo testfilepath = new FileInfo("Serialized_Splits_Is_Deserialized_With_Same_Values.json");
 
             var splits = new Splits();
             splits.GameName = "Some game name";
@@ -36,11 +36,11 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
                 deserializedSplits = serializer.Deserialize(testfilepath);
             }
             catch (Exception e) {
-                File.Delete(testfilepath);
+                File.Delete(testfilepath.FullName);
                 throw;
             }
             finally {
-                File.Delete(testfilepath);
+                File.Delete(testfilepath.FullName);
             }
 
             Assert.Equal("Some game name", deserializedSplits.GameName);
@@ -57,7 +57,7 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
         [Fact]
         public void Serialized_String_List_Is_Deserialized_With_Save_Values()
         {
-            string testfilepath = "Serialized_String_List_Is_Deserialized_With_Save_Values.json";
+            FileInfo testfilepath = new FileInfo("Serialized_String_List_Is_Deserialized_With_Save_Values.json");
 
             var list = new List<string>();
             list.Add("Value 0");
@@ -71,11 +71,11 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
                 deserializedList = serializer.Deserialize(testfilepath);
             }
             catch (Exception e) {
-                File.Delete(testfilepath);
+                File.Delete(testfilepath.FullName);
                 throw;
             }
             finally {
-                File.Delete(testfilepath);
+                File.Delete(testfilepath.FullName);
             }
 
             Assert.Equal("Value 0", deserializedList[0]);

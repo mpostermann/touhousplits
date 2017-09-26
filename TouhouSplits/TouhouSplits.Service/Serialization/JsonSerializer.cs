@@ -7,20 +7,20 @@ namespace TouhouSplits.Service.Serialization
 {
     public class JsonSerializer<T> : IFileSerializer<T>
     {
-        public T Deserialize(string filepath)
+        public T Deserialize(FileInfo filepath)
         {
-            using (FileStream stream = File.OpenRead(filepath)) {
+            using (FileStream stream = File.OpenRead(filepath.FullName)) {
                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
                 return (T)serializer.ReadObject(stream);
             }
         }
 
-        public void Serialize(T obj, string filepath)
+        public void Serialize(T obj, FileInfo filepath)
         {
             string json = SerializeToString(obj);
             json = PrettifyJson(json);
 
-            using (FileStream fileStream = File.Open(filepath, FileMode.OpenOrCreate, FileAccess.Write)) {
+            using (FileStream fileStream = File.Open(filepath.FullName, FileMode.OpenOrCreate, FileAccess.Write)) {
                 using (StreamWriter sw = new StreamWriter(fileStream)) {
                     sw.Write(json);
                     sw.Flush();
