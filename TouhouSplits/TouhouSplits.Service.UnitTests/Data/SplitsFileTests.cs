@@ -11,10 +11,12 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void FileInfo_Has_FullName_Matching_Path_Set_In_Constructor()
         {
-            string path = string.Format("directory/file.{0}", FilePaths.EXT_SPLITS_FILE);
-            var file = new SplitsFile(path, Substitute.For<IFileSerializer<ISplits>>());
+            var file = new SplitsFile(
+                new FileInfo(string.Format("directory/file.{0}", FilePaths.EXT_SPLITS_FILE)),
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
 
-            FileInfo expectedFileInfo = new FileInfo(path);
+            FileInfo expectedFileInfo = new FileInfo(string.Format("directory/file.{0}", FilePaths.EXT_SPLITS_FILE));
             Assert.Equal(expectedFileInfo.FullName, file.FileInfo.FullName);
         }
 
@@ -23,7 +25,10 @@ namespace TouhouSplits.Service.UnitTests.Data
         {
             FileInfo path = new FileInfo("somepath.someExtension");
             var serializerMock = Substitute.For<IFileSerializer<ISplits>>();
-            var file = new SplitsFile(path.FullName, serializerMock);
+            var file = new SplitsFile(
+                path, 
+                serializerMock
+            );
 
             var splits = file.Splits;
             serializerMock.Received().Deserialize(path.FullName);
@@ -34,7 +39,10 @@ namespace TouhouSplits.Service.UnitTests.Data
         {
             FileInfo path = new FileInfo("somepath.someExtension");
             var serializerMock = Substitute.For<IFileSerializer<ISplits>>();
-            var file = new SplitsFile(path.FullName, serializerMock);
+            var file = new SplitsFile(
+                path,
+                serializerMock
+            );
 
             var splits0 = file.Splits;
             var splits1 = file.Splits;
@@ -45,7 +53,10 @@ namespace TouhouSplits.Service.UnitTests.Data
         public void Get_Splits_Returns_Instance_Passed_In_Constructor()
         {
             var splits = Substitute.For<ISplits>();
-            var file = new SplitsFile("somepath.someExtension", splits);
+            var file = new SplitsFile(
+                new FileInfo("somepath.someExtension"),
+                splits
+            );
 
             Assert.Equal(splits, file.Splits);
         }

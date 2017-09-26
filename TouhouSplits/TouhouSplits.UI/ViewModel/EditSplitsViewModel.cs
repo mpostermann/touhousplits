@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Input;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
@@ -96,7 +97,7 @@ namespace TouhouSplits.UI.ViewModel
         private void SaveSplits(string filepath)
         {
             var gameManager = _splitsFacade.LoadGameManager(Splits.GameName);
-            SplitsFile = gameManager.SerializeSplits(Splits, filepath);
+            SplitsFile = gameManager.SerializeSplits(Splits, new FileInfo(filepath));
         }
 
         private void CloseWithoutSaving()

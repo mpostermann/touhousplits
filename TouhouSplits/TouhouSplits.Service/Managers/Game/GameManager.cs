@@ -41,29 +41,29 @@ namespace TouhouSplits.Service.Managers.Game
             List<string> recentSplitsPaths = recentSplitsSerializer.Deserialize(recentSplitsFile.FullName);
             foreach (string path in recentSplitsPaths) {
                 recentSplits.Add(new SplitsFile(
-                    path,
+                    new FileInfo(path),
                     splitsSerializer
                 ));
             }
             return recentSplits;
         }
 
-        public ISplitsFile SerializeSplits(ISplits splits, string filePath)
+        public ISplitsFile SerializeSplits(ISplits splits, FileInfo filePath)
         {
-            _splitsSerializer.Serialize(splits, filePath);
+            _splitsSerializer.Serialize(splits, filePath.FullName);
             return AddToRecentSplits(splits, filePath);
         }
 
-        public ISplitsFile DeserializeSplits(string filePath)
+        public ISplitsFile DeserializeSplits(FileInfo filePath)
         {
-            var splits = _splitsSerializer.Deserialize(filePath);
+            var splits = _splitsSerializer.Deserialize(filePath.FullName);
             return AddToRecentSplits(splits, filePath);
         }
 
         /// <summary>
         /// Adds a splits to the recent splits list, if it's not already in it.
         /// </summary>
-        private ISplitsFile AddToRecentSplits(ISplits splits, string filePath)
+        private ISplitsFile AddToRecentSplits(ISplits splits, FileInfo filePath)
         {
             var splitsFile = new SplitsFile(filePath, splits);
 

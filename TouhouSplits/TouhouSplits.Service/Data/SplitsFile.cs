@@ -19,15 +19,15 @@ namespace TouhouSplits.Service.Data
             }
         }
 
-        public SplitsFile(string filepath, IFileSerializer<ISplits> serializer)
+        public SplitsFile(FileInfo fileInfo, IFileSerializer<ISplits> serializer)
         {
-            FileInfo = new FileInfo(filepath);
+            FileInfo = fileInfo;
             _serializer = serializer;
         }
 
-        public SplitsFile(string filepath, ISplits splits)
+        public SplitsFile(FileInfo fileInfo, ISplits splits)
         {
-            FileInfo = new FileInfo(filepath);
+            FileInfo = fileInfo;
             _splits = splits;
         }
     }

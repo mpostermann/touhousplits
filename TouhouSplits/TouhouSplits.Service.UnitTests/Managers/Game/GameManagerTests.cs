@@ -25,7 +25,10 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         private IFileSerializer<List<string>> CreateRecentSplitsSerializer(string filename, params string[] paths)
         {
             var serializer = Substitute.For<IFileSerializer<List<string>>>();
-            serializer.Deserialize(filename).Returns(new List<string>(paths));
+            serializer.Deserialize(filename).Returns(new List<string>());
+            foreach (string path in paths) {
+                serializer.Deserialize(filename).Add(new FileInfo(path).FullName);
+            }
             return serializer;
         }
 
@@ -100,8 +103,8 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             );
 
             var splits = new Splits();
-            manager.SerializeSplits(splits, "new splits path");
-            splitsSerializerMock.Received().Serialize(splits, "new splits path");
+            manager.SerializeSplits(splits, new FileInfo("new splits path"));
+            splitsSerializerMock.Received().Serialize(splits, new FileInfo("new splits path").FullName);
         }
 
         [Fact]
@@ -116,7 +119,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.SerializeSplits(new Splits(), "new splits path");
+            manager.SerializeSplits(new Splits(), new FileInfo("new splits path"));
             var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
             Assert.True(splitsPaths.Contains(new FileInfo("new splits path").FullName));
             recentSplitsSerializerMock.Received().Serialize(splitsPaths, config.RecentSplitsList.FullName);
@@ -134,7 +137,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.SerializeSplits(new Splits(), "existing splits path");
+            manager.SerializeSplits(new Splits(), new FileInfo("existing splits path"));
             var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
             Assert.Equal(1, splitsPaths.Count);
             recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
@@ -152,7 +155,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.SerializeSplits(new Splits(), "new splits path");
+            manager.SerializeSplits(new Splits(), new FileInfo("new splits path"));
             Assert.Equal(1, manager.RecentSplits.Count);
             Assert.Equal(new FileInfo("new splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
         }
@@ -169,7 +172,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.SerializeSplits(new Splits(), "existing splits path");
+            manager.SerializeSplits(new Splits(), new FileInfo("existing splits path"));
             Assert.Equal(1, manager.RecentSplits.Count);
             Assert.Equal(new FileInfo("existing splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
         }
@@ -189,14 +192,14 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 
             var badSplits = new Splits();
             splitsSerializer
-                .When(n => n.Serialize(badSplits, "bad splits path"))
+                .When(n => n.Serialize(badSplits, new FileInfo("bad splits path").FullName))
                 .Do(n => { throw new Exception(); });
             try {
-                manager.SerializeSplits(badSplits, "bad splits path");
+                manager.SerializeSplits(badSplits, new FileInfo("bad splits path"));
             }
             catch {
                 var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
-                Assert.True(splitsPaths.Contains("bad splits path"));
+                Assert.True(splitsPaths.Contains(new FileInfo("bad splits path").FullName));
                 recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
             }
         }
@@ -216,10 +219,10 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 
             var badSplits = new Splits();
             splitsSerializer
-                .When(n => n.Serialize(badSplits, "bad splits path"))
+                .When(n => n.Serialize(badSplits, new FileInfo("bad splits path").FullName))
                 .Do(n => { throw new Exception(); });
             try {
-                manager.SerializeSplits(badSplits, "bad splits path");
+                manager.SerializeSplits(badSplits, new FileInfo("bad splits path"));
             }
             catch {
                 Assert.Equal(1, manager.RecentSplits.Count);
@@ -240,8 +243,8 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 splitsSerializerMock
             );
 
-            manager.DeserializeSplits("some splits path");
-            splitsSerializerMock.Received().Deserialize("some splits path");
+            manager.DeserializeSplits(new FileInfo("some splits path"));
+            splitsSerializerMock.Received().Deserialize(new FileInfo("some splits path").FullName);
         }
 
         [Fact]
@@ -256,7 +259,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.DeserializeSplits("some splits path");
+            manager.DeserializeSplits(new FileInfo("some splits path"));
             var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
             Assert.True(splitsPaths.Contains(new FileInfo("some splits path").FullName));
             recentSplitsSerializerMock.Received().Serialize(splitsPaths, config.RecentSplitsList.FullName);
@@ -274,7 +277,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.DeserializeSplits("existing splits path");
+            manager.DeserializeSplits(new FileInfo("existing splits path"));
             var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
             Assert.Equal(1, splitsPaths.Count);
             recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
@@ -292,7 +295,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.DeserializeSplits("new splits path");
+            manager.DeserializeSplits(new FileInfo("new splits path"));
             Assert.Equal(1, manager.RecentSplits.Count);
             Assert.Equal(new FileInfo("new splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
         }
@@ -309,7 +312,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<ISplits>>()
             );
 
-            manager.DeserializeSplits("existing splits path");
+            manager.DeserializeSplits(new FileInfo("existing splits path"));
             Assert.Equal(1, manager.RecentSplits.Count);
             Assert.Equal(new FileInfo("existing splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
         }
@@ -327,13 +330,15 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 splitsSerializer
             );
 
-            splitsSerializer.Deserialize("bad splits path").Returns(n => { throw new Exception(); } );
+            splitsSerializer
+                .Deserialize(new FileInfo("bad splits path").FullName)
+                .Returns(n => { throw new Exception(); } );
             try {
-                manager.DeserializeSplits("bad splits path");
+                manager.DeserializeSplits(new FileInfo("bad splits path"));
             }
             catch {
                 var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList.FullName);
-                Assert.True(splitsPaths.Contains("bad splits path"));
+                Assert.True(splitsPaths.Contains(new FileInfo("bad splits path").FullName));
                 recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList.FullName);
             }
         }
@@ -352,9 +357,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             );
 
             var badSplits = new Splits();
-            splitsSerializer.Deserialize("bad splits path").Returns(n => { throw new Exception(); });
+            splitsSerializer
+                .Deserialize(new FileInfo("bad splits path").FullName)
+                .Returns(n => { throw new Exception(); });
             try {
-                manager.DeserializeSplits("bad splits path");
+                manager.DeserializeSplits(new FileInfo("bad splits path"));
             }
             catch {
                 Assert.Equal(1, manager.RecentSplits.Count);

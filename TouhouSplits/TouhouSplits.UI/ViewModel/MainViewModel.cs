@@ -145,7 +145,7 @@ namespace TouhouSplits.UI.ViewModel
 
             /* If the new score is better than the previous, then save it */
             if (RecordingSplits.EndingSegment.Score > CurrentSplitsFile.Splits.EndingSegment.Score) {
-                CurrentGame.GameManager.SerializeSplits(RecordingSplits, CurrentSplitsFile.FileInfo.FullName);
+                CurrentGame.GameManager.SerializeSplits(RecordingSplits, CurrentSplitsFile.FileInfo);
             }
         }
     }
