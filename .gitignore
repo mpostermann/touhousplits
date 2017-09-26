@@ -3,10 +3,12 @@
 *~
 *.swp
 *.swo
+*ncrunch*
 _ReSharper.*
 bin
 obj
 packages
 .vs/
 /Deployment
+/_NCrunch_TouhouSplits
 
