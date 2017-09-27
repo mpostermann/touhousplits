@@ -13,7 +13,8 @@ namespace TouhouSplits.UI.ViewModel
     {
         private ISplitsFacade _splitsFacade;
 
-        public readonly MainModel MainModel;
+        private MainModel _mainModel;
+        public MainModel MainModel { get { return _mainModel; } }
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
@@ -26,7 +27,7 @@ namespace TouhouSplits.UI.ViewModel
         {
             IConfigManager configuration = new ConfigManager();
             _splitsFacade = new SplitsFacade(configuration);
-            MainModel = new MainModel(_splitsFacade);
+            _mainModel = new MainModel(_splitsFacade);
 
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
