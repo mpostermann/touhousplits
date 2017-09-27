@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
@@ -130,6 +131,25 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 
             var splits = manager.RecentSplits[0].Splits;
             splitsSerializerMock.Received().Deserialize(Arg.Is<FileInfo>(n => n.Name == "path0"));
+        }
+
+        [Fact]
+        public void RecentSplits_Item_Is_Updated_If_SerializeSplits_Is_Called_For_An_Existing_File()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList, "path0");
+            var splitsSerializer = Substitute.For<IFileSerializer<Splits>>();
+            splitsSerializer.Deserialize(Arg.Is<FileInfo>(n => n.Name == "path0")).Returns(Substitute.For<Splits>());
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializer,
+                splitsSerializer
+            );
+
+            var updatedSplits = Substitute.For<Splits>();
+            manager.SerializeSplits(updatedSplits, new FileInfo("path0"));
+            Assert.Equal(updatedSplits, manager.RecentSplits.FirstOrDefault(n => n.FileInfo.Name == "path0").Splits);
         }
 
         [Fact]
