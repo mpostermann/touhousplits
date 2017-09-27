@@ -13,12 +13,6 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
     public class JsonSerializerTests
     {
         [Fact]
-        public void Serialize_Splits_Creates_Directory()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
         public void Serialized_Splits_Is_Deserialized_With_Same_Values()
         {
             FileInfo testfilepath = new FileInfo("Serialized_Splits_Is_Deserialized_With_Same_Values.json");

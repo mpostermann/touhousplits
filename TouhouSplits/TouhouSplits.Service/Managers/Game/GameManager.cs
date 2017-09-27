@@ -79,24 +79,35 @@ namespace TouhouSplits.Service.Managers.Game
         {
             var splitsFile = new SplitsFile(filePath, splits);
 
-            /* Check if the in-memory list contains this file already - if it does then update the in-memory list and return it */
-            for (int i = 0; i < RecentSplits.Count; i++) {
-                if (RecentSplits[i].FileInfo.FullName.Trim().ToLower() == splitsFile.FileInfo.FullName.Trim().ToLower()) {
-                    RecentSplits[i] = splitsFile;
-                    return splitsFile;
-                }
+            /* Check if the in-memory list contains this file already */
+            int index = GetRecentSplitsFileIndex(filePath);
+            if (index != -1) {
+                RecentSplits[index] = splitsFile;
             }
-
-            /* Update recent splits file */
-            List<string> recentSplitsPaths = _recentSplitsSerializer.Deserialize(_config.RecentSplitsList);
-            recentSplitsPaths.Add(splitsFile.FileInfo.FullName);
-            _recentSplitsSerializer.Serialize(recentSplitsPaths, _config.RecentSplitsList);
-
-            /* Update the recent splits in-memory list */
-            RecentSplits.Add(splitsFile);
+            else {
+                AddToRecentSplitsFile(filePath);
+                RecentSplits.Add(splitsFile);
+            }
 
             return splitsFile;
         }
-        
+
+        private int GetRecentSplitsFileIndex(FileInfo filePath)
+        {
+            for (int i = 0; i < RecentSplits.Count; i++) {
+                if (RecentSplits[i].FileInfo.FullName.Trim().ToLower() == filePath.FullName.Trim().ToLower()) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private void AddToRecentSplitsFile(FileInfo filePath)
+        {
+            List<string> recentSplitsPaths = _recentSplitsSerializer.Deserialize(_config.RecentSplitsList);
+            recentSplitsPaths.Add(filePath.FullName);
+            _recentSplitsSerializer.Serialize(recentSplitsPaths, _config.RecentSplitsList);
+        }
+
     }
 }
