@@ -12,10 +12,12 @@ namespace TouhouSplits.Service
     public class SplitsFacade : ISplitsFacade
     {
         private IList<IGameConfig> _gameConfigs;
+        private IDictionary<string, IGameManager> _gameManagerCache;
 
         public SplitsFacade(IConfigManager configManager)
         {
             _gameConfigs = configManager.AvailableGames;
+            _gameManagerCache = new Dictionary<string, IGameManager>();
         }
 
         private IList<string> _availableGames;
@@ -31,10 +33,19 @@ namespace TouhouSplits.Service
                 return _availableGames;
             }
         }
-        
+
         public IGameManager LoadGameManager(string gameName)
         {
-            foreach (IGameConfig config in _gameConfigs) {
+            if (!_gameManagerCache.ContainsKey(gameName)) {
+                var gameManager = ConstructGameManagerFromConfig(gameName, _gameConfigs);
+                _gameManagerCache.Add(gameName, gameManager);
+            }
+            return _gameManagerCache[gameName];
+        }
+
+        private static IGameManager ConstructGameManagerFromConfig(string gameName, IList<IGameConfig> gameConfigs)
+        {
+            foreach (IGameConfig config in gameConfigs) {
                 if (config.GameName == gameName.Trim()) {
                     return new GameManager(config,
                         HookStrategyFactory.GetInstance(),
@@ -45,6 +56,5 @@ namespace TouhouSplits.Service
             }
             throw new NotSupportedException(string.Format("The game \"{0}\" is not supported.", gameName));
         }
-        
     }
 }
