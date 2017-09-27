@@ -25,7 +25,7 @@ namespace TouhouSplits.UI.Model
             get { return _currentSplitsFile; }
             set {
                 _currentSplitsFile = value;
-                if (_gameManager != null && _gameManager.GameName != _currentSplitsFile.Splits.GameName) {
+                if (_gameManager == null || _gameManager.GameName != _currentSplitsFile.Splits.GameName) {
                     _gameManager = _facade.LoadGameManager(_currentSplitsFile.Splits.GameName);
                 }
                 NotifyPropertyChanged("CurrentSplitsFile");
