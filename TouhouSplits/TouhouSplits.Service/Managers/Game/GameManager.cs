@@ -36,12 +36,20 @@ namespace TouhouSplits.Service.Managers.Game
             IFileSerializer<ISplits> splitsSerializer)
         {
             List<ISplitsFile> recentSplits = new List<ISplitsFile>();
-            List<string> recentSplitsPaths = recentSplitsSerializer.Deserialize(recentSplitsFile);
-            foreach (string path in recentSplitsPaths) {
-                recentSplits.Add(new SplitsFile(
-                    new FileInfo(path),
-                    splitsSerializer
-                ));
+            try {
+                List<string> recentSplitsPaths = recentSplitsSerializer.Deserialize(recentSplitsFile);
+                foreach (string path in recentSplitsPaths) {
+                    var splitsFile = new SplitsFile(new FileInfo(path), splitsSerializer);
+                    recentSplits.Add(splitsFile);
+                }
+            }
+            catch (DirectoryNotFoundException) {
+                /* If the recent splits file doesn't exist, then create a new, empty file */
+                recentSplitsSerializer.Serialize(new List<string>(), recentSplitsFile);
+            }
+            catch (FileNotFoundException) {
+                /* If the recent splits file doesn't exist, then create a new, empty file */
+                recentSplitsSerializer.Serialize(new List<string>(), recentSplitsFile);
             }
             return recentSplits;
         }

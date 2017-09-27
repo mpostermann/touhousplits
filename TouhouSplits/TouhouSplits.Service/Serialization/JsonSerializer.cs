@@ -20,6 +20,7 @@ namespace TouhouSplits.Service.Serialization
             string json = SerializeToString(obj);
             json = PrettifyJson(json);
 
+            filepath.Directory.Create();
             using (FileStream fileStream = File.Open(filepath.FullName, FileMode.OpenOrCreate, FileAccess.Write)) {
                 using (StreamWriter sw = new StreamWriter(fileStream)) {
                     sw.Write(json);

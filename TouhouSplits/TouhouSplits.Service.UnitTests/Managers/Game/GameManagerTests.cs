@@ -55,6 +55,27 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         }
 
         [Fact]
+        public void Constructor_Invokes_RecentSplitsSerializer_If_Directory_Does_Not_Exist()
+        {
+            var config = CreateConfig("Some game name");
+            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList);
+            recentSplitsSerializerMock
+                .Deserialize(config.RecentSplitsList)
+                .Returns(n => { throw new DirectoryNotFoundException(); });
+
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                recentSplitsSerializerMock,
+                Substitute.For<IFileSerializer<ISplits>>()
+            );
+            recentSplitsSerializerMock.Received().Serialize(
+                Arg.Is<List<string>>(n => n.Count == 0),
+                config.RecentSplitsList
+            );
+        }
+
+        [Fact]
         public void GameName_Returns_GameName_From_Config()
         {
             var config = CreateConfig("Some game name");
