@@ -79,10 +79,11 @@ namespace TouhouSplits.Service.Managers.Game
         {
             var splitsFile = new SplitsFile(filePath, splits);
 
-            /* Check if the in-memory list contains this file already - if it does then return it */
-            foreach (ISplitsFile file in RecentSplits) {
-                if (file.FileInfo.FullName.Trim().ToLower() == splitsFile.FileInfo.FullName.Trim().ToLower()) {
-                    return file;
+            /* Check if the in-memory list contains this file already - if it does then update the in-memory list and return it */
+            for (int i = 0; i < RecentSplits.Count; i++) {
+                if (RecentSplits[i].FileInfo.FullName.Trim().ToLower() == splitsFile.FileInfo.FullName.Trim().ToLower()) {
+                    RecentSplits[i] = splitsFile;
+                    return splitsFile;
                 }
             }
 
