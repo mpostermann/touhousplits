@@ -12,12 +12,12 @@ using Xunit;
 
 namespace TouhouSplits.UI.UnitTests.Model
 {
-    public class GameTests
+    public class MainModel
     {
         [Fact]
         public void Set_GameName_Fires_NotifyPropertyChanged_Event_For_RecentSplits()
         {
-            var game = new Game(
+            var game = new UI.Model.MainModel(
                 Substitute.For<ISplitsFacade>(),
                 Substitute.For<IGameManager>()
             );
@@ -32,7 +32,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         public void Set_GameName_Loads_Matching_GameManager()
         {
             var facadeMock = Substitute.For<ISplitsFacade>();
-            var game = new Game(
+            var game = new UI.Model.MainModel(
                 facadeMock,
                 Substitute.For<IGameManager>()
             );
@@ -44,7 +44,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void Get_CurrentScore_Returns_Negative_One_If_Game_Is_Not_Polling()
         {
-            var game = new Game(
+            var game = new UI.Model.MainModel(
                 Substitute.For<ISplitsFacade>(),
                 Substitute.For<IGameManager>()
             );
@@ -56,7 +56,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void IsPolling_Is_False_After_Construction()
         {
-            var game = new Game(
+            var game = new UI.Model.MainModel(
                 Substitute.For<ISplitsFacade>(),
                 Substitute.For<IGameManager>()
             );
@@ -67,7 +67,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void StartScorePoller_Sets_IsPoller_To_True()
         {
-            var game = new Game(
+            var game = new UI.Model.MainModel(
                 Substitute.For<ISplitsFacade>(),
                 Substitute.For<IGameManager>()
             );
@@ -79,7 +79,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void StartScorePoller_Sets_IsPoller_To_False()
         {
-            var game = new Game(
+            var game = new UI.Model.MainModel(
                 Substitute.For<ISplitsFacade>(),
                 Substitute.For<IGameManager>()
             );

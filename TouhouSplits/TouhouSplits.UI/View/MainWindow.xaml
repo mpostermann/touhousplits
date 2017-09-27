@@ -33,8 +33,8 @@
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1">
-            <Label Content="{Binding CurrentSplitsFile.Splits.GameName, FallbackValue='Open a split!'}"></Label>
-            <Label Content="{Binding CurrentSplitsFile.Splits.SplitName}"></Label>
+            <Label Content="{Binding MainModel.CurrentSplitsFile.Splits.GameName, FallbackValue='Open a split!'}"></Label>
+            <Label Content="{Binding MainModel.CurrentSplitsFile.Splits.SplitName}"></Label>
             <ListView>
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
@@ -50,7 +50,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Label Content="{Binding CurrentScore}"></Label>
+            <Label Content="{Binding CurrentGame.CurrentScore}"></Label>
         </StackPanel>
     </Grid>
 </Window>

@@ -13,9 +13,7 @@ namespace TouhouSplits.UI.ViewModel
     {
         private ISplitsFacade _splitsFacade;
 
-        public Game CurrentGame { get; private set; }
-        public ISplitsFile CurrentSplitsFile { get; private set; }
-        public ISplits RecordingSplits { get; private set; }
+        public readonly MainModel MainModel;
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
@@ -28,6 +26,7 @@ namespace TouhouSplits.UI.ViewModel
         {
             IConfigManager configuration = new ConfigManager();
             _splitsFacade = new SplitsFacade(configuration);
+            MainModel = new MainModel(_splitsFacade);
 
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
@@ -49,8 +48,7 @@ namespace TouhouSplits.UI.ViewModel
 
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
-                CurrentSplitsFile = loadSplitsVm.SplitsFile;
-                CurrentGame = new Game (_splitsFacade, _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName));
+                MainModel.CurrentSplitsFile = loadSplitsVm.SplitsFile;
             }
         }
 
@@ -58,71 +56,69 @@ namespace TouhouSplits.UI.ViewModel
         {
             var loadSplitView = new EditSplitsWindow();
             loadSplitView.DataContext = new EditSplitsViewModel(
-                CurrentSplitsFile.FileInfo.FullName,
-                CurrentSplitsFile.Splits,
+                MainModel.CurrentSplitsFile.FileInfo.FullName,
+                MainModel.CurrentSplitsFile.Splits,
                 _splitsFacade
             );
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
-                CurrentSplitsFile = loadSplitsVm.SplitsFile;
-                CurrentGame = new Game(_splitsFacade, _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName));
+                MainModel.CurrentSplitsFile = loadSplitsVm.SplitsFile;
             }
         }
 
         private void RecentSplits()
         {
             var recentSplitsView = new RecentSplitsWindow();
-            recentSplitsView.DataContext = new RecentSplitsViewModel(_splitsFacade, CurrentGame);
+            recentSplitsView.DataContext = new RecentSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Splits);
             recentSplitsView.ShowDialog();
 
             if (recentSplitsView.DialogResult == true) {
                 var rsViewModel = (RecentSplitsViewModel)recentSplitsView.DataContext;
-                CurrentSplitsFile = rsViewModel.SelectedSplits;
-                CurrentGame = new Game(_splitsFacade, _splitsFacade.LoadGameManager(CurrentSplitsFile.Splits.GameName));
+                MainModel.CurrentSplitsFile = rsViewModel.SelectedSplits;
             }
         }
 
         private void NextSplits()
         {
-            if (CurrentSplitsFile == null) {
+            if (MainModel.CurrentSplitsFile == null) {
                 return;
             }
 
             /* Get the current index */
-            int index = CurrentGame.RecentSplits.IndexOf(CurrentSplitsFile);
+            int index = MainModel.RecentSplits.IndexOf(MainModel.CurrentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index + 1;
-            if (nextIndex == CurrentGame.RecentSplits.Count) {
+            if (nextIndex == MainModel.RecentSplits.Count) {
                 nextIndex = 0;
             }
 
-            CurrentSplitsFile = CurrentGame.RecentSplits[nextIndex];
+            MainModel.CurrentSplitsFile = MainModel.RecentSplits[nextIndex];
         }
 
         private void PreviousSplits()
         {
-            if (CurrentSplitsFile == null) {
+            if (MainModel.CurrentSplitsFile == null) {
                 return;
             }
 
             /* Get the current index */
-            int index = CurrentGame.RecentSplits.IndexOf(CurrentSplitsFile);
+            int index = MainModel.RecentSplits.IndexOf(MainModel.CurrentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index - 1;
             if (nextIndex == -1) {
-                nextIndex = CurrentGame.RecentSplits.Count - 1;
+                nextIndex = MainModel.RecentSplits.Count - 1;
             }
 
-            CurrentSplitsFile = CurrentGame.RecentSplits[nextIndex];
+            MainModel.CurrentSplitsFile = MainModel.RecentSplits[nextIndex];
         }
 
         private void StartOrStopRecordingSplits()
         {
-            if (CurrentGame.IsPolling) {
+            if (MainModel.IsPolling) {
                 StopRecordingSplits();
             }
             else {
@@ -132,20 +128,21 @@ namespace TouhouSplits.UI.ViewModel
 
         private void StartRecordingSplits()
         {
-            CurrentGame.StartScorePoller();
+            MainModel.StartScorePoller();
 
             //todo: Initialize splits builder and assign. If there is already a recording splits and it's better
             //than the current splits, then swap them.
-            RecordingSplits = null;
+            MainModel.RecordingSplits = null;
         }
 
         private void StopRecordingSplits()
         {
-            CurrentGame.StopScorePoller();
+            MainModel.StopScorePoller();
 
             /* If the new score is better than the previous, then save it */
-            if (RecordingSplits.EndingSegment.Score > CurrentSplitsFile.Splits.EndingSegment.Score) {
-                CurrentGame.GameManager.SerializeSplits(RecordingSplits, CurrentSplitsFile.FileInfo);
+            if (MainModel.RecordingSplits.EndingSegment.Score > MainModel.CurrentSplitsFile.Splits.EndingSegment.Score) {
+                var gameManager = _splitsFacade.LoadGameManager(MainModel.RecordingSplits.GameName);
+                gameManager.SerializeSplits(MainModel.RecordingSplits, MainModel.CurrentSplitsFile.FileInfo);
             }
         }
     }
