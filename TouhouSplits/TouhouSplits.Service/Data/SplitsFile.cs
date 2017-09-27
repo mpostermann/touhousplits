@@ -5,7 +5,7 @@ namespace TouhouSplits.Service.Data
 {
     public class SplitsFile : ISplitsFile
     {
-        private IFileSerializer<ISplits> _serializer;
+        private IFileSerializer<Splits> _serializer;
         
         public FileInfo FileInfo { get; private set; }
 
@@ -19,7 +19,7 @@ namespace TouhouSplits.Service.Data
             }
         }
 
-        public SplitsFile(FileInfo fileInfo, IFileSerializer<ISplits> serializer)
+        public SplitsFile(FileInfo fileInfo, IFileSerializer<Splits> serializer)
         {
             FileInfo = fileInfo;
             _serializer = serializer;

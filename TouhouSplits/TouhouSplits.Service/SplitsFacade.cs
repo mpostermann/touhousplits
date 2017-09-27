@@ -50,7 +50,7 @@ namespace TouhouSplits.Service
                     return new GameManager(config,
                         HookStrategyFactory.GetInstance(),
                         new JsonSerializer<List<string>>(),
-                        new JsonSerializer<ISplits>()
+                        new JsonSerializer<Splits>()
                     );
                 }
             }

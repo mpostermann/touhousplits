@@ -21,7 +21,7 @@ namespace TouhouSplits.Service.Serialization
             json = PrettifyJson(json);
 
             filepath.Directory.Create();
-            using (FileStream fileStream = File.Open(filepath.FullName, FileMode.OpenOrCreate, FileAccess.Write)) {
+            using (FileStream fileStream = File.Open(filepath.FullName, FileMode.Create, FileAccess.Write)) {
                 using (StreamWriter sw = new StreamWriter(fileStream)) {
                     sw.Write(json);
                     sw.Flush();
@@ -32,7 +32,7 @@ namespace TouhouSplits.Service.Serialization
         private string SerializeToString(T obj)
         {
             using (MemoryStream memStream = new MemoryStream()) {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
                 serializer.WriteObject(memStream, obj);
                 memStream.Flush();
                 memStream.Position = 0;

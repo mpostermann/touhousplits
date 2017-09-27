@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
@@ -11,7 +12,7 @@ namespace TouhouSplits.Service.Managers.Game
     {
         private IGameConfig _config;
         private IFileSerializer<List<string>> _recentSplitsSerializer;
-        private IFileSerializer<ISplits> _splitsSerializer;
+        private IFileSerializer<Splits> _splitsSerializer;
 
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
@@ -21,7 +22,7 @@ namespace TouhouSplits.Service.Managers.Game
             IGameConfig config,
             IHookStrategyFactory hookFactory,
             IFileSerializer<List<string>> recentSplitsSerializer,
-            IFileSerializer<ISplits> splitsSerializer)
+            IFileSerializer<Splits> splitsSerializer)
         {
             _config = config;
             _recentSplitsSerializer = recentSplitsSerializer;
@@ -33,7 +34,7 @@ namespace TouhouSplits.Service.Managers.Game
         private static List<ISplitsFile> LoadRecentSplits(
             FileInfo recentSplitsFile,
             IFileSerializer<List<string>> recentSplitsSerializer,
-            IFileSerializer<ISplits> splitsSerializer)
+            IFileSerializer<Splits> splitsSerializer)
         {
             List<ISplitsFile> recentSplits = new List<ISplitsFile>();
             try {
@@ -56,7 +57,12 @@ namespace TouhouSplits.Service.Managers.Game
 
         public ISplitsFile SerializeSplits(ISplits splits, FileInfo filePath)
         {
-            _splitsSerializer.Serialize(splits, filePath);
+            var concreteSplits = splits as Splits;
+            if (concreteSplits == null) {
+                throw new NotSupportedException(string.Format("{0} is not supported for serialization", splits.GetType()));
+            }
+
+            _splitsSerializer.Serialize(concreteSplits, filePath);
             return AddToRecentSplits(splits, filePath);
         }
 
