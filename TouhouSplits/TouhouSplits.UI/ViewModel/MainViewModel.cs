@@ -1,9 +1,13 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
+using System;
+using System.IO;
 using System.Windows.Input;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers.Config;
+using TouhouSplits.Service.Serialization;
 using TouhouSplits.UI.Model;
 using TouhouSplits.UI.View;
 
@@ -18,6 +22,7 @@ namespace TouhouSplits.UI.ViewModel
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
+        public ICommand OpenSplitCommand { get; private set; }
         public ICommand RecentSplitsCommand { get; private set; }
         public ICommand NextSplitsCommand { get; private set; }
         public ICommand PreviousSplitsCommand { get; private set; }
@@ -31,6 +36,7 @@ namespace TouhouSplits.UI.ViewModel
 
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
+            OpenSplitCommand = new RelayCommand(() => OpenSplit());
             RecentSplitsCommand = new RelayCommand(() => RecentSplits());
             NextSplitsCommand = new RelayCommand(() => NextSplits());
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits());
@@ -66,6 +72,21 @@ namespace TouhouSplits.UI.ViewModel
             if (loadSplitView.DialogResult == true) {
                 var loadSplitsVm = (EditSplitsViewModel)loadSplitView.DataContext;
                 MainModel.CurrentSplitsFile = loadSplitsVm.SplitsFile;
+            }
+        }
+
+        private void OpenSplit()
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (MainModel.CurrentSplitsFile != null &&
+                !string.IsNullOrEmpty(MainModel.CurrentSplitsFile.FileInfo.FullName)) {
+                dialog.FileName = MainModel.CurrentSplitsFile.FileInfo.FullName;
+            }
+            dialog.DefaultExt = FilePaths.EXT_SPLITS_FILE;
+            dialog.Filter = string.Format("Touhou Splits Files ({0})|*{0}", FilePaths.EXT_SPLITS_FILE);
+
+            if (dialog.ShowDialog() == true) {
+                throw new NotImplementedException();
             }
         }
 
