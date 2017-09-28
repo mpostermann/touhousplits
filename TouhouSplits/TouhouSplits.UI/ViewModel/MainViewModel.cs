@@ -93,7 +93,12 @@ namespace TouhouSplits.UI.ViewModel
         private void FavoriteSplits()
         {
             var favoriteSplitsView = new FavoriteSplitsWindow();
-            favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Splits);
+            if (MainModel.CurrentSplitsFile != null) {
+                favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Splits.GameName);
+            }
+            else {
+                favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade);
+            }
             favoriteSplitsView.ShowDialog();
 
             if (favoriteSplitsView.DialogResult == true) {

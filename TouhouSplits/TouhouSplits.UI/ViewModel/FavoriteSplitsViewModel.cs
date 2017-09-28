@@ -27,12 +27,12 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand OpenSplitsCommand { get; private set; }
         public ICommand CancelOpeningSplitsCommand { get; private set; }
         
-        public FavoriteSplitsViewModel(ISplitsFacade facade, ISplits defaultSplits)
+        public FavoriteSplitsViewModel(ISplitsFacade facade, string initialGameName = null)
         {
             _splitsFacade = facade;
 
-            if (defaultSplits != null) {
-                FavoriteSplitsModel = new FavoriteSplitsModel(_splitsFacade.LoadGameManager(defaultSplits.GameName));
+            if (!string.IsNullOrEmpty(initialGameName)) {
+                FavoriteSplitsModel = new FavoriteSplitsModel(_splitsFacade.LoadGameManager(initialGameName));
             }
             else {
                 FavoriteSplitsModel = new FavoriteSplitsModel(_splitsFacade.LoadGameManager(AvailableGames[0]));
