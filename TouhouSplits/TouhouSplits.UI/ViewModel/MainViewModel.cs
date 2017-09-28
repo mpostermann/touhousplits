@@ -34,13 +34,13 @@ namespace TouhouSplits.UI.ViewModel
             _splitsFacade = new SplitsFacade(configuration, new JsonSerializer<Splits>());
             _mainModel = new MainModel(_splitsFacade);
 
-            NewSplitCommand = new RelayCommand(() => NewSplit());
-            EditSplitCommand = new RelayCommand(() => EditSplit());
-            OpenSplitCommand = new RelayCommand(() => OpenSplit());
-            FavoriteSplitsCommand = new RelayCommand(() => FavoriteSplits());
-            NextSplitsCommand = new RelayCommand(() => NextSplits());
-            PreviousSplitsCommand = new RelayCommand(() => PreviousSplits());
-            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits());
+            NewSplitCommand = new RelayCommand(() => NewSplit(), () => !MainModel.IsPolling);
+            EditSplitCommand = new RelayCommand(() => EditSplit(), () => MainModel.CurrentSplitsFile != null && !MainModel.IsPolling);
+            OpenSplitCommand = new RelayCommand(() => OpenSplit(), () => !MainModel.IsPolling);
+            FavoriteSplitsCommand = new RelayCommand(() => FavoriteSplits(), () => !MainModel.IsPolling);
+            NextSplitsCommand = new RelayCommand(() => NextSplits(), () => !MainModel.IsPolling);
+            PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
+            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => MainModel.CurrentSplitsFile != null);
         }
 
         private void NewSplit()
