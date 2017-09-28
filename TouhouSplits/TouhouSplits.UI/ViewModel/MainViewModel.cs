@@ -164,7 +164,7 @@ namespace TouhouSplits.UI.ViewModel
             /* If the new score is better than the previous, then save it */
             if (MainModel.RecordingSplits.EndingSegment.Score > MainModel.CurrentSplitsFile.Splits.EndingSegment.Score) {
                 var gameManager = _splitsFacade.LoadGameManager(MainModel.RecordingSplits.GameName);
-                gameManager.SerializeSplits(MainModel.RecordingSplits, MainModel.CurrentSplitsFile.FileInfo);
+                _splitsFacade.SerializeSplits(MainModel.RecordingSplits, MainModel.CurrentSplitsFile.FileInfo);
             }
         }
     }

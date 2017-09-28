@@ -96,9 +96,7 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveSplits(string filepath)
         {
-            var gameManager = _splitsFacade.LoadGameManager(Splits.GameName);
-            SplitsFile = gameManager.SerializeSplits(Splits, new FileInfo(filepath));
-            SplitsFile = gameManager.DeserializeSplits(new FileInfo(filepath));
+            SplitsFile = _splitsFacade.SerializeSplits(Splits, new FileInfo(filepath));
         }
 
         private void CloseWithoutSaving()

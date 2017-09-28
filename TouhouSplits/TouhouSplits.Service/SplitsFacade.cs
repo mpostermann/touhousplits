@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
@@ -13,11 +14,13 @@ namespace TouhouSplits.Service
     {
         private IList<IGameConfig> _gameConfigs;
         private IDictionary<string, IGameManager> _gameManagerCache;
+        private IFileSerializer<Splits> _splitsSerializer;
 
         public SplitsFacade(IConfigManager configManager)
         {
             _gameConfigs = configManager.AvailableGames;
             _gameManagerCache = new Dictionary<string, IGameManager>();
+            _splitsSerializer = new JsonSerializer<Splits>();
         }
 
         private IList<string> _availableGames;
@@ -43,18 +46,28 @@ namespace TouhouSplits.Service
             return _gameManagerCache[gameName];
         }
 
-        private static IGameManager ConstructGameManagerFromConfig(string gameName, IList<IGameConfig> gameConfigs)
+        private IGameManager ConstructGameManagerFromConfig(string gameName, IList<IGameConfig> gameConfigs)
         {
             foreach (IGameConfig config in gameConfigs) {
                 if (config.GameName == gameName.Trim()) {
                     return new GameManager(config,
                         HookStrategyFactory.GetInstance(),
                         new JsonSerializer<List<string>>(),
-                        new JsonSerializer<Splits>()
+                        _splitsSerializer
                     );
                 }
             }
             throw new NotSupportedException(string.Format("The game \"{0}\" is not supported.", gameName));
+        }
+
+        public ISplitsFile DeserializeSplits(FileInfo filepath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISplitsFile SerializeSplits(ISplits splits, FileInfo filepath)
+        {
+            throw new NotImplementedException();
         }
     }
 }

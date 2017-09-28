@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
@@ -12,7 +11,6 @@ namespace TouhouSplits.Service.Managers.Game
     {
         private IGameConfig _config;
         private IFileSerializer<List<string>> _recentSplitsSerializer;
-        private IFileSerializer<Splits> _splitsSerializer;
 
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
@@ -26,9 +24,8 @@ namespace TouhouSplits.Service.Managers.Game
         {
             _config = config;
             _recentSplitsSerializer = recentSplitsSerializer;
-            _splitsSerializer = splitsSerializer;
             Hook = hookFactory.Create(config.HookConfig);
-            RecentSplits = LoadRecentSplits(_config.RecentSplitsList, _recentSplitsSerializer, _splitsSerializer);
+            RecentSplits = LoadRecentSplits(_config.RecentSplitsList, _recentSplitsSerializer, splitsSerializer);
         }
 
         private static List<ISplitsFile> LoadRecentSplits(
@@ -55,41 +52,20 @@ namespace TouhouSplits.Service.Managers.Game
             return recentSplits;
         }
 
-        public ISplitsFile SerializeSplits(ISplits splits, FileInfo filePath)
-        {
-            var concreteSplits = splits as Splits;
-            if (concreteSplits == null) {
-                throw new NotSupportedException(string.Format("{0} is not supported for serialization", splits.GetType()));
-            }
-
-            _splitsSerializer.Serialize(concreteSplits, filePath);
-            return AddToRecentSplits(splits, filePath);
-        }
-
-        public ISplitsFile DeserializeSplits(FileInfo filePath)
-        {
-            var splits = _splitsSerializer.Deserialize(filePath);
-            return AddToRecentSplits(splits, filePath);
-        }
-
         /// <summary>
         /// Adds a splits to the recent splits list, if it's not already in it.
         /// </summary>
-        private ISplitsFile AddToRecentSplits(ISplits splits, FileInfo filePath)
+        public void AddToRecentSplits(ISplitsFile splitsFile)
         {
-            var splitsFile = new SplitsFile(filePath, splits);
-
             /* Check if the in-memory list contains this file already */
-            int index = GetRecentSplitsFileIndex(filePath);
+            int index = GetRecentSplitsFileIndex(splitsFile.FileInfo);
             if (index != -1) {
                 RecentSplits[index] = splitsFile;
             }
             else {
-                AddToRecentSplitsFile(filePath);
+                AddToRecentSplitsFile(splitsFile.FileInfo);
                 RecentSplits.Add(splitsFile);
             }
-
-            return splitsFile;
         }
 
         private int GetRecentSplitsFileIndex(FileInfo filePath)
