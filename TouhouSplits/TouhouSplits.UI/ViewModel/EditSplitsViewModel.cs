@@ -90,8 +90,13 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveSplits()
         {
-            SaveSplits(_filepath);
-            InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+            if (!string.IsNullOrEmpty(_filepath)) {
+                SaveSplits(_filepath);
+                InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+            }
+            else {
+                SaveSplitsAs();
+            }
         }
 
         private void SaveSplits(string filepath)
