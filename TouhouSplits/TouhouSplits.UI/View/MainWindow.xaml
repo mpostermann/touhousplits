@@ -50,7 +50,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Label Content="{Binding CurrentGame.CurrentScore}"></Label>
+            <Label Content="{Binding MainModel.CurrentScore}"></Label>
         </StackPanel>
     </Grid>
 </Window>
