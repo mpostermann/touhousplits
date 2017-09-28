@@ -31,7 +31,7 @@ namespace TouhouSplits.UI.ViewModel
         public MainViewModel()
         {
             IConfigManager configuration = new ConfigManager();
-            _splitsFacade = new SplitsFacade(configuration);
+            _splitsFacade = new SplitsFacade(configuration, new JsonSerializer<Splits>());
             _mainModel = new MainModel(_splitsFacade);
 
             NewSplitCommand = new RelayCommand(() => NewSplit());

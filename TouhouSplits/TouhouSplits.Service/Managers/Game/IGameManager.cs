@@ -9,6 +9,6 @@ namespace TouhouSplits.Service.Managers.Game
         string GameName { get; }
         IHookStrategy Hook { get; }
         IList<ISplitsFile> RecentSplits { get; }
-        void AddToRecentSplits(ISplitsFile splitsFile);
+        void AddOrUpdateRecentSplits(ISplitsFile splitsFile);
     }
 }

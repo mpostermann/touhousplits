@@ -55,7 +55,7 @@ namespace TouhouSplits.Service.Managers.Game
         /// <summary>
         /// Adds a splits to the recent splits list, if it's not already in it.
         /// </summary>
-        public void AddToRecentSplits(ISplitsFile splitsFile)
+        public void AddOrUpdateRecentSplits(ISplitsFile splitsFile)
         {
             /* Check if the in-memory list contains this file already */
             int index = GetRecentSplitsFileIndex(splitsFile.FileInfo);

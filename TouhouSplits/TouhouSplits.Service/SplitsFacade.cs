@@ -13,14 +13,14 @@ namespace TouhouSplits.Service
     public class SplitsFacade : ISplitsFacade
     {
         private IList<IGameConfig> _gameConfigs;
-        private IDictionary<string, IGameManager> _gameManagerCache;
         private IFileSerializer<Splits> _splitsSerializer;
+        private IDictionary<string, IGameManager> _gameManagerCache;
 
-        public SplitsFacade(IConfigManager configManager)
+        public SplitsFacade(IConfigManager configManager, IFileSerializer<Splits> _splitsSerializer)
         {
             _gameConfigs = configManager.AvailableGames;
-            _gameManagerCache = new Dictionary<string, IGameManager>();
             _splitsSerializer = new JsonSerializer<Splits>();
+            _gameManagerCache = new Dictionary<string, IGameManager>();
         }
 
         private IList<string> _availableGames;
