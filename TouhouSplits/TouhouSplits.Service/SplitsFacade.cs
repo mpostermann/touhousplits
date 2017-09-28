@@ -16,10 +16,9 @@ namespace TouhouSplits.Service
         private IFileSerializer<Splits> _splitsSerializer;
         private IDictionary<string, IGameManager> _gameManagerCache;
 
-        public SplitsFacade(IConfigManager configManager, IFileSerializer<Splits> _splitsSerializer)
-        {
+        public SplitsFacade(IConfigManager configManager, IFileSerializer<Splits> splitsSerializer) {
             _gameConfigs = configManager.AvailableGames;
-            _splitsSerializer = new JsonSerializer<Splits>();
+            _splitsSerializer = splitsSerializer;
             _gameManagerCache = new Dictionary<string, IGameManager>();
         }
 
@@ -62,12 +61,18 @@ namespace TouhouSplits.Service
 
         public ISplitsFile DeserializeSplits(FileInfo filepath)
         {
-            throw new NotImplementedException();
+            var splits = _splitsSerializer.Deserialize(filepath);
+            return new SplitsFile(filepath, splits);
         }
 
         public ISplitsFile SerializeSplits(ISplits splits, FileInfo filepath)
         {
-            throw new NotImplementedException();
+            var concreteSplits = splits as Splits;
+            if (concreteSplits == null) {
+                throw new InvalidCastException(string.Format("Serialization is not supported for object of type {0}", splits.GetType()));
+            }
+            _splitsSerializer.Serialize(concreteSplits, filepath);
+            return new SplitsFile(filepath, splits);
         }
     }
 }
