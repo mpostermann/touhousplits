@@ -8,7 +8,7 @@ namespace TouhouSplits.Service.UnitTests.Config
 {
     public class GameConfigTests
     {
-        private const string VALID_CONFIG = @"<Game name=""Some game name"" recentslist=""gamename.trs"">
+        private const string VALID_CONFIG = @"<Game name=""Some game name"" favoriteslist=""gamename.trs"">
   <Hook strategy=""Kernel32HookStrategy"" process=""process1|process2"" address=""0x0069BCA4"" encoding=""int32""/>
 </Game>";
 
@@ -37,30 +37,30 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void Constructor_Parse_Recent_Filepath_from_recentslist_Attribute()
+        public void Constructor_Parse_Favorites_Filepath_from_favoriteslist_Attribute()
         {
             FilePaths.SetAppConfigDirectory("root");
             XElement xml = XElement.Parse(VALID_CONFIG);
             var config = new GameConfig(xml);
             FilePaths.ResetAppConfigDirectoryToDefault();
 
-            var expectedFile = new FileInfo(@"root\Recent\gamename.trs");
-            Assert.Equal(expectedFile.FullName, config.RecentSplitsList.FullName);
+            var expectedFile = new FileInfo(@"root\Favorites\gamename.trs");
+            Assert.Equal(expectedFile.FullName, config.FavoriteSplitsList.FullName);
         }
 
         [Fact]
-        public void Constructor_Throws_Exception_If_recentslist_Attribute_Is_Missing()
+        public void Constructor_Throws_Exception_If_favoriteslist_Attribute_Is_Missing()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
-            xml.Attribute("recentslist").Remove();
+            xml.Attribute("favoriteslist").Remove();
             Assert.Throws<ConfigurationErrorsException>(() => new GameConfig(xml));
         }
 
         [Fact]
-        public void Constructor_Throws_Exception_If_recentslist_Attribute_Is_Empty()
+        public void Constructor_Throws_Exception_If_favoriteslist_Attribute_Is_Empty()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
-            xml.Attribute("recentslist").Value = string.Empty;
+            xml.Attribute("favoriteslist").Value = string.Empty;
             Assert.Throws<ConfigurationErrorsException>(() => new GameConfig(xml));
         }
 

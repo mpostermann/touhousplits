@@ -80,17 +80,17 @@
     <Compile Include="Control\DataGrid\DataGridLongColumn.cs" />
     <Compile Include="Converter\AdditionConverter.cs" />
     <Compile Include="Model\MainModel.cs" />
-    <Compile Include="Model\RecentSplitsModel.cs" />
+    <Compile Include="Model\FavoriteSplitsModel.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
-    <Compile Include="ViewModel\RecentSplitsViewModel.cs" />
+    <Compile Include="ViewModel\FavoriteSplitsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\EditSplitsWindow.xaml.cs">
       <DependentUpon>EditSplitsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\EditSplitsViewModel.cs" />
-    <Compile Include="View\RecentSplitsWindow.xaml.cs">
-      <DependentUpon>RecentSplitsWindow.xaml</DependentUpon>
+    <Compile Include="View\FavoriteSplitsWindow.xaml.cs">
+      <DependentUpon>FavoriteSplitsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -108,7 +108,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RecentSplitsWindow.xaml">
+    <Page Include="View\FavoriteSplitsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

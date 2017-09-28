@@ -23,7 +23,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
         public ICommand OpenSplitCommand { get; private set; }
-        public ICommand RecentSplitsCommand { get; private set; }
+        public ICommand FavoriteSplitsCommand { get; private set; }
         public ICommand NextSplitsCommand { get; private set; }
         public ICommand PreviousSplitsCommand { get; private set; }
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
@@ -37,7 +37,7 @@ namespace TouhouSplits.UI.ViewModel
             NewSplitCommand = new RelayCommand(() => NewSplit());
             EditSplitCommand = new RelayCommand(() => EditSplit());
             OpenSplitCommand = new RelayCommand(() => OpenSplit());
-            RecentSplitsCommand = new RelayCommand(() => RecentSplits());
+            FavoriteSplitsCommand = new RelayCommand(() => FavoriteSplits());
             NextSplitsCommand = new RelayCommand(() => NextSplits());
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits());
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits());
@@ -90,14 +90,14 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        private void RecentSplits()
+        private void FavoriteSplits()
         {
-            var recentSplitsView = new RecentSplitsWindow();
-            recentSplitsView.DataContext = new RecentSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Splits);
-            recentSplitsView.ShowDialog();
+            var favoriteSplitsView = new FavoriteSplitsWindow();
+            favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Splits);
+            favoriteSplitsView.ShowDialog();
 
-            if (recentSplitsView.DialogResult == true) {
-                var rsViewModel = (RecentSplitsViewModel)recentSplitsView.DataContext;
+            if (favoriteSplitsView.DialogResult == true) {
+                var rsViewModel = (FavoriteSplitsViewModel)favoriteSplitsView.DataContext;
                 MainModel.CurrentSplitsFile = rsViewModel.SelectedSplits;
             }
         }
@@ -109,15 +109,15 @@ namespace TouhouSplits.UI.ViewModel
             }
 
             /* Get the current index */
-            int index = MainModel.RecentSplits.IndexOf(MainModel.CurrentSplitsFile);
+            int index = MainModel.FavoriteSplits.IndexOf(MainModel.CurrentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index + 1;
-            if (nextIndex == MainModel.RecentSplits.Count) {
+            if (nextIndex == MainModel.FavoriteSplits.Count) {
                 nextIndex = 0;
             }
 
-            MainModel.CurrentSplitsFile = MainModel.RecentSplits[nextIndex];
+            MainModel.CurrentSplitsFile = MainModel.FavoriteSplits[nextIndex];
         }
 
         private void PreviousSplits()
@@ -127,15 +127,15 @@ namespace TouhouSplits.UI.ViewModel
             }
 
             /* Get the current index */
-            int index = MainModel.RecentSplits.IndexOf(MainModel.CurrentSplitsFile);
+            int index = MainModel.FavoriteSplits.IndexOf(MainModel.CurrentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index - 1;
             if (nextIndex == -1) {
-                nextIndex = MainModel.RecentSplits.Count - 1;
+                nextIndex = MainModel.FavoriteSplits.Count - 1;
             }
 
-            MainModel.CurrentSplitsFile = MainModel.RecentSplits[nextIndex];
+            MainModel.CurrentSplitsFile = MainModel.FavoriteSplits[nextIndex];
         }
 
         private void StartOrStopRecordingSplits()

@@ -8,11 +8,11 @@ using TouhouSplits.UI.Model;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class RecentSplitsViewModel : IDialogResultViewModel
+    public class FavoriteSplitsViewModel : IDialogResultViewModel
     {
         private ISplitsFacade _splitsFacade;
 
-        public readonly RecentSplitsModel RecentSplitsModel;
+        public readonly FavoriteSplitsModel FavoriteSplitsModel;
         public ISplitsFile SelectedSplits { get; private set; }
 
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
@@ -27,15 +27,15 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand OpenSplitsCommand { get; private set; }
         public ICommand CancelOpeningSplitsCommand { get; private set; }
         
-        public RecentSplitsViewModel(ISplitsFacade facade, ISplits defaultSplits)
+        public FavoriteSplitsViewModel(ISplitsFacade facade, ISplits defaultSplits)
         {
             _splitsFacade = facade;
 
             if (defaultSplits != null) {
-                RecentSplitsModel = new RecentSplitsModel(_splitsFacade.LoadGameManager(defaultSplits.GameName));
+                FavoriteSplitsModel = new FavoriteSplitsModel(_splitsFacade.LoadGameManager(defaultSplits.GameName));
             }
             else {
-                RecentSplitsModel = new RecentSplitsModel(_splitsFacade.LoadGameManager(AvailableGames[0]));
+                FavoriteSplitsModel = new FavoriteSplitsModel(_splitsFacade.LoadGameManager(AvailableGames[0]));
             }
 
             OpenSplitsCommand = new RelayCommand<ISplitsFile>((param) => OpenSplits(param));

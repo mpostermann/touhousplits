@@ -10,14 +10,14 @@ namespace TouhouSplits.UI.UnitTests.Model
     public class MainModelTests
     {
         [Fact]
-        public void Set_CurrentSplitsFile_Fires_NotifyPropertyChanged_Event_For_RecentSplits()
+        public void Set_CurrentSplitsFile_Fires_NotifyPropertyChanged_Event_For_FavoriteSplits()
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
             model.CurrentSplitsFile = Substitute.For<ISplitsFile>();
-            Assert.True(eventCatcher.CaughtProperties.Contains("RecentSplits"));
+            Assert.True(eventCatcher.CaughtProperties.Contains("FavoriteSplits"));
         }
 
         [Fact]

@@ -17,12 +17,12 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         private static IGameConfig CreateConfig(string gameName)
         {
             var config = Substitute.For<IGameConfig>();
-            config.RecentSplitsList.Returns(new FileInfo("somefile.ext"));
+            config.FavoriteSplitsList.Returns(new FileInfo("somefile.ext"));
             config.GameName.Returns(gameName);
             return config;
         }
 
-        private IFileSerializer<List<string>> CreateRecentSplitsSerializer(FileInfo filename, params string[] paths)
+        private IFileSerializer<List<string>> CreateFavoriteSplitsSerializer(FileInfo filename, params string[] paths)
         {
             var serializer = Substitute.For<IFileSerializer<List<string>>>();
             serializer
@@ -43,44 +43,44 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         }
 
         [Fact]
-        public void Constructor_Invokes_RecentSplitsSerializer_If_File_Does_Not_Exist()
+        public void Constructor_Invokes_FavoriteSplitsSerializer_If_File_Does_Not_Exist()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList);
-            recentSplitsSerializerMock
-                .Deserialize(config.RecentSplitsList)
+            var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
+            favoriteSplitsSerializerMock
+                .Deserialize(config.FavoriteSplitsList)
                 .Returns(n => { throw new FileNotFoundException(); });
 
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializerMock,
+                favoriteSplitsSerializerMock,
                 Substitute.For<IFileSerializer<Splits>>()
             );
-            recentSplitsSerializerMock.Received().Serialize(
+            favoriteSplitsSerializerMock.Received().Serialize(
                 Arg.Is<List<string>>(n => n.Count == 0),
-                config.RecentSplitsList
+                config.FavoriteSplitsList
             );
         }
 
         [Fact]
-        public void Constructor_Invokes_RecentSplitsSerializer_If_Directory_Does_Not_Exist()
+        public void Constructor_Invokes_FavoriteSplitsSerializer_If_Directory_Does_Not_Exist()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList);
-            recentSplitsSerializerMock
-                .Deserialize(config.RecentSplitsList)
+            var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
+            favoriteSplitsSerializerMock
+                .Deserialize(config.FavoriteSplitsList)
                 .Returns(n => { throw new DirectoryNotFoundException(); });
 
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializerMock,
+                favoriteSplitsSerializerMock,
                 Substitute.For<IFileSerializer<Splits>>()
             );
-            recentSplitsSerializerMock.Received().Serialize(
+            favoriteSplitsSerializerMock.Received().Serialize(
                 Arg.Is<List<string>>(n => n.Count == 0),
-                config.RecentSplitsList
+                config.FavoriteSplitsList
             );
         }
 
@@ -88,11 +88,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         public void GameName_Returns_GameName_From_Config()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList);
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializer,
+                favoriteSplitsSerializer,
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
@@ -100,11 +100,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         }
 
         [Fact]
-        public void RecentSplits_Returns_Splits_Filepaths_Loaded_From_RecentSplitsSerializer()
+        public void FavoriteSplits_Returns_Splits_Filepaths_Loaded_From_FavoriteSplitsSerializer()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(
-                config.RecentSplitsList,
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(
+                config.FavoriteSplitsList,
                 "path0",
                 "path1",
                 "path2"
@@ -112,143 +112,143 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializer,
+                favoriteSplitsSerializer,
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            Assert.Equal(new FileInfo("path0").FullName, manager.RecentSplits[0].FileInfo.FullName);
-            Assert.Equal(new FileInfo("path1").FullName, manager.RecentSplits[1].FileInfo.FullName);
-            Assert.Equal(new FileInfo("path2").FullName, manager.RecentSplits[2].FileInfo.FullName);
+            Assert.Equal(new FileInfo("path0").FullName, manager.FavoriteSplits[0].FileInfo.FullName);
+            Assert.Equal(new FileInfo("path1").FullName, manager.FavoriteSplits[1].FileInfo.FullName);
+            Assert.Equal(new FileInfo("path2").FullName, manager.FavoriteSplits[2].FileInfo.FullName);
         }
 
         [Fact]
-        public void RecentSplits_Deserialize_Splits_Using_Passed_In_Serializer()
+        public void FavoriteSplits_Deserialize_Splits_Using_Passed_In_Serializer()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(
-                config.RecentSplitsList,
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(
+                config.FavoriteSplitsList,
                 "path0"
             );
             var splitsSerializerMock = Substitute.For<IFileSerializer<Splits>>();
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializer,
+                favoriteSplitsSerializer,
                 splitsSerializerMock
             );
 
-            var splits = manager.RecentSplits[0].Splits;
+            var splits = manager.FavoriteSplits[0].Splits;
             splitsSerializerMock.Received().Deserialize(Arg.Is<FileInfo>(n => n.Name == "path0"));
         }
 
         [Fact]
-        public void RecentSplits_Item_Is_Updated_If_AddOrUpdateRecentSplits_Is_Called_For_An_Existing_File()
+        public void FavoriteSplits_Item_Is_Updated_If_AddOrUpdateFavorites_Is_Called_For_An_Existing_File()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList, "path0");
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList, "path0");
             var splitsSerializer = Substitute.For<IFileSerializer<Splits>>();
             splitsSerializer.Deserialize(Arg.Is<FileInfo>(n => n.Name == "path0")).Returns(Substitute.For<Splits>());
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializer,
+                favoriteSplitsSerializer,
                 splitsSerializer
             );
 
             var updatedSplitsFile = CreateSplitsFile("path0", "Some game name");
             var expectedSplits = updatedSplitsFile.Splits;
 
-            manager.AddOrUpdateRecentSplits(updatedSplitsFile);
-            Assert.Equal(expectedSplits, manager.RecentSplits.FirstOrDefault(n => n.FileInfo.Name == "path0").Splits);
+            manager.AddOrUpdateFavorites(updatedSplitsFile);
+            Assert.Equal(expectedSplits, manager.FavoriteSplits.FirstOrDefault(n => n.FileInfo.Name == "path0").Splits);
         }
 
         [Fact]
-        public void AddOrUpdateRecentSplits_Invokes_RecentSplitsSerializer_If_Filepath_Is_Not_Already_In_List()
+        public void AddOrUpdateFavorites_Invokes_FavoriteSplitsSerializer_If_Filepath_Is_Not_Already_In_List()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList);
+            var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializerMock,
+                favoriteSplitsSerializerMock,
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("new splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("new splits path", "Some game name"));
 
-            var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList);
+            var splitsPaths = favoriteSplitsSerializerMock.Deserialize(config.FavoriteSplitsList);
             Assert.True(splitsPaths.Contains(new FileInfo("new splits path").FullName));
-            recentSplitsSerializerMock.Received().Serialize(splitsPaths, config.RecentSplitsList);
+            favoriteSplitsSerializerMock.Received().Serialize(splitsPaths, config.FavoriteSplitsList);
         }
 
         [Fact]
-        public void AddOrUpdateRecentSplits_Does_Not_Invokes_RecentSplitsSerializer_If_Filepath_Is_Already_In_List()
+        public void AddOrUpdateFavorites_Does_Not_Invokes_FavoriteSplitsSerializer_If_Filepath_Is_Already_In_List()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializerMock = CreateRecentSplitsSerializer(config.RecentSplitsList, "existing splits path");
+            var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList, "existing splits path");
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializerMock,
+                favoriteSplitsSerializerMock,
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("existing splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("existing splits path", "Some game name"));
 
-            var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList);
+            var splitsPaths = favoriteSplitsSerializerMock.Deserialize(config.FavoriteSplitsList);
             Assert.Equal(1, splitsPaths.Count);
-            recentSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.RecentSplitsList);
+            favoriteSplitsSerializerMock.DidNotReceive().Serialize(splitsPaths, config.FavoriteSplitsList);
         }
 
         [Fact]
-        public void AddOrUpdateRecentSplits_Adds_Splits_To_RecentSplits_If_Filepath_Is_Not_Already_In_List()
+        public void AddOrUpdateFavorites_Adds_Splits_To_FavoriteSplits_If_Filepath_Is_Not_Already_In_List()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList);
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializer,
+                favoriteSplitsSerializer,
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("new splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("new splits path", "Some game name"));
 
-            Assert.Equal(1, manager.RecentSplits.Count);
-            Assert.Equal(new FileInfo("new splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
+            Assert.Equal(1, manager.FavoriteSplits.Count);
+            Assert.Equal(new FileInfo("new splits path").FullName, manager.FavoriteSplits[0].FileInfo.FullName);
         }
 
         [Fact]
-        public void AddOrUpdateRecentSplits_Does_Not_Add_Splits_To_RecentSplits_If_Filepath_Is_Already_In_List()
+        public void AddOrUpdateFavorites_Does_Not_Add_Splits_To_FavoriteSplits_If_Filepath_Is_Already_In_List()
         {
             var config = CreateConfig("Some game name");
-            var recentSplitsSerializer = CreateRecentSplitsSerializer(config.RecentSplitsList, "existing splits path");
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList, "existing splits path");
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                recentSplitsSerializer,
+                favoriteSplitsSerializer,
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("existing splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("existing splits path", "Some game name"));
 
-            Assert.Equal(1, manager.RecentSplits.Count);
-            Assert.Equal(new FileInfo("existing splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
+            Assert.Equal(1, manager.FavoriteSplits.Count);
+            Assert.Equal(new FileInfo("existing splits path").FullName, manager.FavoriteSplits[0].FileInfo.FullName);
         }
 
         [Fact]
-        public void AddOrUpdateRecentSplits_Throws_Exception_If_Splits_GameName_Does_Not_Equal_GameManagers_GameName()
+        public void AddOrUpdateFavorites_Throws_Exception_If_Splits_GameName_Does_Not_Equal_GameManagers_GameName()
         {
             var config = CreateConfig("Some game name");
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
-                CreateRecentSplitsSerializer(config.RecentSplitsList),
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
             var splitsFile = CreateSplitsFile("some path", "Not matching game name");
-            Assert.Throws<InvalidOperationException>(() => manager.AddOrUpdateRecentSplits(splitsFile));
+            Assert.Throws<InvalidOperationException>(() => manager.AddOrUpdateFavorites(splitsFile));
         }
     }
 }

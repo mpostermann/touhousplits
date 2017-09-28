@@ -5,13 +5,13 @@ using TouhouSplits.UI.ViewModel;
 namespace TouhouSplits.UI.View
 {
     /// <summary>
-    /// Interaction logic for RecentSplitsWindow.xaml
+    /// Interaction logic for FavoriteSplitsWindow.xaml
     /// </summary>
-    public partial class RecentSplitsWindow : Window
+    public partial class FavoriteSplitsWindow : Window
     {
         private bool _isClosed = false;
 
-        public RecentSplitsWindow()
+        public FavoriteSplitsWindow()
         {
             InitializeComponent();
 

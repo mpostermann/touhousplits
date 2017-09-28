@@ -6,20 +6,20 @@ using TouhouSplits.Service.Managers.Game;
 
 namespace TouhouSplits.UI.Model
 {
-    public class RecentSplitsModel : ModelBase
+    public class FavoriteSplitsModel : ModelBase
     {
         private IGameManager _gameManager;
 
-        public RecentSplitsModel(IGameManager gameManager)
+        public FavoriteSplitsModel(IGameManager gameManager)
         {
             _gameManager = gameManager;
         }
 
-        public IList<ISplitsFile> RecentSplits {
-            get { return _gameManager.RecentSplits; }
+        public IList<ISplitsFile> FavoriteSplits {
+            get { return _gameManager.FavoriteSplits; }
         }
 
-        public void RemoveSplitsFromRecentSplits()
+        public void RemoveSplitsFromFavoriteSplits()
         {
             throw new NotImplementedException();
         }

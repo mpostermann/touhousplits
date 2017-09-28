@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
     <Games>
-        <Game name="Touhou 6: the Embodiment of Scarlet Devil" recentslist="th06.trs">
+        <Game name="Touhou 6: the Embodiment of Scarlet Devil" favoriteslist="th06.trs">
             <Hook strategy="Kernel32HookStrategy" process="東方紅魔郷|th06e|“Œ•ûg–‚‹½" address="0069BCA4" encoding="int32"/>
         </Game>
     </Games>

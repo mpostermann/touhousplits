@@ -29,7 +29,7 @@ namespace TouhouSplits.UI.Model
                     _gameManager = _facade.LoadGameManager(_currentSplitsFile.Splits.GameName);
                 }
                 NotifyPropertyChanged("CurrentSplitsFile");
-                NotifyPropertyChanged("RecentSplits");
+                NotifyPropertyChanged("FavoriteSplits");
             }
         }
 
@@ -44,7 +44,7 @@ namespace TouhouSplits.UI.Model
             }
         }
 
-        public IList<ISplitsFile> RecentSplits { get { return _gameManager.RecentSplits; } }
+        public IList<ISplitsFile> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
 
         public bool IsPolling { get; private set; }
 

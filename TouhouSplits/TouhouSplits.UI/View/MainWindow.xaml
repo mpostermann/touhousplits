@@ -26,7 +26,7 @@
                 <MenuItem Header="_Open Splits..." Command="{Binding OpenSplitCommand}"/>
                 <MenuItem Header="_New Splits..." Command="{Binding NewSplitCommand}" />
                 <MenuItem Header="_Edit Splits..." Command="{Binding EditSplitCommand}" />
-                <MenuItem Header="_Recent Splits..." Command="{Binding RecentSplitsCommand}" />
+                <MenuItem Header="_Favorite Splits..." Command="{Binding FavoriteSplitsCommand}" />
             </MenuItem>
             <MenuItem Header="_Game">
                 <MenuItem Header="Start _Recording Split" Command="{Binding StartOrStopRecordingSplitsCommand}"/>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
 using System.Xml.Linq;
 
@@ -9,13 +8,13 @@ namespace TouhouSplits.Service.Config
     {
         public string GameName { get; private set; }
         public XElement HookConfig { get; private set; }
-        public FileInfo RecentSplitsList { get; private set; }
+        public FileInfo FavoriteSplitsList { get; private set; }
 
         public GameConfig(XElement configElement)
         {
             GameName = GetGameName(configElement);
             HookConfig = GetHook(configElement);
-            RecentSplitsList = GetRecentSplitsList(configElement);
+            FavoriteSplitsList = GetFavoriteSplitsList(configElement);
         }
 
         private static string GetGameName(XElement configElement)
@@ -36,15 +35,15 @@ namespace TouhouSplits.Service.Config
             return configElement.Element("Hook");
         }
 
-        private static FileInfo GetRecentSplitsList(XElement configElement)
+        private static FileInfo GetFavoriteSplitsList(XElement configElement)
         {
-            if (configElement.Attribute("recentslist") == null ||
-                string.IsNullOrEmpty(configElement.Attribute("recentslist").Value)) {
-                throw new ConfigurationErrorsException("Element \"recentslist\" is missing.");
+            if (configElement.Attribute("favoriteslist") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("favoriteslist").Value)) {
+                throw new ConfigurationErrorsException("Element \"favoriteslist\" is missing.");
             }
             return new FileInfo(Path.Combine(
-                FilePaths.DIR_RECENT_SPLITS_LIST,
-                configElement.Attribute("recentslist").Value
+                FilePaths.DIR_FAVORITE_SPLITS_LIST,
+                configElement.Attribute("favoriteslist").Value
             ));
         }
     }
