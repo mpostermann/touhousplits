@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
@@ -57,6 +58,10 @@ namespace TouhouSplits.Service.Managers.Game
         /// </summary>
         public void AddOrUpdateRecentSplits(ISplitsFile splitsFile)
         {
+            if (splitsFile.Splits.GameName != this.GameName) {
+                throw new InvalidOperationException("SplitsFile can only be added to RecentsList for a GameManager with a matching name.");
+            }
+
             /* Check if the in-memory list contains this file already */
             int index = GetRecentSplitsFileIndex(splitsFile.FileInfo);
             if (index != -1) {

@@ -34,10 +34,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             return serializer;
         }
 
-        private ISplitsFile CreateSplitsFile(string filepath)
+        private ISplitsFile CreateSplitsFile(string filepath, string gameName)
         {
             var splitsFile = Substitute.For<ISplitsFile>();
             splitsFile.FileInfo.Returns(new FileInfo(filepath));
+            splitsFile.Splits.GameName.Returns(gameName);
             return splitsFile;
         }
 
@@ -154,7 +155,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 splitsSerializer
             );
 
-            var updatedSplitsFile = CreateSplitsFile("path0");
+            var updatedSplitsFile = CreateSplitsFile("path0", "Some game name");
             var expectedSplits = updatedSplitsFile.Splits;
 
             manager.AddOrUpdateRecentSplits(updatedSplitsFile);
@@ -173,7 +174,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("new splits path"));
+            manager.AddOrUpdateRecentSplits(CreateSplitsFile("new splits path", "Some game name"));
 
             var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList);
             Assert.True(splitsPaths.Contains(new FileInfo("new splits path").FullName));
@@ -192,7 +193,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("existing splits path"));
+            manager.AddOrUpdateRecentSplits(CreateSplitsFile("existing splits path", "Some game name"));
 
             var splitsPaths = recentSplitsSerializerMock.Deserialize(config.RecentSplitsList);
             Assert.Equal(1, splitsPaths.Count);
@@ -211,7 +212,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("new splits path"));
+            manager.AddOrUpdateRecentSplits(CreateSplitsFile("new splits path", "Some game name"));
 
             Assert.Equal(1, manager.RecentSplits.Count);
             Assert.Equal(new FileInfo("new splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
@@ -229,7 +230,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateRecentSplits(CreateSplitsFile("existing splits path"));
+            manager.AddOrUpdateRecentSplits(CreateSplitsFile("existing splits path", "Some game name"));
 
             Assert.Equal(1, manager.RecentSplits.Count);
             Assert.Equal(new FileInfo("existing splits path").FullName, manager.RecentSplits[0].FileInfo.FullName);
@@ -246,8 +247,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            var splitsFile = CreateSplitsFile("some path");
-            splitsFile.Splits.GameName.Returns("Some other game name");
+            var splitsFile = CreateSplitsFile("some path", "Not matching game name");
             Assert.Throws<InvalidOperationException>(() => manager.AddOrUpdateRecentSplits(splitsFile));
         }
     }
