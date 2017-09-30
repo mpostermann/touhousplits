@@ -13,9 +13,9 @@ namespace TouhouSplits.Service.Data
         private IFileSerializer<TTwo> _serializer;
         private TTwo _clone;
 
-        public FileHandler(FileInfo filepath, IFileSerializer<TTwo> serializer)
+        public FileHandler(FileInfo fileInfo, IFileSerializer<TTwo> serializer)
         {
-            FileInfo = filepath;
+            FileInfo = fileInfo;
             _serializer = serializer;
         }
 
@@ -41,11 +41,6 @@ namespace TouhouSplits.Service.Data
         }
 
         public void Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save(FileInfo filepath)
         {
             throw new NotImplementedException();
         }

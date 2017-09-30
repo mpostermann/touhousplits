@@ -7,7 +7,6 @@ namespace TouhouSplits.Service.Data
         FileInfo FileInfo { get; set; }
         TOne Object { get; }
         void Save();
-        void Save(FileInfo filepath);
         void RevertToLastSavedState();
         void Close();
     }
