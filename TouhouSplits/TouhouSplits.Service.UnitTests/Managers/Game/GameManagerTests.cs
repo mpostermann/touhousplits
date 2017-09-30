@@ -130,6 +130,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 "path0"
             );
             var splitsSerializerMock = Substitute.For<IFileSerializer<Splits>>();
+            splitsSerializerMock.Deserialize(Arg.Any<FileInfo>()).Returns(Substitute.For<Splits>());
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
