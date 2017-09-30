@@ -64,7 +64,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         public void Object_Throws_Exception_If_Object_And_FileInfo_Are_Null()
         {
             var fileHandler = new FileHandler<ISplits, Splits>(
-                Substitute.For<Splits>(),
+                (FileInfo)null,
                 GetDefaultSerializer("some path"));
 
             Assert.Throws<InvalidOperationException>(() => fileHandler.Object);
@@ -126,6 +126,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             splits.Clone().Returns(clone);
             clone.Clone().Returns(clonedClone);
             var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
+            fileHandler.FileInfo = new FileInfo("some path");
 
             clonedClone.GameName = "Updated Game Name";
             fileHandler.Save();

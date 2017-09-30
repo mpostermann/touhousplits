@@ -24,6 +24,10 @@ namespace TouhouSplits.Service.Data
 
         public FileHandler(TTwo obj, IFileSerializer<TTwo> serializer)
         {
+            if (obj == null) {
+                throw new NullReferenceException("FileHandler requires a non-null obj parameter.");
+            }
+
             _object = obj;
             _clone = (TTwo) obj.Clone();
             _serializer = serializer;

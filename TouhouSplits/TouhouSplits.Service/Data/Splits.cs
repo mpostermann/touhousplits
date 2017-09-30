@@ -77,7 +77,7 @@ namespace TouhouSplits.Service.Data
             }
         }
 
-        public object Clone()
+        public virtual object Clone()
         {
             var clone = new Splits();
             clone.GameName = this.GameName;
