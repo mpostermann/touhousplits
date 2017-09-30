@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using TouhouSplits.MVVM;
 
@@ -76,7 +77,7 @@ namespace TouhouSplits.Service.Data
             }
         }
 
-        public ISplits Clone()
+        public object Clone()
         {
             var clone = new Splits();
             clone.GameName = this.GameName;

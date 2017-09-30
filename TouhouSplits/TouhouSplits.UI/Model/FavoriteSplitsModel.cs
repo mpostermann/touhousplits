@@ -15,7 +15,7 @@ namespace TouhouSplits.UI.Model
             _gameManager = gameManager;
         }
 
-        public IList<ISplitsFile> FavoriteSplits {
+        public IList<IFileHandler<ISplits>> FavoriteSplits {
             get { return _gameManager.FavoriteSplits; }
         }
 

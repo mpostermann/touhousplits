@@ -34,11 +34,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             return serializer;
         }
 
-        private ISplitsFile CreateSplitsFile(string filepath, string gameName)
+        private IFileHandler<ISplits> CreateSplitsFile(string filepath, string gameName)
         {
-            var splitsFile = Substitute.For<ISplitsFile>();
+            var splitsFile = Substitute.For<IFileHandler<ISplits>>();
             splitsFile.FileInfo.Returns(new FileInfo(filepath));
-            splitsFile.Splits.GameName.Returns(gameName);
+            splitsFile.Object.GameName.Returns(gameName);
             return splitsFile;
         }
 
@@ -137,7 +137,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 splitsSerializerMock
             );
 
-            var splits = manager.FavoriteSplits[0].Splits;
+            var splits = manager.FavoriteSplits[0].Object;
             splitsSerializerMock.Received().Deserialize(Arg.Is<FileInfo>(n => n.Name == "path0"));
         }
 
@@ -156,10 +156,10 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             );
 
             var updatedSplitsFile = CreateSplitsFile("path0", "Some game name");
-            var expectedSplits = updatedSplitsFile.Splits;
+            var expectedSplits = updatedSplitsFile.Object;
 
             manager.AddOrUpdateFavorites(updatedSplitsFile);
-            Assert.Equal(expectedSplits, manager.FavoriteSplits.FirstOrDefault(n => n.FileInfo.Name == "path0").Splits);
+            Assert.Equal(expectedSplits, manager.FavoriteSplits.FirstOrDefault(n => n.FileInfo.Name == "path0").Object);
         }
 
         [Fact]

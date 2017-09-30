@@ -12,10 +12,9 @@ namespace TouhouSplits.UI.ViewModel
     public class EditSplitsViewModel : IDialogResultViewModel
     {
         private ISplitsFacade _splitsFacade;
-        private string _filepath;
 
-        public ISplitsFile SplitsFile { get; private set; }
-        public ISplits Splits { get; private set; }
+        public IFileHandler<ISplits> SplitsFile { get; private set; }
+        public ISplits Splits { get { return SplitsFile.Object; } }
 
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
         private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
@@ -33,10 +32,9 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand SaveSplitsAsCommand { get; private set; }
         public ICommand CloseWithoutSavingCommand { get; private set; }
 
-        public EditSplitsViewModel(string filepath, ISplits splits, ISplitsFacade facade)
+        public EditSplitsViewModel(IFileHandler<ISplits> splitsFile, ISplitsFacade facade)
         {
-            Splits = splits.Clone();
-            _filepath = filepath;
+            SplitsFile = splitsFile;
             _splitsFacade = facade;
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
@@ -76,22 +74,22 @@ namespace TouhouSplits.UI.ViewModel
         private void SaveSplitsAs()
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            if (!String.IsNullOrEmpty(_filepath)) {
-                dialog.FileName = _filepath;
+            if (SplitsFile.FileInfo != null) {
+                dialog.FileName = SplitsFile.FileInfo.FullName;
             }
             dialog.DefaultExt = FilePaths.EXT_SPLITS_FILE;
             dialog.Filter = string.Format("Touhou Splits Files ({0})|*{0}", FilePaths.EXT_SPLITS_FILE);
 
             if (dialog.ShowDialog() == true) {
-                SaveSplits(dialog.FileName);
+                SplitsFile.Save(new FileInfo(dialog.FileName));
                 InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
             }
         }
 
         private void SaveSplits()
         {
-            if (!string.IsNullOrEmpty(_filepath)) {
-                SaveSplits(_filepath);
+            if (SplitsFile.FileInfo != null) {
+                SplitsFile.Save();
                 InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
             }
             else {
@@ -99,13 +97,9 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        private void SaveSplits(string filepath)
-        {
-            SplitsFile = _splitsFacade.SerializeSplits(Splits, new FileInfo(filepath));
-        }
-
         private void CloseWithoutSaving()
         {
+            SplitsFile.RevertToLastSavedState();
             InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(false));
         }
     }

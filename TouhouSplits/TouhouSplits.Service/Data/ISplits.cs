@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TouhouSplits.Service.Data
 {
-    public interface ISplits
+    public interface ISplits : ICloneable
     {
         string GameName { get; set; }
         string SplitName { get; set; }
@@ -11,6 +12,5 @@ namespace TouhouSplits.Service.Data
         void AddSegment(int index, ISegment segment);
         void RemoveSegment(int index);
         void UpdateSegment(int index, ISegment segment);
-        ISplits Clone();
     }
 }

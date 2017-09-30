@@ -51,10 +51,10 @@
     <Compile Include="Config\Hook\IKernel32HookConfig.cs" />
     <Compile Include="Config\Hook\Kernel32HookConfig.cs" />
     <Compile Include="Config\IGameConfig.cs" />
-    <Compile Include="Data\ISplitsFile.cs" />
+    <Compile Include="Data\FileHandler.cs" />
+    <Compile Include="Data\IFileHandler.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
-    <Compile Include="Data\SplitsFile.cs" />
     <Compile Include="FilePaths.cs" />
     <Compile Include="Hook\EncodingEnum.cs" />
     <Compile Include="Hook\HookStrategyFactory.cs" />

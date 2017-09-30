@@ -16,7 +16,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            model.CurrentSplitsFile = Substitute.For<ISplitsFile>();
+            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
             Assert.True(eventCatcher.CaughtProperties.Contains("FavoriteSplits"));
         }
 
@@ -26,9 +26,9 @@ namespace TouhouSplits.UI.UnitTests.Model
             var facadeMock = Substitute.For<ISplitsFacade>();
             var model = new MainModel(facadeMock);
 
-            var splitsFile = Substitute.For<ISplitsFile>();
-            splitsFile.Splits.Returns(Substitute.For<ISplits>());
-            splitsFile.Splits.GameName = "Game to load";
+            var splitsFile = Substitute.For<IFileHandler<ISplits>>();
+            splitsFile.Object.Returns(Substitute.For<ISplits>());
+            splitsFile.Object.GameName = "Game to load";
             model.CurrentSplitsFile = splitsFile;
             facadeMock.Received().LoadGameManager("Game to load");
         }
@@ -55,7 +55,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = Substitute.For<ISplitsFile>();
+            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
             model.StartScorePoller();
             Assert.Equal(true, model.IsPolling);
         }
@@ -65,7 +65,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = Substitute.For<ISplitsFile>();
+            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
             model.StartScorePoller();
             model.StopScorePoller();
             Assert.Equal(false, model.IsPolling);

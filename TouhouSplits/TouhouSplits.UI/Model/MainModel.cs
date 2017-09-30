@@ -20,13 +20,13 @@ namespace TouhouSplits.UI.Model
             IsPolling = false;
         }
 
-        private ISplitsFile _currentSplitsFile;
-        public ISplitsFile CurrentSplitsFile {
+        private IFileHandler<ISplits> _currentSplitsFile;
+        public IFileHandler<ISplits> CurrentSplitsFile {
             get { return _currentSplitsFile; }
             set {
                 _currentSplitsFile = value;
-                if (_gameManager == null || _gameManager.GameName != _currentSplitsFile.Splits.GameName) {
-                    _gameManager = _facade.LoadGameManager(_currentSplitsFile.Splits.GameName);
+                if (_gameManager == null || _gameManager.GameName != _currentSplitsFile.Object.GameName) {
+                    _gameManager = _facade.LoadGameManager(_currentSplitsFile.Object.GameName);
                 }
                 NotifyPropertyChanged("CurrentSplitsFile");
                 NotifyPropertyChanged("FavoriteSplits");
@@ -44,7 +44,7 @@ namespace TouhouSplits.UI.Model
             }
         }
 
-        public IList<ISplitsFile> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
+        public IList<IFileHandler<ISplits>> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
 
         public bool IsPolling { get; private set; }
 

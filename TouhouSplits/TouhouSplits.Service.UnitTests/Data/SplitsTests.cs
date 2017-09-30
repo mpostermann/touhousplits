@@ -412,7 +412,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var splits = new Splits();
             splits.GameName = "Some game name";
 
-            var clone = splits.Clone();
+            var clone = (Splits) splits.Clone();
             Assert.Equal("Some game name", clone.GameName);
         }
 
@@ -422,7 +422,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var splits = new Splits();
             splits.SplitName = "Some split name";
 
-            var clone = splits.Clone();
+            var clone = (Splits) splits.Clone();
             Assert.Equal("Some split name", clone.SplitName);
         }
 
@@ -432,7 +432,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var splits = new Splits();
             splits.AddSegment(0, Substitute.For<ISegment>());
 
-            var clone = splits.Clone();
+            var clone = (Splits) splits.Clone();
             Assert.NotEqual(splits.Segments, clone.Segments);
             Assert.NotEqual(splits.Segments[0], clone.Segments[0]);
         }
@@ -451,7 +451,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             splits.AddSegment(1, segment1);
 
 
-            var clone = splits.Clone();
+            var clone = (Splits) splits.Clone();
             Assert.Equal("Some segment", clone.Segments[0].SegmentName);
             Assert.Equal(1561, clone.Segments[0].Score);
             Assert.Equal("Some segment stage 2", clone.Segments[1].SegmentName);

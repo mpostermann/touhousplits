@@ -13,7 +13,7 @@ namespace TouhouSplits.UI.ViewModel
         private ISplitsFacade _splitsFacade;
 
         public readonly FavoriteSplitsModel FavoriteSplitsModel;
-        public ISplitsFile SelectedSplits { get; private set; }
+        public IFileHandler<ISplits> SelectedSplits { get; private set; }
 
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
         private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
@@ -38,7 +38,7 @@ namespace TouhouSplits.UI.ViewModel
                 FavoriteSplitsModel = new FavoriteSplitsModel(_splitsFacade.LoadGameManager(AvailableGames[0]));
             }
 
-            OpenSplitsCommand = new RelayCommand<ISplitsFile>((param) => OpenSplits(param));
+            OpenSplitsCommand = new RelayCommand<IFileHandler<ISplits>>((param) => OpenSplits(param));
             CancelOpeningSplitsCommand = new RelayCommand(() => CancelOpeningSplits());
         }
 
@@ -48,7 +48,7 @@ namespace TouhouSplits.UI.ViewModel
             }
         }
 
-        private void OpenSplits(ISplitsFile file)
+        private void OpenSplits(IFileHandler<ISplits> file)
         {
             SelectedSplits = file;
             InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));

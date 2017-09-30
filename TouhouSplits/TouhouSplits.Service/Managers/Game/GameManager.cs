@@ -15,7 +15,7 @@ namespace TouhouSplits.Service.Managers.Game
 
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
-        public IList<ISplitsFile> FavoriteSplits { get; private set; }
+        public IList<IFileHandler<ISplits>> FavoriteSplits { get; private set; }
 
         public GameManager(
             IGameConfig config,
@@ -29,16 +29,16 @@ namespace TouhouSplits.Service.Managers.Game
             FavoriteSplits = LoadFavoriteSplits(_config.FavoriteSplitsList, _favoriteSplitsSerializer, splitsSerializer);
         }
 
-        private static List<ISplitsFile> LoadFavoriteSplits(
+        private static List<IFileHandler<ISplits>> LoadFavoriteSplits(
             FileInfo favoriteSplitsFile,
             IFileSerializer<List<string>> favoriteSplitsSerializer,
             IFileSerializer<Splits> splitsSerializer)
         {
-            List<ISplitsFile> favoriteSplits = new List<ISplitsFile>();
+            List<IFileHandler<ISplits>> favoriteSplits = new List<IFileHandler<ISplits>>();
             try {
                 List<string> favoriteSplitsPaths = favoriteSplitsSerializer.Deserialize(favoriteSplitsFile);
                 foreach (string path in favoriteSplitsPaths) {
-                    var splitsFile = new SplitsFile(new FileInfo(path), splitsSerializer);
+                    var splitsFile = new FileHandler<ISplits, Splits>(new FileInfo(path), splitsSerializer);
                     favoriteSplits.Add(splitsFile);
                 }
             }
@@ -56,10 +56,10 @@ namespace TouhouSplits.Service.Managers.Game
         /// <summary>
         /// Adds a splits to the favorite splits list, if it's not already in it.
         /// </summary>
-        public void AddOrUpdateFavorites(ISplitsFile splitsFile)
+        public void AddOrUpdateFavorites(IFileHandler<ISplits> splitsFile)
         {
-            if (splitsFile.Splits.GameName != this.GameName) {
-                throw new InvalidOperationException("SplitsFile can only be added to Favorites for a GameManager with a matching name.");
+            if (splitsFile.Object.GameName != this.GameName) {
+                throw new InvalidOperationException("Files can only be added to Favorites for a GameManager with a matching name.");
             }
 
             /* Check if the in-memory list contains this file already */

@@ -46,11 +46,7 @@ namespace TouhouSplits.UI.ViewModel
         private void NewSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            loadSplitView.DataContext = new EditSplitsViewModel(
-                string.Empty,
-                new Splits(),
-                _splitsFacade
-            );
+            loadSplitView.DataContext = new EditSplitsViewModel(_splitsFacade.NewSplitsFile(), _splitsFacade);
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
@@ -62,11 +58,7 @@ namespace TouhouSplits.UI.ViewModel
         private void EditSplit()
         {
             var loadSplitView = new EditSplitsWindow();
-            loadSplitView.DataContext = new EditSplitsViewModel(
-                MainModel.CurrentSplitsFile.FileInfo.FullName,
-                MainModel.CurrentSplitsFile.Splits,
-                _splitsFacade
-            );
+            loadSplitView.DataContext = new EditSplitsViewModel(MainModel.CurrentSplitsFile, _splitsFacade);
             loadSplitView.ShowDialog();
 
             if (loadSplitView.DialogResult == true) {
@@ -86,7 +78,7 @@ namespace TouhouSplits.UI.ViewModel
             dialog.Filter = string.Format("Touhou Splits Files ({0})|*{0}", FilePaths.EXT_SPLITS_FILE);
 
             if (dialog.ShowDialog() == true) {
-                MainModel.CurrentSplitsFile = _splitsFacade.DeserializeSplits(new FileInfo(dialog.FileName));
+                MainModel.CurrentSplitsFile = _splitsFacade.LoadSplitsFile(new FileInfo(dialog.FileName));
             }
         }
 
@@ -94,7 +86,7 @@ namespace TouhouSplits.UI.ViewModel
         {
             var favoriteSplitsView = new FavoriteSplitsWindow();
             if (MainModel.CurrentSplitsFile != null) {
-                favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Splits.GameName);
+                favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade, MainModel.CurrentSplitsFile.Object.GameName);
             }
             else {
                 favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade);
@@ -166,10 +158,8 @@ namespace TouhouSplits.UI.ViewModel
         {
             MainModel.StopScorePoller();
 
-            /* If the new score is better than the previous, then save it */
-            if (MainModel.RecordingSplits.EndingSegment.Score > MainModel.CurrentSplitsFile.Splits.EndingSegment.Score) {
-                var gameManager = _splitsFacade.LoadGameManager(MainModel.RecordingSplits.GameName);
-                _splitsFacade.SerializeSplits(MainModel.RecordingSplits, MainModel.CurrentSplitsFile.FileInfo);
+            /* Todo: If the new score is better than the previous, then save it */
+            if (MainModel.RecordingSplits.EndingSegment.Score > MainModel.CurrentSplitsFile.Object.EndingSegment.Score) {
             }
         }
     }

@@ -8,7 +8,7 @@ namespace TouhouSplits.Service.Managers.Game
     {
         string GameName { get; }
         IHookStrategy Hook { get; }
-        IList<ISplitsFile> FavoriteSplits { get; }
-        void AddOrUpdateFavorites(ISplitsFile splitsFile);
+        IList<IFileHandler<ISplits>> FavoriteSplits { get; }
+        void AddOrUpdateFavorites(IFileHandler<ISplits> splitsFile);
     }
 }

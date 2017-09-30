@@ -59,20 +59,14 @@ namespace TouhouSplits.Service
             throw new NotSupportedException(string.Format("The game \"{0}\" is not supported.", gameName));
         }
 
-        public ISplitsFile DeserializeSplits(FileInfo filepath)
+        public IFileHandler<ISplits> LoadSplitsFile(FileInfo filePath)
         {
-            var splits = _splitsSerializer.Deserialize(filepath);
-            return new SplitsFile(filepath, splits);
+            return new FileHandler<ISplits, Splits>(filePath, _splitsSerializer);
         }
 
-        public ISplitsFile SerializeSplits(ISplits splits, FileInfo filepath)
+        public IFileHandler<ISplits> NewSplitsFile()
         {
-            var concreteSplits = splits as Splits;
-            if (concreteSplits == null) {
-                throw new InvalidCastException(string.Format("Serialization is not supported for object of type {0}", splits.GetType()));
-            }
-            _splitsSerializer.Serialize(concreteSplits, filepath);
-            return new SplitsFile(filepath, splits);
+            return new FileHandler<ISplits, Splits>(new Splits(), _splitsSerializer);
         }
     }
 }

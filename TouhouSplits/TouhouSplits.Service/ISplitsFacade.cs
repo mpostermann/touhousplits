@@ -9,7 +9,7 @@ namespace TouhouSplits.Service
     {
         IList<string> AvailableGames { get; }
         IGameManager LoadGameManager(string gameName);
-        ISplitsFile DeserializeSplits(FileInfo filepath);
-        ISplitsFile SerializeSplits(ISplits splits, FileInfo filepath);
+        IFileHandler<ISplits> LoadSplitsFile(FileInfo filePath);
+        IFileHandler<ISplits> NewSplitsFile();
     }
 }
