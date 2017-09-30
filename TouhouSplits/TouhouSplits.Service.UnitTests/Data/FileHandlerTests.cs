@@ -9,6 +9,15 @@ namespace TouhouSplits.Service.UnitTests.Data
 {
     public class FileHandlerTests
     {
+        private static IFileSerializer<Splits> GetDefaultSerializer(string filepath)
+        {
+            var serializer = Substitute.For<IFileSerializer<Splits>>();
+            serializer
+                .Deserialize(Arg.Is<FileInfo>(n => n.Name == filepath))
+                .Returns(Substitute.For<Splits>());
+            return serializer;
+        }
+
         [Fact]
         public void Constructor_With_Obj_Sets_Object_To_Obj()
         {
@@ -20,35 +29,35 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void Object_Invokes_Serializer_If_Object_Is_Not_Loaded()
         {
-            var serializer = Substitute.For<IFileSerializer<Splits>>();
-            var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializer);
-
+            var serializerMock = GetDefaultSerializer("some path");
+            var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializerMock);
+            
             var obj = fileHandler.Object;
-            serializer.Received(1).Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path"));
+            serializerMock.Received(1).Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path"));
         }
 
         [Fact]
         public void Object_Does_Not_Invoke_Serializer_After_Object_Is_Loaded()
         {
-            var serializer = Substitute.For<IFileSerializer<Splits>>();
-            var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializer);
+            var serializerMock = GetDefaultSerializer("some path");
+            var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializerMock);
 
             var obj = fileHandler.Object;
             obj = fileHandler.Object;
-            serializer.Received(1).Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path"));
+            serializerMock.Received(1).Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path"));
         }
 
         [Fact]
         public void Object_Invokes_Serializer_After_Close_Is_Called()
         {
-            var serializer = Substitute.For<IFileSerializer<Splits>>();
-            var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializer);
+            var serializerMock = GetDefaultSerializer("some path");
+            var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializerMock);
 
             var obj = fileHandler.Object;
             fileHandler.Close();
-            serializer.ClearReceivedCalls();
+            serializerMock.ClearReceivedCalls();
             obj = fileHandler.Object;
-            serializer.Received(1).Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path"));
+            serializerMock.Received(1).Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path"));
         }
 
         [Fact]
@@ -56,7 +65,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         {
             var fileHandler = new FileHandler<ISplits, Splits>(
                 Substitute.For<Splits>(),
-                Substitute.For<IFileSerializer<Splits>>());
+                GetDefaultSerializer("some path"));
 
             Assert.Throws<InvalidOperationException>(() => fileHandler.Object);
         }
@@ -67,7 +76,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var splits = Substitute.For<Splits>();
             var clone = Substitute.For<Splits>();
             splits.Clone().Returns(clone);
-            var fileHandler = new FileHandler<ISplits, Splits>(splits, Substitute.For<IFileSerializer<Splits>>());
+            var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
 
             clone.GameName = "Original Game Name";
             fileHandler.Object.GameName = "New Game Name";
@@ -81,7 +90,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var splits = Substitute.For<Splits>();
             var clone = Substitute.For<Splits>();
             splits.Clone().Returns(clone);
-            var serializer = Substitute.For<IFileSerializer<Splits>>();
+            var serializer = GetDefaultSerializer("some path");
             var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializer);
 
             serializer.Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path")).Returns(splits);
@@ -99,7 +108,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var clonedClone = Substitute.For<Splits>();
             splits.Clone().Returns(clone);
             clone.Clone().Returns(clonedClone);
-            var fileHandler = new FileHandler<ISplits, Splits>(splits, Substitute.For<IFileSerializer<Splits>>());
+            var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
 
             clonedClone.GameName = "Original Game Name";
             fileHandler.RevertToLastSavedState();
@@ -116,7 +125,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             var clonedClone = Substitute.For<Splits>();
             splits.Clone().Returns(clone);
             clone.Clone().Returns(clonedClone);
-            var fileHandler = new FileHandler<ISplits, Splits>(splits, Substitute.For<IFileSerializer<Splits>>());
+            var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
 
             clonedClone.GameName = "Updated Game Name";
             fileHandler.Save();
@@ -128,7 +137,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         [Fact]
         public void Save_Invokes_Serializer()
         {
-            var serializerMock = Substitute.For<IFileSerializer<Splits>>();
+            var serializerMock = GetDefaultSerializer("some path");
             var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializerMock);
 
             fileHandler.Save();
@@ -140,7 +149,7 @@ namespace TouhouSplits.Service.UnitTests.Data
         {
             var fileHandler = new FileHandler<ISplits, Splits>(
                             Substitute.For<Splits>(),
-                            Substitute.For<IFileSerializer<Splits>>());
+                            GetDefaultSerializer("some path"));
 
             Assert.Throws<InvalidOperationException>(() => fileHandler.Save());
         }
