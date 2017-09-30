@@ -24,10 +24,15 @@ namespace TouhouSplits.UI.Model
         public IFileHandler<ISplits> CurrentSplitsFile {
             get { return _currentSplitsFile; }
             set {
+                if (_currentSplitsFile != null) {
+                    _currentSplitsFile.Close();
+                }
                 _currentSplitsFile = value;
+
                 if (_gameManager == null || _gameManager.GameName != _currentSplitsFile.Object.GameName) {
                     _gameManager = _facade.LoadGameManager(_currentSplitsFile.Object.GameName);
                 }
+
                 NotifyPropertyChanged("CurrentSplitsFile");
                 NotifyPropertyChanged("FavoriteSplits");
             }
