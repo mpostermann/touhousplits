@@ -122,13 +122,11 @@ namespace TouhouSplits.Service.UnitTests.Data
         {
             var splits = Substitute.For<Splits>();
             var clone = Substitute.For<Splits>();
-            var clonedClone = Substitute.For<Splits>();
-            splits.Clone().Returns(clone);
-            clone.Clone().Returns(clonedClone);
             var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
             fileHandler.FileInfo = new FileInfo("some path");
 
-            clonedClone.GameName = "Updated Game Name";
+            clone.GameName = "Updated Game Name";
+            splits.Clone().Returns(clone);
             fileHandler.Save();
             fileHandler.Object.GameName = "Newest Game Name";
             fileHandler.RevertToLastSavedState();
