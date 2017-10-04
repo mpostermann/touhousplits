@@ -91,17 +91,17 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
             var pb = CreateDefaultSplits(numSegments);
             var builder = new PersonalBestSplitsBuilder(pb);
 
-            for (int i = 0; i < numSegments; i++) {
+            for (int i = 0; i < numSegments - 1; i++) {
                 builder.SplitToNextSegment();
             }
             builder.SetScoreForCurrentSegment(12345);
-            Assert.Equal(12345, builder.Segments[numSegments].RecordingScore);
+            Assert.Equal(12345, builder.Segments[numSegments - 1].RecordingScore);
         }
 
         [Fact]
         public void SplitToNextSegment_Throws_Exception_If_Called_More_Times_Than_The_Count_Of_Segments_In_Personal_Best()
         {
-            var pb = CreateDefaultSplits(2);
+            var pb = CreateDefaultSplits(3);
             var builder = new PersonalBestSplitsBuilder(pb);
 
             builder.SplitToNextSegment();

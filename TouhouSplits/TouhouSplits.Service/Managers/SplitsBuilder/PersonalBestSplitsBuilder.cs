@@ -34,7 +34,7 @@ namespace TouhouSplits.Service.Managers
 
         public void SplitToNextSegment()
         {
-            if (_currentSegment == _segments.Count) {
+            if (_currentSegment == _segments.Count - 1) {
                 throw new InvalidOperationException("Cannot split past the last existing segment.");
             }
             _currentSegment++;
