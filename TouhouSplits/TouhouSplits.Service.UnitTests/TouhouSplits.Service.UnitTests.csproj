@@ -71,6 +71,7 @@
     <Compile Include="Data\SegmentTests.cs" />
     <Compile Include="Data\SplitsTests.cs" />
     <Compile Include="Managers\Game\GameManagerTests.cs" />
+    <Compile Include="Managers\SplitsBuilder\PersonalBestSplitsBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config\GameConfigTests.cs" />
   </ItemGroup>
