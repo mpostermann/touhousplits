@@ -35,16 +35,16 @@
         <StackPanel Grid.Row="1">
             <Label Content="{Binding MainModel.CurrentSplitsFile.Splits.GameName, FallbackValue='Open a split!'}"></Label>
             <Label Content="{Binding MainModel.CurrentSplitsFile.Splits.SplitName}"></Label>
-            <ListView>
+            <ListView ItemsSource="{Binding MainModel.RecordingSplits}">
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
-                        <GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding SegmentName}">
                             <GridViewColumnHeader>Segment</GridViewColumnHeader>
                         </GridViewColumn>
-                        <GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding RecordingScore}">
                             <GridViewColumnHeader>Score</GridViewColumnHeader>
                         </GridViewColumn>
-                        <GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding PersonalBestScore}">
                             <GridViewColumnHeader>PB</GridViewColumnHeader>
                         </GridViewColumn>
                     </GridView>

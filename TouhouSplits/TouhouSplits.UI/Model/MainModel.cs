@@ -48,7 +48,12 @@ namespace TouhouSplits.UI.Model
         public bool IsPolling { get; private set; }
 
         public IList<IPersonalBestSegment> RecordingSplits {
-            get { return _personalBestBuilder.Segments; }
+            get {
+                if (_personalBestBuilder == null) {
+                    return null;
+                }
+                return _personalBestBuilder.Segments;
+            }
         }
 
         public long CurrentScore {
