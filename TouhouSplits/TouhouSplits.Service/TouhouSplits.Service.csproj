@@ -68,6 +68,10 @@
     <Compile Include="Hook\IHookStrategy.cs" />
     <Compile Include="Managers\Game\GameManager.cs" />
     <Compile Include="Managers\Game\IGameManager.cs" />
+    <Compile Include="Managers\SplitsBuilder\IPersonalBestSegment.cs" />
+    <Compile Include="Managers\SplitsBuilder\ISplitsBuilder.cs" />
+    <Compile Include="Managers\SplitsBuilder\PersonalBestSegment.cs" />
+    <Compile Include="Managers\SplitsBuilder\PersonalBestSplitsBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\IFileSerializer.cs" />
     <Compile Include="Serialization\JsonSerializer.cs" />

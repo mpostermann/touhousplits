@@ -151,7 +151,6 @@ namespace TouhouSplits.UI.ViewModel
 
             //todo: Initialize splits builder and assign. If there is already a recording splits and it's better
             //than the current splits, then swap them.
-            MainModel.RecordingSplits = null;
         }
 
         private void StopRecordingSplits()

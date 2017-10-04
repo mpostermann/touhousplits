@@ -1,10 +1,11 @@
 ﻿using TouhouSplits.MVVM;
+using TouhouSplits.Service.Managers.SplitsBuilder;
 
 namespace TouhouSplits.UI.Model
 {
-    public class SegmentRecordingModel : ModelBase
+    public class PersonalBestSegment : ModelBase, IPersonalBestSegment
     {
-        public SegmentRecordingModel()
+        public PersonalBestSegment()
         {
             SegmentName = string.Empty;
             PersonalBestScore = -1;

@@ -4,7 +4,9 @@ using System.Threading;
 using TouhouSplits.MVVM;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
+using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Game;
+using TouhouSplits.Service.Managers.SplitsBuilder;
 
 namespace TouhouSplits.UI.Model
 {
@@ -12,6 +14,7 @@ namespace TouhouSplits.UI.Model
     {
         private ISplitsFacade _facade;
         private IGameManager _gameManager;
+        private ISplitsBuilder _personalBestBuilder;
         private Timer _timer;
 
         public MainModel(ISplitsFacade facade)
@@ -33,36 +36,19 @@ namespace TouhouSplits.UI.Model
                     _gameManager = _facade.LoadGameManager(_currentSplitsFile.Object.GameName);
                 }
 
-                RecordingSplits = InitializeNewRecordingSplits(_currentSplitsFile.Object);
+                _personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
+                NotifyPropertyChanged("RecordingSplits");
                 NotifyPropertyChanged("CurrentSplitsFile");
                 NotifyPropertyChanged("FavoriteSplits");
             }
-        }
-
-        private static IList<SegmentRecordingModel> InitializeNewRecordingSplits(ISplits personalBestSplits)
-        {
-            var recordingModel = new List<SegmentRecordingModel>();
-            foreach (ISegment pbSegment in personalBestSplits.Segments) {
-                var seg = new SegmentRecordingModel() {
-                    SegmentName = pbSegment.SegmentName,
-                    PersonalBestScore = pbSegment.Score
-                };
-                recordingModel.Add(seg);
-            }
-            return recordingModel;
         }
 
         public IList<IFileHandler<ISplits>> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
 
         public bool IsPolling { get; private set; }
 
-        private IList<SegmentRecordingModel> _recordingSplits;
-        public IList<SegmentRecordingModel> RecordingSplits {
-            get { return _recordingSplits; }
-            set {
-                _recordingSplits = value;
-                NotifyPropertyChanged("RecordingSplits");
-            }
+        public IList<IPersonalBestSegment> RecordingSplits {
+            get { return _personalBestBuilder.Segments; }
         }
 
         public long CurrentScore {
@@ -88,12 +74,18 @@ namespace TouhouSplits.UI.Model
 
             // Set a poller to check the updated score
             _timer = new Timer(
-                (param) => NotifyPropertyChanged("CurrentScore"),
+                (param) => UpdateCurrentRecordingScore(),
                 null,
                 0,
                 50
             );
             IsPolling = true;
+        }
+
+        private void UpdateCurrentRecordingScore()
+        {
+            NotifyPropertyChanged("CurrentScore");
+            _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
         }
 
         public void StopScorePoller()

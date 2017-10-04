@@ -81,7 +81,6 @@
     <Compile Include="Converter\AdditionConverter.cs" />
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\FavoriteSplitsModel.cs" />
-    <Compile Include="Model\SegmentRecordingModel.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\FavoriteSplitsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
