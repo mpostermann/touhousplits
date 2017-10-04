@@ -21,6 +21,28 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
+        public void Set_CurrentSplitsFile_Fires_NotifyPropertyChanged_Event_For_CurrentSplitsFile()
+        {
+            var model = new MainModel(Substitute.For<ISplitsFacade>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
+            Assert.True(eventCatcher.CaughtProperties.Contains("CurrentSplitsFile"));
+        }
+
+        [Fact]
+        public void Set_CurrentSplitsFile_Fires_NotifyPropertyChanged_Event_For_RecordingSplits()
+        {
+            var model = new MainModel(Substitute.For<ISplitsFacade>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
+            Assert.True(eventCatcher.CaughtProperties.Contains("RecordingSplits"));
+        }
+
+        [Fact]
         public void Set_CurrentSplitsFile_Loads_Matching_GameManager_If_Manager_Is_Not_Already_Loaded()
         {
             var facadeMock = Substitute.For<ISplitsFacade>();
