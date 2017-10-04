@@ -179,10 +179,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
             var pb = CreateDefaultSplits(numSegments);
             var builder = new PersonalBestSplitsBuilder(pb);
 
-            for (int i = 0; i < numSegments; i++) {
+            for (int i = 0; i < numSegments - 1; i++) {
                 builder.SetScoreForCurrentSegment(i * 2);
                 builder.SplitToNextSegment();
             }
+            builder.SetScoreForCurrentSegment( (numSegments - 1) * 2);
             var newSplits = builder.GetOutput();
 
             for (int i = 0; i < numSegments; i++) {
