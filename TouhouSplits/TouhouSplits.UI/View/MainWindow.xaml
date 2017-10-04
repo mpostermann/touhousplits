@@ -38,15 +38,9 @@
             <ListView ItemsSource="{Binding MainModel.RecordingSplits}">
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
-                        <GridViewColumn DisplayMemberBinding="{Binding SegmentName}">
-                            <GridViewColumnHeader>Segment</GridViewColumnHeader>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding RecordingScore}">
-                            <GridViewColumnHeader>Score</GridViewColumnHeader>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding PersonalBestScore}">
-                            <GridViewColumnHeader>PB</GridViewColumnHeader>
-                        </GridViewColumn>
+                        <GridViewColumn Header="Segment" DisplayMemberBinding="{Binding SegmentName}"/>
+                        <GridViewColumn Header="Score" DisplayMemberBinding="{Binding RecordingScore}"/>
+                        <GridViewColumn Header="PB" DisplayMemberBinding="{Binding PersonalBestScore}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
