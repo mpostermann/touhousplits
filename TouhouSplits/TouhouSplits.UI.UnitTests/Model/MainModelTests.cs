@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using System.Collections.Generic;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 using TouhouSplits.UI.Model;
@@ -9,14 +10,23 @@ namespace TouhouSplits.UI.UnitTests.Model
 {
     public class MainModelTests
     {
+        private static IFileHandler<ISplits> GetDefaultSplitsFile(int numSegments)
+        {
+            var splitsFile = Substitute.For<IFileHandler<ISplits>>();
+            splitsFile.Object.Segments.Returns(new List<ISegment>());
+            for (int i = 0; i < numSegments; i++) {
+                splitsFile.Object.Segments.Add(Substitute.For<ISegment>());
+            }
+            return splitsFile;
+        }
+
         [Fact]
         public void Set_CurrentSplitsFile_Loads_Matching_GameManager_If_Manager_Is_Not_Already_Loaded()
         {
             var facadeMock = Substitute.For<ISplitsFacade>();
             var model = new MainModel(facadeMock);
 
-            var splitsFile = Substitute.For<IFileHandler<ISplits>>();
-            splitsFile.Object.Returns(Substitute.For<ISplits>());
+            var splitsFile = GetDefaultSplitsFile(1);
             splitsFile.Object.GameName = "Game to load";
             model.CurrentSplitsFile = splitsFile;
             facadeMock.Received().LoadGameManager("Game to load");
@@ -36,25 +46,26 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
+            model.CurrentSplitsFile = GetDefaultSplitsFile(1);
             Assert.Equal(false, model.IsPolling);
         }
 
         [Fact]
-        public void StartScorePoller_Sets_IsPoller_To_True()
+        public void StartScorePoller_Sets_IsPolling_To_True()
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
+            model.CurrentSplitsFile = GetDefaultSplitsFile(1);
             model.StartScorePoller();
             Assert.Equal(true, model.IsPolling);
         }
 
         [Fact]
-        public void StartScorePoller_Sets_IsPoller_To_False()
+        public void StartScorePoller_Sets_IsPolling_To_False()
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
+            model.CurrentSplitsFile = GetDefaultSplitsFile(1);
             model.StartScorePoller();
             model.StopScorePoller();
             Assert.Equal(false, model.IsPolling);
