@@ -39,7 +39,6 @@ namespace TouhouSplits.UI.Model
                 _personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
                 NotifyPropertyChanged("RecordingSplits");
                 NotifyPropertyChanged("CurrentSplitsFile");
-                NotifyPropertyChanged("FavoriteSplits");
             }
         }
 
