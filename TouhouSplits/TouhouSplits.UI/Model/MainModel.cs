@@ -33,25 +33,37 @@ namespace TouhouSplits.UI.Model
                     _gameManager = _facade.LoadGameManager(_currentSplitsFile.Object.GameName);
                 }
 
+                RecordingSplits = InitializeNewRecordingSplits(_currentSplitsFile.Object);
                 NotifyPropertyChanged("CurrentSplitsFile");
                 NotifyPropertyChanged("FavoriteSplits");
             }
         }
 
-        private ISplits _recordingSplits;
-        public ISplits RecordingSplits {
-            get {
-                return _recordingSplits;
+        private static IList<SegmentRecordingModel> InitializeNewRecordingSplits(ISplits personalBestSplits)
+        {
+            var recordingModel = new List<SegmentRecordingModel>();
+            foreach (ISegment pbSegment in personalBestSplits.Segments) {
+                var seg = new SegmentRecordingModel() {
+                    SegmentName = pbSegment.SegmentName,
+                    PersonalBestScore = pbSegment.Score
+                };
+                recordingModel.Add(seg);
             }
-            set {
-                _recordingSplits = value;
-                NotifyPropertyChanged("RecordingSplits");
-            }
+            return recordingModel;
         }
 
         public IList<IFileHandler<ISplits>> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
 
         public bool IsPolling { get; private set; }
+
+        private IList<SegmentRecordingModel> _recordingSplits;
+        public IList<SegmentRecordingModel> RecordingSplits {
+            get { return _recordingSplits; }
+            set {
+                _recordingSplits = value;
+                NotifyPropertyChanged("RecordingSplits");
+            }
+        }
 
         public long CurrentScore {
             get {

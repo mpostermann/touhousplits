@@ -159,8 +159,6 @@ namespace TouhouSplits.UI.ViewModel
             MainModel.StopScorePoller();
 
             /* Todo: If the new score is better than the previous, then save it */
-            if (MainModel.RecordingSplits.EndingSegment.Score > MainModel.CurrentSplitsFile.Object.EndingSegment.Score) {
-            }
         }
     }
 }
