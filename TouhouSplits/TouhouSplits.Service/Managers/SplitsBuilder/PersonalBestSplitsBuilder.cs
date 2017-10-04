@@ -9,10 +9,12 @@ namespace TouhouSplits.Service.Managers
     public class PersonalBestSplitsBuilder : ISplitsBuilder
     {
         private int _currentSegment;
+        private long _personalBestScore;
 
         public PersonalBestSplitsBuilder(ISplits personalBest)
         {
             _currentSegment = 0;
+            _personalBestScore = personalBest.EndingSegment.Score;
 
             _segments = new List<IPersonalBestSegment>();
             foreach (ISegment segment in personalBest.Segments) {
@@ -43,8 +45,7 @@ namespace TouhouSplits.Service.Managers
         public bool IsNewPersonalBest()
         {
             long currentScore = _segments[_currentSegment].RecordingScore;
-            long personalBest = _segments[_segments.Count - 1].PersonalBestScore;
-            return currentScore > personalBest;
+            return currentScore > _personalBestScore;
         }
 
         public ISplits GetOutput()
