@@ -12,6 +12,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
         private static ISplits CreateDefaultSplits(int numSegments)
         {
             var pb = Substitute.For<ISplits>();
+            pb.Segments.Returns(new List<ISegment>());
             for (int i = 0; i < numSegments; i++) {
                 pb.Segments.Add(Substitute.For<ISegment>());
                 pb.Segments[i].SegmentName.Returns($"Segment {i}");
