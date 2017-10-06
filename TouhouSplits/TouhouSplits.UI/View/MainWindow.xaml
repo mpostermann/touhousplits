@@ -33,8 +33,8 @@
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1">
-            <Label Content="{Binding MainModel.CurrentSplitsFile.Object.GameName, FallbackValue='Open a split!'}"></Label>
-            <Label Content="{Binding MainModel.CurrentSplitsFile.Object.SplitName}"></Label>
+            <Label Content="{Binding MainModel.GameName, FallbackValue='Open a split!'}"></Label>
+            <Label Content="{Binding MainModel.SplitsName}"></Label>
             <ListView ItemsSource="{Binding MainModel.RecordingSplits}">
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
