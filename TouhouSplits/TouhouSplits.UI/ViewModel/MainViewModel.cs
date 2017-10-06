@@ -1,11 +1,11 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
-using System;
 using System.IO;
 using System.Windows.Input;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
+using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Config;
 using TouhouSplits.Service.Serialization;
 using TouhouSplits.UI.Model;
@@ -147,7 +147,13 @@ namespace TouhouSplits.UI.ViewModel
                 _currentSplitsFile.Close();
             }
             _currentSplitsFile = splitsFile;
-            MainModel.LoadPersonalBest(_currentSplitsFile.Object);
+
+            var personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
+            MainModel.LoadPersonalBest(
+                _currentSplitsFile.Object.GameName,
+                _currentSplitsFile.Object.SplitName,
+                personalBestBuilder
+            );
         }
 
         private void StartOrStopRecordingSplits()

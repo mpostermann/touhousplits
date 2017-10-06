@@ -28,14 +28,22 @@ namespace TouhouSplits.UI.Model
             return _gameManager != null;
         }
 
-        public void LoadPersonalBest(ISplits personalBestSplits)
+        public void LoadPersonalBest(string gameName, string splitsName, ISplitsBuilder personalBestSplits)
         {
-            if (_gameManager == null || _gameManager.GameName != personalBestSplits.GameName) {
-                _gameManager = _facade.LoadGameManager(personalBestSplits.GameName);
+            if (_gameManager == null || _gameManager.GameName != gameName) {
+                _gameManager = _facade.LoadGameManager(gameName);
             }
 
-            _personalBestBuilder = new PersonalBestSplitsBuilder(personalBestSplits);
+            _personalBestBuilder = personalBestSplits;
             NotifyPropertyChanged("RecordingSplits");
+        }
+
+        public string GameName {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string SplitsName {
+            get { throw new NotImplementedException(); }
         }
 
         public IList<IFileHandler<ISplits>> FavoriteSplits()
