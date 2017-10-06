@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI"
+        xmlns:conv="clr-namespace:TouhouSplits.UI.Converter"
         xmlns:vm="clr-namespace:TouhouSplits.UI.ViewModel"
         mc:Ignorable="d"
         Title="Touhou Splits" SizeToContent="Height" Width="525">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <conv:ScoreConverter x:Key="ScoreConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,7 +44,7 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn Header="Segment" DisplayMemberBinding="{Binding SegmentName}"/>
-                        <GridViewColumn Header="Score" DisplayMemberBinding="{Binding RecordingScore}"/>
+                        <GridViewColumn Header="Score" DisplayMemberBinding="{Binding RecordingScore, Converter={StaticResource ScoreConverter}}"/>
                         <GridViewColumn Header="PB" DisplayMemberBinding="{Binding PersonalBestScore}"/>
                     </GridView>
                 </ListView.View>
