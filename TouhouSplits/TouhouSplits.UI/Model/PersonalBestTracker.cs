@@ -33,16 +33,28 @@ namespace TouhouSplits.UI.Model
                 _gameManager = _facade.LoadGameManager(gameName);
             }
 
+            GameName = gameName;
+            SplitsName = splitsName;
             _personalBestBuilder = personalBestSplits;
             NotifyPropertyChanged("RecordingSplits");
         }
 
+        private string _gameName;
         public string GameName {
-            get { throw new NotImplementedException(); }
+            get { return _gameName; }
+            private set {
+                _gameName = value;
+                NotifyPropertyChanged("GameName");
+            }
         }
 
+        private string _splitsName;
         public string SplitsName {
-            get { throw new NotImplementedException(); }
+            get { return _splitsName; }
+            private set {
+                _splitsName = value;
+                NotifyPropertyChanged("SplitsName");
+            }
         }
 
         public IList<IFileHandler<ISplits>> FavoriteSplits()

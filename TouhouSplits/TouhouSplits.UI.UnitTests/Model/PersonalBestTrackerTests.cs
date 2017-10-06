@@ -58,12 +58,34 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
+        public void LoadPersonalBest_Fires_NotifyPropertyChanged_Event_For_GameName()
+        {
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            Assert.True(eventCatcher.CaughtProperties.Contains("GameName"));
+        }
+
+        [Fact]
         public void LoadPersonalBest_Sets_SplitsName_Using_Passed_In_Builder()
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
 
             model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.Equal("Splits Name", model.SplitsName);
+        }
+
+        [Fact]
+        public void LoadPersonalBest_Fires_NotifyPropertyChanged_Event_For_SplitsName()
+        {
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            Assert.True(eventCatcher.CaughtProperties.Contains("SplitsName"));
         }
 
         [Fact]
