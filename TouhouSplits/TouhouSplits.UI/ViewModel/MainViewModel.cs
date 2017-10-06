@@ -28,6 +28,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand NextSplitsCommand { get; private set; }
         public ICommand PreviousSplitsCommand { get; private set; }
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
+        public ICommand SplitToNextSegmentCommand { get; private set; }
 
         public MainViewModel()
         {
@@ -42,6 +43,7 @@ namespace TouhouSplits.UI.ViewModel
             NextSplitsCommand = new RelayCommand(() => NextSplits(), () => !MainModel.IsPolling);
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => _currentSplitsFile != null);
+            SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling);
         }
 
         private void NewSplit()
@@ -179,6 +181,11 @@ namespace TouhouSplits.UI.ViewModel
             MainModel.StopScorePoller();
 
             /* Todo: If the new score is better than the previous, then save it */
+        }
+
+        private void SplitToNextSegment()
+        {
+            MainModel.SplitToNextSegment();
         }
     }
 }

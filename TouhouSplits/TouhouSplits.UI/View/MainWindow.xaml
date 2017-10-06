@@ -30,6 +30,7 @@
             </MenuItem>
             <MenuItem Header="_Game">
                 <MenuItem Header="Start _Recording Split" Command="{Binding StartOrStopRecordingSplitsCommand}"/>
+                <MenuItem Header="_Split" Command="{Binding SplitToNextSegmentCommand}"/>
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1">
