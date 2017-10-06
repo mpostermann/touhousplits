@@ -33,7 +33,13 @@ namespace TouhouSplits.UI.Model
             NotifyPropertyChanged("RecordingSplits");
         }
 
-        public IList<IFileHandler<ISplits>> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
+        public IList<IFileHandler<ISplits>> FavoriteSplits()
+        {
+            if (_gameManager == null) {
+                throw new InvalidOperationException("A personal best splits must be loaded before related FavoriteSplits can be retrieved.");
+            }
+            return _gameManager.FavoriteSplits;
+        }
 
         public bool IsPolling { get; private set; }
 

@@ -107,16 +107,18 @@ namespace TouhouSplits.UI.ViewModel
                 return;
             }
 
+            var favoriteSplits = MainModel.FavoriteSplits();
+
             /* Get the current index */
-            int index = MainModel.FavoriteSplits.IndexOf(_currentSplitsFile);
+            int index = favoriteSplits.IndexOf(_currentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index + 1;
-            if (nextIndex == MainModel.FavoriteSplits.Count) {
+            if (nextIndex == favoriteSplits.Count) {
                 nextIndex = 0;
             }
 
-            _currentSplitsFile = MainModel.FavoriteSplits[nextIndex];
+            _currentSplitsFile = favoriteSplits[nextIndex];
         }
 
         private void PreviousSplits()
@@ -125,16 +127,18 @@ namespace TouhouSplits.UI.ViewModel
                 return;
             }
 
+            var favoriteSplits = MainModel.FavoriteSplits();
+
             /* Get the current index */
-            int index = MainModel.FavoriteSplits.IndexOf(_currentSplitsFile);
+            int index = favoriteSplits.IndexOf(_currentSplitsFile);
 
             /* Get the next index */
             int nextIndex = index - 1;
             if (nextIndex == -1) {
-                nextIndex = MainModel.FavoriteSplits.Count - 1;
+                nextIndex = favoriteSplits.Count - 1;
             }
 
-            _currentSplitsFile = MainModel.FavoriteSplits[nextIndex];
+            _currentSplitsFile = favoriteSplits[nextIndex];
         }
 
         private void ReloadCurrentSplitsFile(IFileHandler<ISplits> splitsFile)
