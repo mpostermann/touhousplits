@@ -23,6 +23,11 @@ namespace TouhouSplits.UI.Model
             IsPolling = false;
         }
 
+        public bool IsPersonalBestLoaded()
+        {
+            return _gameManager != null;
+        }
+
         public void LoadPersonalBest(ISplits personalBestSplits)
         {
             if (_gameManager == null || _gameManager.GameName != personalBestSplits.GameName) {
@@ -35,7 +40,7 @@ namespace TouhouSplits.UI.Model
 
         public IList<IFileHandler<ISplits>> FavoriteSplits()
         {
-            if (_gameManager == null) {
+            if (!IsPersonalBestLoaded()) {
                 throw new InvalidOperationException("A personal best splits must be loaded before related FavoriteSplits can be retrieved.");
             }
             return _gameManager.FavoriteSplits;
@@ -67,8 +72,8 @@ namespace TouhouSplits.UI.Model
                 return;
             }
 
-            if (_gameManager == null) {
-                throw new InvalidOperationException("Game must be set before polling can start.");
+            if (!IsPersonalBestLoaded()) {
+                throw new InvalidOperationException("A personal best splits must be loaded before polling can start.");
             }
 
             _gameManager.Hook.Hook();
@@ -87,6 +92,11 @@ namespace TouhouSplits.UI.Model
         {
             NotifyPropertyChanged("CurrentScore");
             _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
+        }
+
+        public void SplitSegment()
+        {
+            throw new NotImplementedException();
         }
 
         public void StopScorePoller()
