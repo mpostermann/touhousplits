@@ -284,5 +284,30 @@ namespace TouhouSplits.UI.UnitTests.Model
             Thread.Sleep(500);
             Assert.False(eventCatcher.CaughtProperties.Contains("CurrentScore"));
         }
+
+        [Fact]
+        public void StopScorePoller_Returns_Output_Of_Builder_If_Polling_Is_Stopped()
+        {
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var builder = GetDefaultSplitsBuilder(1);
+            var expectedSplits = Substitute.For<ISplits>();
+            builder.GetOutput().Returns(expectedSplits);
+
+            model.LoadPersonalBest("Game Name", "Splits Name", builder);
+            model.StartScorePoller();
+            Assert.Equal(expectedSplits, model.StopScorePoller());
+        }
+
+        [Fact]
+        public void StopScorePoller_Returns_Output_Of_Builder_If_Polling_Is_Started()
+        {
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var builder = GetDefaultSplitsBuilder(1);
+            var expectedSplits = Substitute.For<ISplits>();
+            builder.GetOutput().Returns(expectedSplits);
+
+            model.LoadPersonalBest("Game Name", "Splits Name", builder);
+            Assert.Equal(expectedSplits, model.StopScorePoller());
+        }
     }
 }

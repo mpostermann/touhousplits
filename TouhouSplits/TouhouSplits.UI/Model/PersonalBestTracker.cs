@@ -106,10 +106,13 @@ namespace TouhouSplits.UI.Model
             throw new NotImplementedException();
         }
 
-        public void StopScorePoller()
+        public ISplits StopScorePoller()
         {
             if (!IsPolling) {
-                return;
+                if (_personalBestBuilder == null) {
+                    return null;
+                }
+                return _personalBestBuilder.GetOutput();
             }
 
             _gameManager.Hook.Unhook();
@@ -118,6 +121,8 @@ namespace TouhouSplits.UI.Model
                 _timer = null;
             }
             IsPolling = false;
+
+            return _personalBestBuilder.GetOutput();
         }
     }
 }
