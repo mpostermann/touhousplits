@@ -4,7 +4,6 @@ using System.Threading;
 using TouhouSplits.MVVM;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
-using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Game;
 using TouhouSplits.Service.Managers.SplitsBuilder;
 
@@ -102,7 +101,7 @@ namespace TouhouSplits.UI.Model
             _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
         }
 
-        public void SplitSegment()
+        public void SplitToNextSegment()
         {
             throw new NotImplementedException();
         }
