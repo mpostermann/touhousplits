@@ -151,19 +151,6 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void StartScorePoller_Does_Not_Fire_NotifyPropertyChangedEvent_For_IsPolling_If_Polling_Is_Already_Started()
-        {
-            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
-            var eventCatcher = new NotifyPropertyChangedCatcher();
-
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
-            model.StartScorePoller();
-            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
-            model.StartScorePoller();
-            Assert.False(eventCatcher.CaughtProperties.Contains("IsPolling"));
-        }
-
-        [Fact]
         public void StartScorePoller_Sets_IsPolling_To_False()
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
@@ -252,20 +239,6 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             model.StopScorePoller();
             Assert.True(eventCatcher.CaughtProperties.Contains("IsPolling"));
-        }
-
-        [Fact]
-        public void StopScorePoller_Does_Not_Fire_NotifyPropertyChangedEvent_For_IsPolling_If_Polling_Is_Already_Stopped()
-        {
-            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
-            var eventCatcher = new NotifyPropertyChangedCatcher();
-
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
-            model.StartScorePoller();
-            model.StopScorePoller();
-            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
-            model.StopScorePoller();
-            Assert.False(eventCatcher.CaughtProperties.Contains("IsPolling"));
         }
 
         [Fact]

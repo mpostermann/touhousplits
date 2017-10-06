@@ -53,7 +53,14 @@ namespace TouhouSplits.UI.Model
             return _gameManager.FavoriteSplits;
         }
 
-        public bool IsPolling { get; private set; }
+        private bool _isPolling;
+        public bool IsPolling {
+            get { return _isPolling; }
+            private set {
+                _isPolling = value;
+                NotifyPropertyChanged("IsPolling");
+            }
+        }
 
         public IList<IPersonalBestSegment> RecordingSplits {
             get {
