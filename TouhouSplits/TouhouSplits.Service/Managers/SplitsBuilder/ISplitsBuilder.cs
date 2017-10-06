@@ -9,6 +9,7 @@ namespace TouhouSplits.Service.Managers.SplitsBuilder
         IList<IPersonalBestSegment> Segments { get; }
         void SetScoreForCurrentSegment(long score);
         void SplitToNextSegment();
+        void Reset();
         bool IsNewPersonalBest();
         ISplits GetOutput();
     }

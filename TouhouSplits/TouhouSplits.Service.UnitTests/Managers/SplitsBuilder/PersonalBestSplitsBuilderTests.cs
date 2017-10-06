@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers;
+using TouhouSplits.UI.Model;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
@@ -107,6 +108,36 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
             builder.SplitToNextSegment();
             builder.SplitToNextSegment();
             Assert.Throws<InvalidOperationException>(() => builder.SplitToNextSegment());
+        }
+
+        [Fact]
+        public void Reset_Causes_Next_SetScoreForCurrentSegment_To_Set_To_The_1st_Segment()
+        {
+            var pb = CreateDefaultSplits(3);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            builder.SplitToNextSegment();
+            builder.Reset();
+            builder.SetScoreForCurrentSegment(12345);
+            Assert.Equal(12345, builder.Segments[0].RecordingScore);
+        }
+
+        [Fact]
+        public void Reset_Causes_Previously_Set_Scores_To_Be_Set_To_Their_Default_Value()
+        {
+            var pb = CreateDefaultSplits(3);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            builder.SetScoreForCurrentSegment(1);
+            builder.SplitToNextSegment();
+            builder.SetScoreForCurrentSegment(2);
+            builder.SplitToNextSegment();
+            builder.SetScoreForCurrentSegment(3);
+
+            builder.Reset();
+            Assert.Equal(PersonalBestSegment.UNSET_SCORE, builder.Segments[0].RecordingScore);
+            Assert.Equal(PersonalBestSegment.UNSET_SCORE, builder.Segments[1].RecordingScore);
+            Assert.Equal(PersonalBestSegment.UNSET_SCORE, builder.Segments[2].RecordingScore);
         }
 
         [Fact]

@@ -42,6 +42,11 @@ namespace TouhouSplits.Service.Managers
             _currentSegment++;
         }
 
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsNewPersonalBest()
         {
             long currentScore = _segments[_currentSegment].RecordingScore;

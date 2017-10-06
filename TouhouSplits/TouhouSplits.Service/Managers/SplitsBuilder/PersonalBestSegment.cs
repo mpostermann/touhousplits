@@ -6,11 +6,13 @@ namespace TouhouSplits.UI.Model
 {
     public class PersonalBestSegment : ModelBase, IPersonalBestSegment
     {
+        public static long UNSET_SCORE = -1;
+
         public PersonalBestSegment(ISegment personalBest)
         {
             SegmentName = personalBest.SegmentName;
             PersonalBestScore = personalBest.Score;
-            RecordingScore = -1;
+            RecordingScore = UNSET_SCORE;
         }
 
         private string _segmentName;

@@ -117,13 +117,25 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void StartScorePoller_Resets_Builder_If_Polling_Is_Not_Already_Started()
         {
-            throw new NotImplementedException();
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var builderMock = GetDefaultSplitsBuilder(1);
+
+            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.StartScorePoller();
+            builderMock.Received().Reset();
         }
 
         [Fact]
         public void StartScorePoller_Does_Not_Reset_Builder_If_Polling_Is_Already_Started()
         {
-            throw new NotImplementedException();
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var builderMock = GetDefaultSplitsBuilder(1);
+
+            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.StartScorePoller();
+            builderMock.ClearReceivedCalls();
+            model.StartScorePoller();
+            builderMock.Received().Reset();
         }
 
         [Fact]
