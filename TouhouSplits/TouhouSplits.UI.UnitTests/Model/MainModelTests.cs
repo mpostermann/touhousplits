@@ -10,47 +10,36 @@ namespace TouhouSplits.UI.UnitTests.Model
 {
     public class MainModelTests
     {
-        private static IFileHandler<ISplits> GetDefaultSplitsFile(int numSegments)
+        private static ISplits GetDefaultSplits(int numSegments)
         {
-            var splitsFile = Substitute.For<IFileHandler<ISplits>>();
-            splitsFile.Object.Segments.Returns(new List<ISegment>());
+            var splits = Substitute.For<ISplits>();
+            splits.Segments.Returns(new List<ISegment>());
             for (int i = 0; i < numSegments; i++) {
-                splitsFile.Object.Segments.Add(Substitute.For<ISegment>());
+                splits.Segments.Add(Substitute.For<ISegment>());
             }
-            return splitsFile;
+            return splits;
         }
 
         [Fact]
-        public void Set_CurrentSplitsFile_Fires_NotifyPropertyChanged_Event_For_CurrentSplitsFile()
+        public void ResetModel_Fires_NotifyPropertyChanged_Event_For_RecordingSplits()
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
-            Assert.True(eventCatcher.CaughtProperties.Contains("CurrentSplitsFile"));
-        }
-
-        [Fact]
-        public void Set_CurrentSplitsFile_Fires_NotifyPropertyChanged_Event_For_RecordingSplits()
-        {
-            var model = new MainModel(Substitute.For<ISplitsFacade>());
-            var eventCatcher = new NotifyPropertyChangedCatcher();
-            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
-
-            model.CurrentSplitsFile = Substitute.For<IFileHandler<ISplits>>();
+            model.ResetModel(Substitute.For<ISplits>());
             Assert.True(eventCatcher.CaughtProperties.Contains("RecordingSplits"));
         }
 
         [Fact]
-        public void Set_CurrentSplitsFile_Loads_Matching_GameManager_If_Manager_Is_Not_Already_Loaded()
+        public void ResetModel_Loads_Matching_GameManager_If_Manager_Is_Not_Already_Loaded()
         {
             var facadeMock = Substitute.For<ISplitsFacade>();
             var model = new MainModel(facadeMock);
 
-            var splitsFile = GetDefaultSplitsFile(1);
-            splitsFile.Object.GameName = "Game to load";
-            model.CurrentSplitsFile = splitsFile;
+            var splits = GetDefaultSplits(1);
+            splits.GameName = "Game to load";
+            model.ResetModel(splits);
             facadeMock.Received().LoadGameManager("Game to load");
         }
 
@@ -68,7 +57,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = GetDefaultSplitsFile(1);
+            model.ResetModel(GetDefaultSplits(1));
             Assert.Equal(false, model.IsPolling);
         }
 
@@ -77,7 +66,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = GetDefaultSplitsFile(1);
+            model.ResetModel(GetDefaultSplits(1));
             model.StartScorePoller();
             Assert.Equal(true, model.IsPolling);
         }
@@ -87,7 +76,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new MainModel(Substitute.For<ISplitsFacade>());
 
-            model.CurrentSplitsFile = GetDefaultSplitsFile(1);
+            model.ResetModel(GetDefaultSplits(1));
             model.StartScorePoller();
             model.StopScorePoller();
             Assert.Equal(false, model.IsPolling);

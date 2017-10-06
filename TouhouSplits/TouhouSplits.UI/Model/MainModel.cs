@@ -23,23 +23,14 @@ namespace TouhouSplits.UI.Model
             IsPolling = false;
         }
 
-        private IFileHandler<ISplits> _currentSplitsFile;
-        public IFileHandler<ISplits> CurrentSplitsFile {
-            get { return _currentSplitsFile; }
-            set {
-                if (_currentSplitsFile != null) {
-                    _currentSplitsFile.Close();
-                }
-                _currentSplitsFile = value;
-
-                if (_gameManager == null || _gameManager.GameName != _currentSplitsFile.Object.GameName) {
-                    _gameManager = _facade.LoadGameManager(_currentSplitsFile.Object.GameName);
-                }
-
-                _personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
-                NotifyPropertyChanged("RecordingSplits");
-                NotifyPropertyChanged("CurrentSplitsFile");
+        public void ResetModel(ISplits personalBestSplits)
+        {
+            if (_gameManager == null || _gameManager.GameName != personalBestSplits.GameName) {
+                _gameManager = _facade.LoadGameManager(personalBestSplits.GameName);
             }
+
+            _personalBestBuilder = new PersonalBestSplitsBuilder(personalBestSplits);
+            NotifyPropertyChanged("RecordingSplits");
         }
 
         public IList<IFileHandler<ISplits>> FavoriteSplits { get { return _gameManager.FavoriteSplits; } }
