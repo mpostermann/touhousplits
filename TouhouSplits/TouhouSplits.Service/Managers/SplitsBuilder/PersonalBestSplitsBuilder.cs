@@ -8,7 +8,6 @@ namespace TouhouSplits.Service.Managers
 {
     public class PersonalBestSplitsBuilder : ISplitsBuilder
     {
-        private int _currentSegment;
         private long _personalBestScore;
 
         public PersonalBestSplitsBuilder(ISplits personalBest)
@@ -26,6 +25,11 @@ namespace TouhouSplits.Service.Managers
         private List<IPersonalBestSegment> _segments;
         public IList<IPersonalBestSegment> Segments {
             get { return _segments.AsReadOnly(); }
+        }
+
+        private int _currentSegment;
+        public int CurrentSegment {
+            get { return _currentSegment; }
         }
 
         public void SetScoreForCurrentSegment(long score)

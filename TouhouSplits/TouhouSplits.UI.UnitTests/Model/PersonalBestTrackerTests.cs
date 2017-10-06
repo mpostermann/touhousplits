@@ -21,6 +21,9 @@ namespace TouhouSplits.UI.UnitTests.Model
             for (int i = 0; i < numSegments; i++) {
                 builder.Segments.Add(Substitute.For<IPersonalBestSegment>());
             }
+            builder
+                .When(n => n.SplitToNextSegment())
+                .Do(n => builder.CurrentSegment.Returns(builder.CurrentSegment + 1));
             return builder;
         }
 
@@ -215,17 +218,15 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void SplitToNextSegment_Calls_StopPolling_If_Called_At_Last_Segment()
+        public void SplitToNextSegment_StopsPolling_If_Called_At_Last_Segment()
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
-            var builderMock = GetDefaultSplitsBuilder(2);
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(2));
 
             model.StartScorePoller();
             model.SplitToNextSegment();
-            model.ClearReceivedCalls();
             model.SplitToNextSegment();
-            model.Received().StopScorePoller();
+            Assert.Equal(false, model.IsPolling);
         }
 
         [Fact]

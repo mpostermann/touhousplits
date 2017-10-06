@@ -111,7 +111,16 @@ namespace TouhouSplits.UI.Model
 
         public void SplitToNextSegment()
         {
-            throw new NotImplementedException();
+            if (!IsPolling) {
+                return;
+            }
+            _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
+            if (_personalBestBuilder.CurrentSegment < _personalBestBuilder.Segments.Count - 1) {
+                _personalBestBuilder.SplitToNextSegment();
+            }
+            else {
+                StopScorePoller();
+            }
         }
 
         public ISplits StopScorePoller()

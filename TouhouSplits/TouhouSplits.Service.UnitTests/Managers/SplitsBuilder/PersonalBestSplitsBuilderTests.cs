@@ -63,6 +63,15 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
         }
 
         [Fact]
+        public void CurrentSegment_Is_Set_To_0_By_Default()
+        {
+            var pb = CreateDefaultSplits(1);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            Assert.Equal(0, builder.CurrentSegment);
+        }
+
+        [Fact]
         public void SetScoreForCurrentSegment_Updates_Score_For_First_Segment_Upon_Construction()
         {
             var pb = CreateDefaultSplits(2);
@@ -97,6 +106,21 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
             }
             builder.SetScoreForCurrentSegment(12345);
             Assert.Equal(12345, builder.Segments[numSegments - 1].RecordingScore);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(100)]
+        public void SplitToNextSegment_Increments_CurrentSegment_By_One(int numberOfTimesToSplit)
+        {
+            var pb = CreateDefaultSplits(numberOfTimesToSplit + 1);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            for (int i = 0; i < numberOfTimesToSplit; i++) {
+                builder.SplitToNextSegment();
+            }
+            Assert.Equal(numberOfTimesToSplit, builder.CurrentSegment);
         }
 
         [Fact]
