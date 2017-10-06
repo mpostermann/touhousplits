@@ -79,7 +79,7 @@
     </ApplicationDefinition>
     <Compile Include="Control\DataGrid\DataGridLongColumn.cs" />
     <Compile Include="Converter\AdditionConverter.cs" />
-    <Compile Include="Model\MainModel.cs" />
+    <Compile Include="Model\PersonalBestTracker.cs" />
     <Compile Include="Model\FavoriteSplitsModel.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\FavoriteSplitsViewModel.cs" />

@@ -18,8 +18,8 @@ namespace TouhouSplits.UI.ViewModel
         private ISplitsFacade _splitsFacade;
         private IFileHandler<ISplits> _currentSplitsFile;
 
-        private MainModel _mainModel;
-        public MainModel MainModel { get { return _mainModel; } }
+        private PersonalBestTracker _mainModel;
+        public PersonalBestTracker MainModel { get { return _mainModel; } }
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
@@ -33,7 +33,7 @@ namespace TouhouSplits.UI.ViewModel
         {
             IConfigManager configuration = new ConfigManager();
             _splitsFacade = new SplitsFacade(configuration, new JsonSerializer<Splits>());
-            _mainModel = new MainModel(_splitsFacade);
+            _mainModel = new PersonalBestTracker(_splitsFacade);
 
             NewSplitCommand = new RelayCommand(() => NewSplit(), () => !MainModel.IsPolling);
             EditSplitCommand = new RelayCommand(() => EditSplit(), () => _currentSplitsFile != null && !MainModel.IsPolling);
@@ -147,7 +147,7 @@ namespace TouhouSplits.UI.ViewModel
                 _currentSplitsFile.Close();
             }
             _currentSplitsFile = splitsFile;
-            MainModel.ResetModel(_currentSplitsFile.Object);
+            MainModel.LoadPersonalBest(_currentSplitsFile.Object);
         }
 
         private void StartOrStopRecordingSplits()

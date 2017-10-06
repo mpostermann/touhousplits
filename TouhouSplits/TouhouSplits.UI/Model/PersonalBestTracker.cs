@@ -10,20 +10,20 @@ using TouhouSplits.Service.Managers.SplitsBuilder;
 
 namespace TouhouSplits.UI.Model
 {
-    public class MainModel : ModelBase
+    public class PersonalBestTracker : ModelBase
     {
         private ISplitsFacade _facade;
         private IGameManager _gameManager;
         private ISplitsBuilder _personalBestBuilder;
         private Timer _timer;
 
-        public MainModel(ISplitsFacade facade)
+        public PersonalBestTracker(ISplitsFacade facade)
         {
             _facade = facade;
             IsPolling = false;
         }
 
-        public void ResetModel(ISplits personalBestSplits)
+        public void LoadPersonalBest(ISplits personalBestSplits)
         {
             if (_gameManager == null || _gameManager.GameName != personalBestSplits.GameName) {
                 _gameManager = _facade.LoadGameManager(personalBestSplits.GameName);
