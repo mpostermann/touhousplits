@@ -83,6 +83,7 @@ namespace TouhouSplits.UI.Model
                 throw new InvalidOperationException("A personal best splits must be loaded before polling can start.");
             }
 
+            _personalBestBuilder.Reset();
             _gameManager.Hook.Hook();
 
             // Set a poller to check the updated score

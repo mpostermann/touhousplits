@@ -135,7 +135,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.StartScorePoller();
             builderMock.ClearReceivedCalls();
             model.StartScorePoller();
-            builderMock.Received().Reset();
+            builderMock.DidNotReceive().Reset();
         }
 
         [Fact]

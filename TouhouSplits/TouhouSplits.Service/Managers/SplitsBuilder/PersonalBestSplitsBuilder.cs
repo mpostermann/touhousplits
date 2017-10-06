@@ -44,7 +44,10 @@ namespace TouhouSplits.Service.Managers
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            _currentSegment = 0;
+            foreach (PersonalBestSegment segment in _segments) {
+                segment.RecordingScore = PersonalBestSegment.UNSET_SCORE;
+            }
         }
 
         public bool IsNewPersonalBest()
