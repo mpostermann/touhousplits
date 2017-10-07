@@ -24,7 +24,6 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
         public ICommand OpenSplitCommand { get; private set; }
-        public ICommand FavoriteSplitsCommand { get; private set; }
         public ICommand NextSplitsCommand { get; private set; }
         public ICommand PreviousSplitsCommand { get; private set; }
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
@@ -39,7 +38,6 @@ namespace TouhouSplits.UI.ViewModel
             NewSplitCommand = new RelayCommand(() => NewSplit(), () => !MainModel.IsPolling);
             EditSplitCommand = new RelayCommand(() => EditSplit(), () => _currentSplitsFile != null && !MainModel.IsPolling);
             OpenSplitCommand = new RelayCommand(() => OpenSplit(), () => !MainModel.IsPolling);
-            FavoriteSplitsCommand = new RelayCommand(() => FavoriteSplits(), () => !MainModel.IsPolling);
             NextSplitsCommand = new RelayCommand(() => NextSplits(), () => !MainModel.IsPolling);
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => _currentSplitsFile != null);
@@ -83,23 +81,6 @@ namespace TouhouSplits.UI.ViewModel
             if (dialog.ShowDialog() == true) {
                 var file = _splitsFacade.LoadSplitsFile(new FileInfo(dialog.FileName));
                 ReloadCurrentSplitsFile(file);
-            }
-        }
-
-        private void FavoriteSplits()
-        {
-            var favoriteSplitsView = new FavoriteSplitsWindow();
-            if (_currentSplitsFile != null) {
-                favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade, _currentSplitsFile.Object.GameName);
-            }
-            else {
-                favoriteSplitsView.DataContext = new FavoriteSplitsViewModel(_splitsFacade);
-            }
-            favoriteSplitsView.ShowDialog();
-
-            if (favoriteSplitsView.DialogResult == true) {
-                var rsViewModel = (FavoriteSplitsViewModel)favoriteSplitsView.DataContext;
-                ReloadCurrentSplitsFile(rsViewModel.SelectedSplits);
             }
         }
 
