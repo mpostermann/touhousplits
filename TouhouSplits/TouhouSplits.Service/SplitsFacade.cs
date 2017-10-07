@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
@@ -36,14 +37,25 @@ namespace TouhouSplits.Service
             }
         }
 
+        private IList<string> _availableGameNames;
         public IList<string> AvailableGameNames {
-            get { throw new NotImplementedException(); }
-            private set { throw new NotImplementedException(); }
+            get {
+                if (_availableGameNames == null) {
+                    _availableGameNames = new string[_gameConfigs.Count];
+                    for (int i = 0; i < _gameConfigs.Count; i++) {
+                        _availableGameNames[i] = _gameConfigs[i].GameName;
+                    }
+                }
+                return _availableGameNames;
+            }
         }
 
         public GameId GetIdFromName(string gameName)
         {
-            throw new NotImplementedException();
+            if (!AvailableGameNames.Contains(gameName)) {
+                throw new KeyNotFoundException(string.Format("Game with name {0} is not supported.", gameName.Trim()));
+            }
+            return _gameConfigs.First(n => n.GameName == gameName.Trim()).Id;
         }
 
         public IGameManager LoadGameManager(GameId gameId)

@@ -83,7 +83,7 @@ namespace TouhouSplits.Service.UnitTests
             var facade = new SplitsFacade(DefaultConfigManager(numGames), Substitute.For<IFileSerializer<Splits>>());
             for (int i = 0; i < numGames; i++) {
                 GameId expectedId = new GameId(string.Format("Id {0}", i));
-                Assert.Equal(expectedId, facade.GetIdFromName("Game 1"));
+                Assert.Equal(expectedId, facade.GetIdFromName(string.Format("Game {0}", i)));
             }
         }
 
