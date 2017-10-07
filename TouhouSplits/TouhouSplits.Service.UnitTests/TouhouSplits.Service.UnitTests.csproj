@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Config\Hook\Kernel32HookConfigTests.cs" />
     <Compile Include="Data\FileHandlerTests.cs" />
+    <Compile Include="Data\GameIdTests.cs" />
     <Compile Include="Data\SegmentTests.cs" />
     <Compile Include="Data\SplitsTests.cs" />
     <Compile Include="Managers\Game\GameManagerTests.cs" />

@@ -11,10 +11,10 @@ namespace TouhouSplits.Service.Data
 
         public GameId(string id)
         {
-            if (id == null) {
+            Id = id;
+            if (Id == null) {
                 Id = string.Empty;
             }
-            Id = id;
         }
 
         public override string ToString()
