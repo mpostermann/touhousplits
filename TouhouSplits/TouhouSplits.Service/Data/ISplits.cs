@@ -5,7 +5,7 @@ namespace TouhouSplits.Service.Data
 {
     public interface ISplits : ICloneable
     {
-        string GameName { get; set; }
+        GameId GameId { get; set; }
         string SplitName { get; set; }
         IList<ISegment> Segments { get; }
         ISegment EndingSegment { get; }

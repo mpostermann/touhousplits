@@ -14,13 +14,10 @@ namespace TouhouSplits.Service.Data
         }
 
         [DataMember]
-        private string _gameName;
-        public string GameName {
-            get { return _gameName; }
-            set {
-                _gameName = value;
-                NotifyPropertyChanged("GameName");
-            }
+        private GameId _gameId;
+        public GameId GameId {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         [DataMember]
@@ -80,7 +77,7 @@ namespace TouhouSplits.Service.Data
         public virtual object Clone()
         {
             var clone = new Splits();
-            clone.GameName = this.GameName;
+            clone.GameId = this.GameId;
             clone.SplitName = this.SplitName;
             foreach (ISegment segment in this._segments) {
                 clone._segments.Add(new Segment() {

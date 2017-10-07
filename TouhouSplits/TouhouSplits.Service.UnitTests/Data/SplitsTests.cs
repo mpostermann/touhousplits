@@ -9,10 +9,10 @@ namespace TouhouSplits.Service.UnitTests.Data
     public class SplitsTests
     {
         [Fact]
-        public void Default_GameName_Is_Null() 
+        public void Default_GameId_Is_Empty() 
         {
             var splits = new Splits();
-            Assert.Equal(null, splits.GameName);
+            Assert.Equal(new GameId(string.Empty), splits.GameId);
         }
 
         [Fact]
@@ -30,12 +30,11 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void Get_GameName_Returns_Last_Set_Value()
+        public void Get_GameId_Returns_Last_Set_Value()
         {
             var splits = new Splits();
-            string expectedGameName = "Some game name";
-            splits.GameName = expectedGameName;
-            Assert.Equal(expectedGameName, splits.GameName);
+            splits.GameId = new GameId("Some game id");
+            Assert.Equal(new GameId("Some game id"), splits.GameId);
         }
 
         [Fact]
@@ -45,8 +44,8 @@ namespace TouhouSplits.Service.UnitTests.Data
             var eventCatcher = new NotifyPropertyChangedCatcher();
             splits.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            splits.GameName = "Some game name";
-            Assert.True(eventCatcher.CaughtProperties.Contains("GameName"));
+            splits.GameId = new GameId("Some game id");
+            Assert.True(eventCatcher.CaughtProperties.Contains("GameId"));
         }
 
         [Fact]
@@ -57,7 +56,6 @@ namespace TouhouSplits.Service.UnitTests.Data
             splits.SplitName = expectedSplitName;
             Assert.Equal(expectedSplitName, splits.SplitName);
         }
-
 
         [Fact]
         public void Set_SplitName_Fires_PropertyChangedEvent()
@@ -407,13 +405,13 @@ namespace TouhouSplits.Service.UnitTests.Data
         }
 
         [Fact]
-        public void Clone_Has_The_Same_GameName()
+        public void Clone_Has_The_Same_GameId()
         {
             var splits = new Splits();
-            splits.GameName = "Some game name";
+            splits.GameId = new GameId("Some game id");
 
             var clone = (Splits) splits.Clone();
-            Assert.Equal("Some game name", clone.GameName);
+            Assert.Equal(new GameId("Some game name"), clone.GameId);
         }
 
         [Fact]

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Serialization;
 using Xunit;
@@ -18,7 +15,7 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
             FileInfo testfilepath = new FileInfo("Serialized_Splits_Is_Deserialized_With_Same_Values.json");
 
             var splits = new Splits();
-            splits.GameName = "Some game name";
+            splits.GameId = new GameId("Some game id");
             splits.SplitName = "Some split name";
             splits.AddSegment(0, new Segment() {
                 SegmentName = "Segment 0",
@@ -43,7 +40,7 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
                 File.Delete(testfilepath.FullName);
             }
 
-            Assert.Equal("Some game name", deserializedSplits.GameName);
+            Assert.Equal(new GameId("Some game id"), deserializedSplits.GameId);
             Assert.Equal("Some split name", deserializedSplits.SplitName);
             Assert.Equal(2, deserializedSplits.Segments.Count);
             Assert.Equal("Segment 0", deserializedSplits.Segments[0].SegmentName);
