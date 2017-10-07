@@ -10,14 +10,18 @@ namespace TouhouSplits.Service.Data
     {
         public Splits()
         {
+            GameId = new GameId();
             _segments = new List<ISegment>();
         }
 
         [DataMember]
         private GameId _gameId;
         public GameId GameId {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _gameId; }
+            set {
+                _gameId = value;
+                NotifyPropertyChanged("GameId");
+            }
         }
 
         [DataMember]

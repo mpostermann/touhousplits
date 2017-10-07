@@ -411,7 +411,7 @@ namespace TouhouSplits.Service.UnitTests.Data
             splits.GameId = new GameId("Some game id");
 
             var clone = (Splits) splits.Clone();
-            Assert.Equal(new GameId("Some game name"), clone.GameId);
+            Assert.Equal(new GameId("Some game id"), clone.GameId);
         }
 
         [Fact]
