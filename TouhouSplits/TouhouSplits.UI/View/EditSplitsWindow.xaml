@@ -20,7 +20,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding Splits.GameName}"/>
+        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding GameName}"/>
         <TextBox Grid.Row="1" Text="{Binding Splits.SplitName}"/>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>

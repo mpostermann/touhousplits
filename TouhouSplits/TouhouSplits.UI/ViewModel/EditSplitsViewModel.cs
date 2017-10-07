@@ -46,7 +46,16 @@ namespace TouhouSplits.UI.ViewModel
 
         public IList<string> AvailableGames {
             get {
-                throw new NotImplementedException();
+                return _splitsFacade.AvailableGameNames;
+            }
+        }
+
+        private string _gameName;
+        public string GameName {
+            get { return _gameName; }
+            set {
+                _gameName = value;
+                Splits.GameId = _splitsFacade.GetIdFromName(_gameName);
             }
         }
 
