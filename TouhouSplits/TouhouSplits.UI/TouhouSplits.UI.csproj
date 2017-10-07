@@ -81,7 +81,6 @@
     <Compile Include="Converter\AdditionConverter.cs" />
     <Compile Include="Converter\ScoreConverter.cs" />
     <Compile Include="Model\PersonalBestTracker.cs" />
-    <Compile Include="Model\FavoriteSplitsModel.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\EditSplitsWindow.xaml.cs">
