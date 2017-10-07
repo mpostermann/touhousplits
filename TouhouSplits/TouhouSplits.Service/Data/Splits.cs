@@ -5,7 +5,9 @@ using TouhouSplits.MVVM;
 
 namespace TouhouSplits.Service.Data
 {
-    [DataContract, KnownType(typeof(Segment))]
+    [DataContract]
+    [KnownType(typeof(Segment))]
+    [KnownType(typeof(GameId))]
     public class Splits : ModelBase, ISplits
     {
         public Splits()

@@ -7,14 +7,21 @@ namespace TouhouSplits.Service.Data
     public struct GameId
     {
         [DataMember]
-        public string Id { get; private set; }
+        private string _id;
+
+        public string Id {
+            get {
+                if (_id == null) {
+                    _id = string.Empty;
+                }
+                return _id;
+            }
+        }
+
 
         public GameId(string id)
         {
-            Id = id;
-            if (Id == null) {
-                Id = string.Empty;
-            }
+            _id = id;
         }
 
         public override string ToString()

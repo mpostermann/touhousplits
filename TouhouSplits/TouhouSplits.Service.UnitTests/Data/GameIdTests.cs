@@ -6,6 +6,13 @@ namespace TouhouSplits.Service.UnitTests.Data
     public class GameIdTests
     {
         [Fact]
+        public void ID_Returns_Empty_String_When_Instantiated_With_Default_Constructor()
+        {
+            var id = new GameId();
+            Assert.Equal(string.Empty, id.Id);
+        }
+
+        [Fact]
         public void ID_Returns_Empty_String_If_Null_Is_Passed_In_Constructor()
         {
             var id = new GameId(null);
