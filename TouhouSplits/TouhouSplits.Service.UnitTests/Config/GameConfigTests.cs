@@ -2,18 +2,44 @@
 using System.IO;
 using System.Xml.Linq;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Config
 {
     public class GameConfigTests
     {
-        private const string VALID_CONFIG = @"<Game name=""Some game name"" favoriteslist=""gamename.trs"">
+        private const string VALID_CONFIG = @"<Game id=""Some game id"" favoriteslist=""gamename.trs"">
+  <Name>Some game name</Name>
   <Hook strategy=""Kernel32HookStrategy"" process=""process1|process2"" address=""0x0069BCA4"" encoding=""int32""/>
 </Game>";
 
         [Fact]
-        public void Constructor_Parses_GameName_From_name_Attribute()
+        public void Constructor_Parses_Id_From_id_Attribute()
+        {
+            XElement xml = XElement.Parse(VALID_CONFIG);
+            var config = new GameConfig(xml);
+            Assert.Equal(new GameId("Some game id"), config.Id);
+        }
+
+        [Fact]
+        public void Constructor_Throws_Exception_If_id_Attribute_Is_Missing()
+        {
+            XElement xml = XElement.Parse(VALID_CONFIG);
+            xml.Attribute("id").Remove();
+            Assert.Throws<ConfigurationErrorsException>(() => new GameConfig(xml));
+        }
+
+        [Fact]
+        public void Constructor_Throws_Exception_If_id_Attribute_Is_Empty()
+        {
+            XElement xml = XElement.Parse(VALID_CONFIG);
+            xml.Attribute("id").Value = string.Empty;
+            Assert.Throws<ConfigurationErrorsException>(() => new GameConfig(xml));
+        }
+
+        [Fact]
+        public void Constructor_Parses_GameName_From_name_Element()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
             var config = new GameConfig(xml);
@@ -21,18 +47,18 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void Constructor_Throws_Exception_If_name_Attribute_Is_Missing()
+        public void Constructor_Throws_Exception_If_name_Element_Is_Missing()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
-            xml.Attribute("name").Remove();
+            xml.Element("Name").Remove();
             Assert.Throws<ConfigurationErrorsException>(() => new GameConfig(xml));
         }
 
         [Fact]
-        public void Constructor_Throws_Exception_If_name_Attribute_Is_Empty()
+        public void Constructor_Throws_Exception_If_name_Element_Is_Empty()
         {
             XElement xml = XElement.Parse(VALID_CONFIG);
-            xml.Attribute("name").Value = string.Empty;
+            xml.Element("Name").Value = string.Empty;
             Assert.Throws<ConfigurationErrorsException>(() => new GameConfig(xml));
         }
 
