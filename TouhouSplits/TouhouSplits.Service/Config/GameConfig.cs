@@ -1,11 +1,14 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Xml.Linq;
+using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.Service.Config
 {
     public class GameConfig : IGameConfig
     {
+        public GameId Id { get { throw new NotImplementedException(); } }
         public string GameName { get; private set; }
         public XElement HookConfig { get; private set; }
         public FileInfo FavoriteSplitsList { get; private set; }

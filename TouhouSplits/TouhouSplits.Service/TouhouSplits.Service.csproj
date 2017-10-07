@@ -52,6 +52,7 @@
     <Compile Include="Config\Hook\Kernel32HookConfig.cs" />
     <Compile Include="Config\IGameConfig.cs" />
     <Compile Include="Data\FileHandler.cs" />
+    <Compile Include="Data\GameId.cs" />
     <Compile Include="Data\IFileHandler.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
