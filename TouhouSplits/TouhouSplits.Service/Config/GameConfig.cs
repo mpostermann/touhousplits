@@ -8,26 +8,38 @@ namespace TouhouSplits.Service.Config
 {
     public class GameConfig : IGameConfig
     {
-        public GameId Id { get { throw new NotImplementedException(); } }
+        public GameId Id { get; private set; }
         public string GameName { get; private set; }
         public XElement HookConfig { get; private set; }
         public FileInfo FavoriteSplitsList { get; private set; }
 
         public GameConfig(XElement configElement)
         {
+            Id = GetId(configElement);
             GameName = GetGameName(configElement);
             HookConfig = GetHook(configElement);
             FavoriteSplitsList = GetFavoriteSplitsList(configElement);
         }
 
-        private static string GetGameName(XElement configElement)
+        private static GameId GetId(XElement configElement)
         {
-            if (configElement.Attribute("name") == null ||
-                string.IsNullOrEmpty(configElement.Attribute("name").Value)) {
-                throw new ConfigurationErrorsException("Attribute \"name\" is missing.");
+            if (configElement.Attribute("id") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("id").Value)) {
+                throw new ConfigurationErrorsException("Attribute \"id\" is missing.");
             }
 
-            return configElement.Attribute("name").Value;
+            string idString = configElement.Attribute("id").Value;
+            return new GameId(idString);
+        }
+
+        private static string GetGameName(XElement configElement)
+        {
+            if (configElement.Element("Name") == null ||
+                string.IsNullOrEmpty(configElement.Element("Name").Value)) {
+                throw new ConfigurationErrorsException("Element \"Name\" is missing.");
+            }
+
+            return configElement.Element("Name").Value;
         }
 
         private static XElement GetHook(XElement configElement)
