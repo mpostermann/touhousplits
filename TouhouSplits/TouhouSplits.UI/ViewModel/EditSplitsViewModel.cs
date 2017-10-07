@@ -46,7 +46,7 @@ namespace TouhouSplits.UI.ViewModel
 
         public IList<string> AvailableGames {
             get {
-                return _splitsFacade.AvailableGames;
+                throw new NotImplementedException();
             }
         }
 

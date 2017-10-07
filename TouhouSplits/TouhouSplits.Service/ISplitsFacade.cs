@@ -7,8 +7,10 @@ namespace TouhouSplits.Service
 {
     public interface ISplitsFacade
     {
-        IList<string> AvailableGames { get; }
-        IGameManager LoadGameManager(string gameName);
+        IList<GameId> AvailableGames { get; }
+        IList<string> AvailableGameNames { get; }
+        GameId GetIdFromName(string gameName);
+        IGameManager LoadGameManager(GameId gameId);
         IFileHandler<ISplits> LoadSplitsFile(FileInfo filePath);
         IFileHandler<ISplits> NewSplitsFile();
     }

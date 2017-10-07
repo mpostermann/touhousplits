@@ -133,7 +133,7 @@ namespace TouhouSplits.UI.ViewModel
 
             var personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
             MainModel.LoadPersonalBest(
-                _currentSplitsFile.Object.GameName,
+                _currentSplitsFile.Object.GameId,
                 _currentSplitsFile.Object.SplitName,
                 personalBestBuilder
             );

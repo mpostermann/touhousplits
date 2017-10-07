@@ -14,10 +14,11 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 {
     public class GameManagerTests
     {
-        private static IGameConfig CreateConfig(string gameName)
+        private static IGameConfig CreateConfig(string gameId, string gameName)
         {
             var config = Substitute.For<IGameConfig>();
             config.FavoriteSplitsList.Returns(new FileInfo("somefile.ext"));
+            config.Id.Returns(new GameId(gameId));
             config.GameName.Returns(gameName);
             return config;
         }
@@ -34,18 +35,18 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             return serializer;
         }
 
-        private IFileHandler<ISplits> CreateSplitsFile(string filepath, string gameName)
+        private IFileHandler<ISplits> CreateSplitsFile(string filepath, string gameId)
         {
             var splitsFile = Substitute.For<IFileHandler<ISplits>>();
             splitsFile.FileInfo.Returns(new FileInfo(filepath));
-            splitsFile.Object.GameName.Returns(gameName);
+            splitsFile.Object.GameId.Returns(new GameId(gameId));
             return splitsFile;
         }
 
         [Fact]
         public void Constructor_Invokes_FavoriteSplitsSerializer_If_File_Does_Not_Exist()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             favoriteSplitsSerializerMock
                 .Deserialize(config.FavoriteSplitsList)
@@ -66,7 +67,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void Constructor_Invokes_FavoriteSplitsSerializer_If_Directory_Does_Not_Exist()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             favoriteSplitsSerializerMock
                 .Deserialize(config.FavoriteSplitsList)
@@ -85,9 +86,24 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         }
 
         [Fact]
+        public void Id_Returns_Id_From_Config()
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                favoriteSplitsSerializer,
+                Substitute.For<IFileSerializer<Splits>>()
+            );
+
+            Assert.Equal(new GameId("Some id"), manager.Id);
+        }
+
+        [Fact]
         public void GameName_Returns_GameName_From_Config()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             var manager = new GameManager(
                 config,
@@ -102,7 +118,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void FavoriteSplits_Returns_Splits_Filepaths_Loaded_From_FavoriteSplitsSerializer()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(
                 config.FavoriteSplitsList,
                 "path0",
@@ -124,7 +140,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void FavoriteSplits_Deserialize_Splits_Using_Passed_In_Serializer()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(
                 config.FavoriteSplitsList,
                 "path0"
@@ -145,7 +161,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void FavoriteSplits_Item_Is_Updated_If_AddOrUpdateFavorites_Is_Called_For_An_Existing_File()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList, "path0");
             var splitsSerializer = Substitute.For<IFileSerializer<Splits>>();
             splitsSerializer.Deserialize(Arg.Is<FileInfo>(n => n.Name == "path0")).Returns(Substitute.For<Splits>());
@@ -156,7 +172,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 splitsSerializer
             );
 
-            var updatedSplitsFile = CreateSplitsFile("path0", "Some game name");
+            var updatedSplitsFile = CreateSplitsFile("path0", "Some id");
             var expectedSplits = updatedSplitsFile.Object;
 
             manager.AddOrUpdateFavorites(updatedSplitsFile);
@@ -166,7 +182,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void AddOrUpdateFavorites_Invokes_FavoriteSplitsSerializer_If_Filepath_Is_Not_Already_In_List()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             var manager = new GameManager(
                 config,
@@ -175,7 +191,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateFavorites(CreateSplitsFile("new splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("new splits path", "Some id"));
 
             var splitsPaths = favoriteSplitsSerializerMock.Deserialize(config.FavoriteSplitsList);
             Assert.True(splitsPaths.Contains(new FileInfo("new splits path").FullName));
@@ -185,7 +201,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void AddOrUpdateFavorites_Does_Not_Invokes_FavoriteSplitsSerializer_If_Filepath_Is_Already_In_List()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList, "existing splits path");
             var manager = new GameManager(
                 config,
@@ -194,7 +210,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateFavorites(CreateSplitsFile("existing splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("existing splits path", "Some id"));
 
             var splitsPaths = favoriteSplitsSerializerMock.Deserialize(config.FavoriteSplitsList);
             Assert.Equal(1, splitsPaths.Count);
@@ -204,7 +220,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void AddOrUpdateFavorites_Adds_Splits_To_FavoriteSplits_If_Filepath_Is_Not_Already_In_List()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
             var manager = new GameManager(
                 config,
@@ -213,7 +229,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateFavorites(CreateSplitsFile("new splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("new splits path", "Some id"));
 
             Assert.Equal(1, manager.FavoriteSplits.Count);
             Assert.Equal(new FileInfo("new splits path").FullName, manager.FavoriteSplits[0].FileInfo.FullName);
@@ -222,7 +238,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         [Fact]
         public void AddOrUpdateFavorites_Does_Not_Add_Splits_To_FavoriteSplits_If_Filepath_Is_Already_In_List()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList, "existing splits path");
             var manager = new GameManager(
                 config,
@@ -231,16 +247,16 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            manager.AddOrUpdateFavorites(CreateSplitsFile("existing splits path", "Some game name"));
+            manager.AddOrUpdateFavorites(CreateSplitsFile("existing splits path", "Some id"));
 
             Assert.Equal(1, manager.FavoriteSplits.Count);
             Assert.Equal(new FileInfo("existing splits path").FullName, manager.FavoriteSplits[0].FileInfo.FullName);
         }
 
         [Fact]
-        public void AddOrUpdateFavorites_Throws_Exception_If_Splits_GameName_Does_Not_Equal_GameManagers_GameName()
+        public void AddOrUpdateFavorites_Throws_Exception_If_Splits_GameId_Does_Not_Equal_GameManagers_GameId()
         {
-            var config = CreateConfig("Some game name");
+            var config = CreateConfig("Some id", "Some game name");
             var manager = new GameManager(
                 config,
                 Substitute.For<IHookStrategyFactory>(),
@@ -248,7 +264,7 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
                 Substitute.For<IFileSerializer<Splits>>()
             );
 
-            var splitsFile = CreateSplitsFile("some path", "Not matching game name");
+            var splitsFile = CreateSplitsFile("some path", "Not matching game id");
             Assert.Throws<InvalidOperationException>(() => manager.AddOrUpdateFavorites(splitsFile));
         }
     }

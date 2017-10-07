@@ -14,41 +14,51 @@ namespace TouhouSplits.Service
     {
         private IList<IGameConfig> _gameConfigs;
         private IFileSerializer<Splits> _splitsSerializer;
-        private IDictionary<string, IGameManager> _gameManagerCache;
+        private IDictionary<GameId, IGameManager> _gameManagerCache;
 
         public SplitsFacade(IConfigManager configManager, IFileSerializer<Splits> splitsSerializer) {
             _gameConfigs = configManager.AvailableGames;
             _splitsSerializer = splitsSerializer;
-            _gameManagerCache = new Dictionary<string, IGameManager>();
+            _gameManagerCache = new Dictionary<GameId, IGameManager>();
         }
 
-        private IList<string> _availableGames;
-        public IList<string> AvailableGames
+        private IList<GameId> _availableGames;
+        public IList<GameId> AvailableGames
         {
             get {
                 if (_availableGames == null) {
-                    _availableGames = new string[_gameConfigs.Count];
+                    _availableGames = new GameId[_gameConfigs.Count];
                     for (int i = 0; i < _gameConfigs.Count; i++) {
-                        _availableGames[i] = _gameConfigs[i].GameName;
+                        _availableGames[i] = _gameConfigs[i].Id;
                     }
                 }
                 return _availableGames;
             }
         }
 
-        public IGameManager LoadGameManager(string gameName)
-        {
-            if (!_gameManagerCache.ContainsKey(gameName)) {
-                var gameManager = ConstructGameManagerFromConfig(gameName, _gameConfigs);
-                _gameManagerCache.Add(gameName, gameManager);
-            }
-            return _gameManagerCache[gameName];
+        public IList<string> AvailableGameNames {
+            get { throw new NotImplementedException(); }
+            private set { throw new NotImplementedException(); }
         }
 
-        private IGameManager ConstructGameManagerFromConfig(string gameName, IList<IGameConfig> gameConfigs)
+        public GameId GetIdFromName(string gameName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGameManager LoadGameManager(GameId gameId)
+        {
+            if (!_gameManagerCache.ContainsKey(gameId)) {
+                var gameManager = ConstructGameManagerFromConfig(gameId, _gameConfigs);
+                _gameManagerCache.Add(gameId, gameManager);
+            }
+            return _gameManagerCache[gameId];
+        }
+
+        private IGameManager ConstructGameManagerFromConfig(GameId gameId, IList<IGameConfig> gameConfigs)
         {
             foreach (IGameConfig config in gameConfigs) {
-                if (config.GameName == gameName.Trim()) {
+                if (config.Id == gameId) {
                     return new GameManager(config,
                         HookStrategyFactory.GetInstance(),
                         new JsonSerializer<List<string>>(),
@@ -56,7 +66,7 @@ namespace TouhouSplits.Service
                     );
                 }
             }
-            throw new NotSupportedException(string.Format("The game \"{0}\" is not supported.", gameName));
+            throw new NotSupportedException(string.Format("The game with Id \"{0}\" is not supported.", gameId));
         }
 
         public IFileHandler<ISplits> LoadSplitsFile(FileInfo filePath)

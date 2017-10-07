@@ -78,10 +78,9 @@ namespace TouhouSplits.Service.UnitTests.Data
             splits.Clone().Returns(clone);
             var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
 
-            clone.GameName = "Original Game Name";
-            fileHandler.Object.GameName = "New Game Name";
+            clone.GameId = new GameId("Original Game Id");
             fileHandler.RevertToLastSavedState();
-            Assert.Equal("Original Game Name", fileHandler.Object.GameName);
+            Assert.Equal(new GameId("Original Game Id"), fileHandler.Object.GameId);
         }
 
         [Fact]
@@ -94,10 +93,10 @@ namespace TouhouSplits.Service.UnitTests.Data
             var fileHandler = new FileHandler<ISplits, Splits>(new FileInfo("some path"), serializer);
 
             serializer.Deserialize(Arg.Is<FileInfo>(n => n.Name == "some path")).Returns(splits);
-            clone.GameName = "Original Game Name";
-            fileHandler.Object.GameName = "New Game Name";
+            clone.GameId = new GameId("Original Game Id");
+            fileHandler.Object.GameId = new GameId("New Game Id");
             fileHandler.RevertToLastSavedState();
-            Assert.Equal("Original Game Name", fileHandler.Object.GameName);
+            Assert.Equal(new GameId("Original Game Id"), fileHandler.Object.GameId);
         }
 
         [Fact]
@@ -110,11 +109,11 @@ namespace TouhouSplits.Service.UnitTests.Data
             clone.Clone().Returns(clonedClone);
             var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
 
-            clonedClone.GameName = "Original Game Name";
+            clonedClone.GameId = new GameId("Original Game Id");
             fileHandler.RevertToLastSavedState();
-            fileHandler.Object.GameName = "New Game Name";
+            fileHandler.Object.GameId = new GameId("New Game Id");
             fileHandler.RevertToLastSavedState();
-            Assert.Equal("Original Game Name", fileHandler.Object.GameName);
+            Assert.Equal(new GameId("Original Game Id"), fileHandler.Object.GameId);
         }
 
         [Fact]
@@ -125,12 +124,12 @@ namespace TouhouSplits.Service.UnitTests.Data
             var fileHandler = new FileHandler<ISplits, Splits>(splits, GetDefaultSerializer("some path"));
             fileHandler.FileInfo = new FileInfo("some path");
 
-            clone.GameName = "Updated Game Name";
+            clone.GameId = new GameId("Updated Game Id");
             splits.Clone().Returns(clone);
             fileHandler.Save();
-            fileHandler.Object.GameName = "Newest Game Name";
+            fileHandler.Object.GameId = new GameId("Newest Game Id");
             fileHandler.RevertToLastSavedState();
-            Assert.Equal("Updated Game Name", fileHandler.Object.GameName);
+            Assert.Equal(new GameId("Updated Game Id"), fileHandler.Object.GameId);
         }
 
         [Fact]

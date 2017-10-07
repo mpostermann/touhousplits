@@ -13,6 +13,7 @@ namespace TouhouSplits.Service.Managers.Game
         private IGameConfig _config;
         private IFileSerializer<List<string>> _favoriteSplitsSerializer;
 
+        public GameId Id { get { return _config.Id; } }
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
         public IList<IFileHandler<ISplits>> FavoriteSplits { get; private set; }
@@ -58,8 +59,8 @@ namespace TouhouSplits.Service.Managers.Game
         /// </summary>
         public void AddOrUpdateFavorites(IFileHandler<ISplits> splitsFile)
         {
-            if (splitsFile.Object.GameName != this.GameName) {
-                throw new InvalidOperationException("Files can only be added to Favorites for a GameManager with a matching name.");
+            if (splitsFile.Object.GameId != Id) {
+                throw new InvalidOperationException("Files can only be added to Favorites for a GameManager with a matching Id.");
             }
 
             /* Check if the in-memory list contains this file already */

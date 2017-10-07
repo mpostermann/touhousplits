@@ -34,7 +34,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.True(eventCatcher.CaughtProperties.Contains("RecordingSplits"));
         }
 
@@ -44,8 +44,8 @@ namespace TouhouSplits.UI.UnitTests.Model
             var facadeMock = Substitute.For<ISplitsFacade>();
             var model = new PersonalBestTracker(facadeMock);
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
-            facadeMock.Received().LoadGameManager("Game Name");
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            facadeMock.Received().LoadGameManager(new GameId("Game Id"));
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.Equal("Game Name", model.GameName);
         }
 
@@ -64,7 +64,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.True(eventCatcher.CaughtProperties.Contains("GameName"));
         }
 
@@ -73,7 +73,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.Equal("Splits Name", model.SplitsName);
         }
 
@@ -84,7 +84,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.True(eventCatcher.CaughtProperties.Contains("SplitsName"));
         }
 
@@ -95,7 +95,7 @@ namespace TouhouSplits.UI.UnitTests.Model
 
             var builder = GetDefaultSplitsBuilder(1);
             var expectedSegments = builder.Segments;
-            model.LoadPersonalBest("Game Name", "Splits Name", builder);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builder);
             Assert.Equal(expectedSegments, model.RecordingSplits);
         }
 
@@ -106,8 +106,8 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(facade);
             var expectedFavoriteSplits = new List<IFileHandler<ISplits>>();
 
-            facade.LoadGameManager("Game Name").FavoriteSplits.Returns(expectedFavoriteSplits);
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            facade.LoadGameManager(new GameId("Game Id")).FavoriteSplits.Returns(expectedFavoriteSplits);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.Equal(expectedFavoriteSplits, model.FavoriteSplits());
         }
 
@@ -125,7 +125,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.Equal(false, model.IsPolling);
         }
 
@@ -134,7 +134,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             Assert.Equal(true, model.IsPolling);
         }
@@ -145,7 +145,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var builderMock = GetDefaultSplitsBuilder(1);
 
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
             builderMock.Received().Reset();
         }
@@ -156,7 +156,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var builderMock = GetDefaultSplitsBuilder(1);
 
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
             builderMock.ClearReceivedCalls();
             model.StartScorePoller();
@@ -169,7 +169,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             model.StartScorePoller();
             Assert.True(eventCatcher.CaughtProperties.Contains("IsPolling"));
@@ -180,7 +180,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             model.StopScorePoller();
             Assert.Equal(false, model.IsPolling);
@@ -193,9 +193,9 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(facade);
 
             var builderMock = GetDefaultSplitsBuilder(1);
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
-            facade.LoadGameManager("Game Name").Hook.GetCurrentScore().Returns(12345);
+            facade.LoadGameManager(new GameId("Game Id")).Hook.GetCurrentScore().Returns(12345);
             Thread.Sleep(500);
             builderMock.Received().SetScoreForCurrentSegment(12345);
         }
@@ -206,7 +206,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             Thread.Sleep(500);
@@ -218,7 +218,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var builderMock = GetDefaultSplitsBuilder(2);
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
 
             model.StartScorePoller();
             builderMock.ClearReceivedCalls();
@@ -231,7 +231,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var builderMock = GetDefaultSplitsBuilder(2);
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
 
             model.StopScorePoller();
             builderMock.ClearReceivedCalls();
@@ -243,7 +243,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         public void SplitToNextSegment_StopsPolling_If_Called_At_Last_Segment()
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(2));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(2));
 
             model.StartScorePoller();
             model.SplitToNextSegment();
@@ -257,7 +257,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             model.StopScorePoller();
@@ -271,10 +271,10 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(facade);
 
             var builderMock = GetDefaultSplitsBuilder(1);
-            model.LoadPersonalBest("Game Name", "Splits Name", builderMock);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
             model.StopScorePoller();
-            facade.LoadGameManager("Game Name").Hook.GetCurrentScore().Returns(12345);
+            facade.LoadGameManager(new GameId("Game Id")).Hook.GetCurrentScore().Returns(12345);
             Thread.Sleep(500);
             builderMock.DidNotReceive().SetScoreForCurrentSegment(12345);
         }
@@ -285,7 +285,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
 
-            model.LoadPersonalBest("Game Name", "Splits Name", GetDefaultSplitsBuilder(1));
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             model.StopScorePoller();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
@@ -301,7 +301,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var expectedSplits = Substitute.For<ISplits>();
             builder.GetOutput().Returns(expectedSplits);
 
-            model.LoadPersonalBest("Game Name", "Splits Name", builder);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builder);
             model.StartScorePoller();
             Assert.Equal(expectedSplits, model.StopScorePoller());
         }
@@ -314,7 +314,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var expectedSplits = Substitute.For<ISplits>();
             builder.GetOutput().Returns(expectedSplits);
 
-            model.LoadPersonalBest("Game Name", "Splits Name", builder);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builder);
             Assert.Equal(expectedSplits, model.StopScorePoller());
         }
     }

@@ -27,13 +27,13 @@ namespace TouhouSplits.UI.Model
             return _gameManager != null;
         }
 
-        public void LoadPersonalBest(string gameName, string splitsName, ISplitsBuilder personalBestSplits)
+        public void LoadPersonalBest(GameId gameId, string splitsName, ISplitsBuilder personalBestSplits)
         {
-            if (_gameManager == null || _gameManager.GameName != gameName) {
-                _gameManager = _facade.LoadGameManager(gameName);
+            if (_gameManager == null || _gameManager.Id != gameId) {
+                _gameManager = _facade.LoadGameManager(gameId);
             }
 
-            GameName = gameName;
+            GameName = _gameManager.GameName;
             SplitsName = splitsName;
             _personalBestBuilder = personalBestSplits;
             NotifyPropertyChanged("RecordingSplits");
