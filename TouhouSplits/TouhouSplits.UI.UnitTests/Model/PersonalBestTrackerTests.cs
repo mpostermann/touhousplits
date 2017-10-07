@@ -51,8 +51,10 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void LoadPersonalBest_Sets_GameName_Using_Passed_In_Builder()
         {
-            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var facade = Substitute.For<ISplitsFacade>();
+            var model = new PersonalBestTracker(facade);
 
+            facade.LoadGameManager(new GameId("Game Id")).GameName.Returns("Game Name");
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.Equal("Game Name", model.GameName);
         }
