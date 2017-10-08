@@ -165,22 +165,39 @@ namespace TouhouSplits.UI.ViewModel
 
         private void StartRecordingSplits()
         {
+            if (MainModel.IsNewPersonalBest) {
+                ReloadCurrentSplitsFile(_currentSplitsFile);
+            }
+                
             MainModel.StartScorePoller();
-
-            //todo: Initialize splits builder and assign. If there is already a recording splits and it's better
-            //than the current splits, then swap them.
         }
 
         private void StopRecordingSplits()
         {
-            MainModel.StopScorePoller();
-
-            /* Todo: If the new score is better than the previous, then save it */
+            var newSplits = MainModel.StopScorePoller();
+            UpdateSplitsFileIfNewPersonalBest(newSplits);
         }
 
         private void SplitToNextSegment()
         {
             MainModel.SplitToNextSegment();
+            if (!MainModel.IsPolling) {
+                MainModel.StopScorePoller();
+            }
+        }
+
+        private void UpdateSplitsFileIfNewPersonalBest(ISplits newSplits)
+        {
+            if (MainModel.IsNewPersonalBest) {
+                var newSplitsFile = _splitsFacade.NewSplitsFile(newSplits);
+                newSplitsFile.FileInfo = _currentSplitsFile.FileInfo;
+
+                /* Save the new splits, but don't reload it to the MainModel yet
+                 * so the player can see how much better their segments were. */
+                _currentSplitsFile.Close();
+                _currentSplitsFile = newSplitsFile;
+                _currentSplitsFile.Save();
+            }
         }
     }
 }

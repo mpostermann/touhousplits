@@ -90,5 +90,14 @@ namespace TouhouSplits.Service
         {
             return new FileHandler<ISplits, Splits>(new Splits(), _splitsSerializer);
         }
+
+        public IFileHandler<ISplits> NewSplitsFile(ISplits splits)
+        {
+            var concreteSplits = splits as Splits;
+            if (concreteSplits == null) {
+                throw new NotSupportedException(string.Format("Object of type {0} is not supported", splits.GetType()));
+            }
+            return new FileHandler<ISplits, Splits>(concreteSplits, _splitsSerializer);
+        }
     }
 }

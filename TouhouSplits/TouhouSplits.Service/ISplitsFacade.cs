@@ -13,5 +13,6 @@ namespace TouhouSplits.Service
         IGameManager LoadGameManager(GameId gameId);
         IFileHandler<ISplits> LoadSplitsFile(FileInfo filePath);
         IFileHandler<ISplits> NewSplitsFile();
+        IFileHandler<ISplits> NewSplitsFile(ISplits splits);
     }
 }
