@@ -20,6 +20,9 @@ namespace TouhouSplits.UI.Hotkey
         }
 
         private System.Windows.Forms.KeyEventHandler KeyDownEventHandler;
+
+        public List<Keys> RegisteredHotkeys => throw new NotImplementedException();
+
         private void KeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (_commandMap.ContainsKey(e.KeyCode)) {
@@ -44,6 +47,26 @@ namespace TouhouSplits.UI.Hotkey
         {
             _commandMap.Remove(keys);
             _keyboardHook.HookedKeys.Remove(keys);
+        }
+
+        public void Enable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Disable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterEnableToggleHotkey(Keys keys)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnregisterEnableToggleHotkey()
+        {
+            throw new NotImplementedException();
         }
     }
 }

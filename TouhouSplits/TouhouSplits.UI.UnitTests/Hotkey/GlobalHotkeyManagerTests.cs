@@ -18,13 +18,22 @@ namespace TouhouSplits.UI.UnitTests.Hotkey
         }
 
         [Fact]
-        public void RegisterHotkey_Adds_Keys_To_IGlobalKeyboardHook_HookedKeys_List()
+        public void RegisteredHotkeys_List_Is_Empty_By_Default()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            Assert.Equal(0, manager.RegisteredHotkeys.Count);
+        }
+
+        [Fact]
+        public void RegisterHotkey_Adds_Keys_To_RegisteredHotkeys_List()
         {
             var hook = DefaultKeyboardHook();
             var manager = new GlobalHotkeyManager(hook);
 
             manager.RegisterHotkey(Keys.A, Substitute.For<ICommand>());
-            Assert.True(hook.HookedKeys.Contains(Keys.A));
+            Assert.True(manager.RegisteredHotkeys.Contains(Keys.A));
         }
 
         [Fact]
@@ -46,18 +55,18 @@ namespace TouhouSplits.UI.UnitTests.Hotkey
             manager.RegisterHotkey(Keys.A, Substitute.For<ICommand>());
             manager.UnregisterHotkey(Keys.A);
             manager.RegisterHotkey(Keys.A, Substitute.For<ICommand>());
-            Assert.True(hook.HookedKeys.Contains(Keys.A));
+            Assert.True(manager.RegisteredHotkeys.Contains(Keys.A));
         }
 
         [Fact]
-        public void UnregisterHotkey_Removes_Keys_From_IGlobalKeyboardHook_HookedKeys_List()
+        public void UnregisterHotkey_Removes_Keys_From_RegisteredHotkeys_List()
         {
             var hook = DefaultKeyboardHook();
             var manager = new GlobalHotkeyManager(hook);
 
             manager.RegisterHotkey(Keys.A, Substitute.For<ICommand>());
             manager.UnregisterHotkey(Keys.A);
-            Assert.False(hook.HookedKeys.Contains(Keys.A));
+            Assert.False(manager.RegisteredHotkeys.Contains(Keys.A));
         }
 
         [Fact]
@@ -152,5 +161,121 @@ namespace TouhouSplits.UI.UnitTests.Hotkey
             commandMock.DidNotReceive().Execute(Arg.Any<object>());
         }
 
+        [Fact]
+        public void Registered_Commands_Are_Not_Executed_After_Disable_Is_Called()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            var commandMock = Substitute.For<ICommand>();
+            commandMock.CanExecute(null).Returns(true);
+            manager.RegisterHotkey(Keys.A, commandMock);
+
+            manager.Disable();
+            var eventArgs = new System.Windows.Forms.KeyEventArgs(Keys.B);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, eventArgs);
+            commandMock.DidNotReceive().Execute(Arg.Any<object>());
+        }
+
+        [Fact]
+        public void Registered_Commands_Are_Executed_After_Enable_Is_Called()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            var commandMock = Substitute.For<ICommand>();
+            commandMock.CanExecute(null).Returns(true);
+            manager.RegisterHotkey(Keys.A, commandMock);
+
+            manager.Disable();
+            manager.Enable();
+            var eventArgs = new System.Windows.Forms.KeyEventArgs(Keys.B);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, eventArgs);
+            commandMock.Received().Execute(null);
+        }
+
+        [Fact]
+        public void RegisterEnableToggleHotkey_Adds_Keys_To_Registered_Hotkeys_List()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            manager.RegisterEnableToggleHotkey(Keys.P);
+            Assert.True(manager.RegisteredHotkeys.Contains(Keys.P));
+        }
+
+        [Fact]
+        public void UnregisterEnableToggleHotkey_Removes_Keys_From_Registered_Hotkeys_List()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            manager.RegisterEnableToggleHotkey(Keys.P);
+            manager.UnregisterEnableToggleHotkey();
+            Assert.False(manager.RegisteredHotkeys.Contains(Keys.P));
+        }
+
+        [Fact]
+        public void RegisterEnableToggleHotkey_Replaces_Previously_Registered_Hotkey()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            manager.RegisterEnableToggleHotkey(Keys.O);
+            manager.RegisterEnableToggleHotkey(Keys.P);
+            Assert.False(manager.RegisteredHotkeys.Contains(Keys.O));
+            Assert.True(manager.RegisteredHotkeys.Contains(Keys.P));
+        }
+
+        [Fact]
+        public void RegisterEnableToggleHotkey_Throws_Exception_If_Hotkey_Was_Previously_Registered_With_RegisterHotkey()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            manager.RegisterHotkey(Keys.P, Substitute.For<ICommand>());
+            Assert.Throws<ArgumentException>(() => manager.RegisterEnableToggleHotkey(Keys.P));
+        }
+
+        [Fact]
+        public void Registered_Commands_Are_Not_Executed_After_EnableToggleHotkey_Is_Pressed_Once()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+            manager.RegisterEnableToggleHotkey(Keys.P);
+
+            var commandMock = Substitute.For<ICommand>();
+            commandMock.CanExecute(null).Returns(true);
+            manager.RegisterHotkey(Keys.A, commandMock);
+
+            /* Trigger the EnableToggle command */
+            var toggleEventArgs = new System.Windows.Forms.KeyEventArgs(Keys.P);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, toggleEventArgs);
+
+            var eventArgs = new System.Windows.Forms.KeyEventArgs(Keys.A);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, eventArgs);
+            commandMock.DidNotReceive().Execute(Arg.Any<object>());
+        }
+
+        [Fact]
+        public void Registered_Commands_Are_Executed_After_EnableToggleHotkey_Is_Pressed_Twice()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+            manager.RegisterEnableToggleHotkey(Keys.P);
+
+            var commandMock = Substitute.For<ICommand>();
+            commandMock.CanExecute(null).Returns(true);
+            manager.RegisterHotkey(Keys.A, commandMock);
+
+            /* Trigger then untrigger the EnableToggle command */
+            var toggleEventArgs = new System.Windows.Forms.KeyEventArgs(Keys.P);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, toggleEventArgs);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, toggleEventArgs);
+
+            var eventArgs = new System.Windows.Forms.KeyEventArgs(Keys.A);
+            hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, eventArgs);
+            commandMock.Received().Execute(null);
+        }
     }
 }
