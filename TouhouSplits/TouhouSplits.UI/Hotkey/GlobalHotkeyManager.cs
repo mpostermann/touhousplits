@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -32,6 +33,9 @@ namespace TouhouSplits.UI.Hotkey
 
         public void RegisterHotkey(Keys keys, ICommand command)
         {
+            if (_commandMap.ContainsKey(keys)) {
+                throw new ArgumentException(string.Format("Hotkey \"{0}\" is already registered.", keys.ToString()));
+            }
             _commandMap.Add(keys, command);
             _keyboardHook.HookedKeys.Add(keys);
         }
