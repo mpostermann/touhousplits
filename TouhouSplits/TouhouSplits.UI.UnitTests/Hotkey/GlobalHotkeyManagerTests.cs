@@ -188,7 +188,7 @@ namespace TouhouSplits.UI.UnitTests.Hotkey
 
             manager.Disable();
             manager.Enable();
-            var eventArgs = new System.Windows.Forms.KeyEventArgs(Keys.B);
+            var eventArgs = new System.Windows.Forms.KeyEventArgs(Keys.A);
             hook.KeyDown += Raise.Event<System.Windows.Forms.KeyEventHandler>(this, eventArgs);
             commandMock.Received().Execute(null);
         }
