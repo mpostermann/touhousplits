@@ -8,6 +8,7 @@ using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Config;
 using TouhouSplits.Service.Serialization;
+using TouhouSplits.UI.Hotkey;
 using TouhouSplits.UI.Model;
 using TouhouSplits.UI.View;
 
@@ -42,6 +43,10 @@ namespace TouhouSplits.UI.ViewModel
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => _currentSplitsFile != null);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling);
+
+            /* Register hotkeys */
+            GlobalHotkeyManagerFactory.Instance.RegisterHotkey(System.Windows.Forms.Keys.P, StartOrStopRecordingSplitsCommand);
+            GlobalHotkeyManagerFactory.Instance.RegisterHotkey(System.Windows.Forms.Keys.Space, SplitToNextSegmentCommand);
         }
 
         private void NewSplit()
