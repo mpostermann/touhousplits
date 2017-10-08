@@ -282,7 +282,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void StopScorePoller_Stops_Firing_Of_NotifyPropertyChangedEvent_For_CurrentScore()
+        public void StopScorePoller_Stops_Continuous_Firing_Of_NotifyPropertyChangedEvent_For_CurrentScore()
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
             var eventCatcher = new NotifyPropertyChangedCatcher();
@@ -293,6 +293,20 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             Thread.Sleep(500);
             Assert.False(eventCatcher.CaughtProperties.Contains("CurrentScore"));
+        }
+
+        [Fact]
+        public void StopScorePoller_Fires_NotifyPropertyChangedEvent_For_CurrentScore()
+        {
+            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+            model.StopScorePoller();
+            Assert.True(eventCatcher.CaughtProperties.Contains("CurrentScore"));
         }
 
         [Fact]

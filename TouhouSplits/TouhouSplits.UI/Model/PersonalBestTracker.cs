@@ -71,6 +71,7 @@ namespace TouhouSplits.UI.Model
             private set {
                 _isPolling = value;
                 NotifyPropertyChanged("IsPolling");
+                NotifyPropertyChanged("CurrentScore");
             }
         }
 
