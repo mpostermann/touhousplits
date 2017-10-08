@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace TouhouSplits.UI.Hotkey
 {
@@ -7,7 +6,6 @@ namespace TouhouSplits.UI.Hotkey
     {
         event KeyEventHandler KeyDown;
         event KeyEventHandler KeyUp;
-        List<Keys> HookedKeys { get; }
 
         void hook();
         void unhook();

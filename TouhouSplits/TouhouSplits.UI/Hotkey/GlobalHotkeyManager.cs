@@ -40,13 +40,11 @@ namespace TouhouSplits.UI.Hotkey
                 throw new ArgumentException(string.Format("Hotkey \"{0}\" is already registered.", keys.ToString()));
             }
             _commandMap.Add(keys, command);
-            _keyboardHook.HookedKeys.Add(keys);
         }
 
         public void UnregisterHotkey(Keys keys)
         {
             _commandMap.Remove(keys);
-            _keyboardHook.HookedKeys.Remove(keys);
         }
 
         public void Enable()

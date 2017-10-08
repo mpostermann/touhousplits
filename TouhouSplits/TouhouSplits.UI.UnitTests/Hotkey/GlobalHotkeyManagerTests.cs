@@ -13,7 +13,6 @@ namespace TouhouSplits.UI.UnitTests.Hotkey
         private static IGlobalKeyboardHook DefaultKeyboardHook()
         {
             var hook = Substitute.For<IGlobalKeyboardHook>();
-            hook.HookedKeys.Returns(new List<Keys>());
             return hook;
         }
 

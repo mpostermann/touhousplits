@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -40,10 +39,6 @@ namespace TouhouSplits.UI.Hotkey
         #endregion
 
         #region Instance Variables
-        /// <summary>
-        /// The collections of keys to watch for
-        /// </summary>
-        public List<Keys> HookedKeys { get; private set; }
 		/// <summary>
 		/// Handle to the hook, need this to unhook and call the next hook
 		/// </summary>
@@ -67,7 +62,6 @@ namespace TouhouSplits.UI.Hotkey
 		/// </summary>
 		public GlobalKeyboardHook()
         {
-            HookedKeys = new List<Keys>();
 			hook();
 		}
 
@@ -112,16 +106,18 @@ namespace TouhouSplits.UI.Hotkey
 			if (code >= 0) {
                 Keys key = (Keys)lParam.vkCode;
                 key = AddModifiers(key);
-                if (HookedKeys.Contains(key)) {
-                    KeyEventArgs kea = new KeyEventArgs(key);
-					if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) && (KeyDown != null)) {
-						KeyDown(this, kea);
-					} else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && (KeyUp != null)) {
-						KeyUp(this, kea);
-					}
-					if (kea.Handled)
-						return 1;
-				}
+                KeyEventArgs kea = new KeyEventArgs(key);
+
+                if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) && (KeyDown != null)) {
+                    KeyDown(this, kea);
+                }
+                else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && (KeyUp != null)) {
+                    KeyUp(this, kea);
+                }
+
+                if (kea.Handled) {
+                    return 1;
+                }
 			}
 			return CallNextHookEx(hhook, code, wParam, ref lParam);
 		}
@@ -134,16 +130,21 @@ namespace TouhouSplits.UI.Hotkey
         private Keys AddModifiers(Keys key)
         {
             //CapsLock
-            if ((GetKeyState(VK_CAPITAL) & 0x0001) != 0) key = key | Keys.CapsLock;
-
+            if ((GetKeyState(VK_CAPITAL) & 0x0001) != 0) {
+                key = key | Keys.CapsLock;
+            }
             //Shift
-            if ((GetKeyState(VK_SHIFT) & 0x8000) != 0) key = key | Keys.Shift;
-
+            if ((GetKeyState(VK_SHIFT) & 0x8000) != 0) {
+                key = key | Keys.Shift;
+            }
             //Ctrl
-            if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) key = key | Keys.Control;
-
+            if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) {
+                key = key | Keys.Control;
+            }
             //Alt
-            if ((GetKeyState(VK_MENU) & 0x8000) != 0) key = key | Keys.Alt;
+            if ((GetKeyState(VK_MENU) & 0x8000) != 0) {
+                key = key | Keys.Alt;
+            }
 
             return key;
         }
