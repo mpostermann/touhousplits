@@ -6,14 +6,16 @@ namespace TouhouSplits.UI.Hotkey
 {
     public class GlobalHotkeyManager : IGlobalHotkeyManager
     {
-        private GlobalKeyboardHook _keyboardHook;
+        private IGlobalKeyboardHook _keyboardHook;
         private IDictionary<Keys, ICommand> _commandMap;
 
-        public GlobalHotkeyManager(GlobalKeyboardHook globalKeyboardHook)
+        public GlobalHotkeyManager(IGlobalKeyboardHook globalKeyboardHook)
         {
             _commandMap = new Dictionary<Keys, ICommand>();
             _keyboardHook = globalKeyboardHook;
             KeyDownEventHandler = new System.Windows.Forms.KeyEventHandler(KeyDownEvent);
+            _keyboardHook.KeyDown -= KeyDownEventHandler;
+            _keyboardHook.KeyDown += KeyDownEventHandler;
         }
 
         private System.Windows.Forms.KeyEventHandler KeyDownEventHandler;
@@ -32,8 +34,6 @@ namespace TouhouSplits.UI.Hotkey
         {
             _commandMap.Add(keys, command);
             _keyboardHook.HookedKeys.Add(keys);
-            _keyboardHook.KeyDown -= KeyDownEventHandler;
-            _keyboardHook.KeyDown += KeyDownEventHandler;
         }
 
         public void UnregisterHotkey(Keys keys)

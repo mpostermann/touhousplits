@@ -85,6 +85,7 @@
     <Compile Include="Hotkey\GlobalHotkeyManagerFactory.cs" />
     <Compile Include="Hotkey\GlobalKeyboardHook.cs" />
     <Compile Include="Hotkey\IGlobalHotkeyManager.cs" />
+    <Compile Include="Hotkey\IGlobalKeyboardHook.cs" />
     <Compile Include="Model\PersonalBestTracker.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

@@ -9,7 +9,7 @@ namespace TouhouSplits.UI.Hotkey
 	/// <summary>
 	/// A class that manages a global low level keyboard hook
 	/// </summary>
-	public class GlobalKeyboardHook
+	public class GlobalKeyboardHook : IGlobalKeyboardHook
     {
 		#region Constant, Structure and Delegate Definitions
 		/// <summary>
@@ -43,7 +43,7 @@ namespace TouhouSplits.UI.Hotkey
         /// <summary>
         /// The collections of keys to watch for
         /// </summary>
-        public List<Keys> HookedKeys = new List<Keys>();
+        public List<Keys> HookedKeys { get; private set; }
 		/// <summary>
 		/// Handle to the hook, need this to unhook and call the next hook
 		/// </summary>
@@ -67,6 +67,7 @@ namespace TouhouSplits.UI.Hotkey
 		/// </summary>
 		public GlobalKeyboardHook()
         {
+            HookedKeys = new List<Keys>();
 			hook();
 		}
 
@@ -114,7 +115,7 @@ namespace TouhouSplits.UI.Hotkey
                 if (HookedKeys.Contains(key)) {
                     KeyEventArgs kea = new KeyEventArgs(key);
 					if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) && (KeyDown != null)) {
-						KeyDown(this, kea) ;
+						KeyDown(this, kea);
 					} else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && (KeyUp != null)) {
 						KeyUp(this, kea);
 					}
