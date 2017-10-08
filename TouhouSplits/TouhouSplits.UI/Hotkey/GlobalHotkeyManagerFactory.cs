@@ -3,7 +3,7 @@ namespace TouhouSplits.UI.Hotkey
 {
     public static class GlobalHotkeyManagerFactory
     {
-        private static IGlobalHotkeyManager _defaultManager = new GlobalHotkeyManager();
+        private static IGlobalHotkeyManager _defaultManager = new GlobalHotkeyManager(new GlobalKeyboardHook());
 
         private static IGlobalHotkeyManager _instance;
         public static IGlobalHotkeyManager Instance {

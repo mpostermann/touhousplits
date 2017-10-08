@@ -9,15 +9,15 @@ namespace TouhouSplits.UI.Hotkey
         private GlobalKeyboardHook _keyboardHook;
         private IDictionary<Keys, ICommand> _commandMap;
 
-        public GlobalHotkeyManager()
+        public GlobalHotkeyManager(GlobalKeyboardHook globalKeyboardHook)
         {
             _commandMap = new Dictionary<Keys, ICommand>();
-            _keyboardHook = new GlobalKeyboardHook();
+            _keyboardHook = globalKeyboardHook;
             KeyDownEventHandler = new System.Windows.Forms.KeyEventHandler(KeyDownEvent);
         }
 
-        public System.Windows.Forms.KeyEventHandler KeyDownEventHandler;
-        public void KeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
+        private System.Windows.Forms.KeyEventHandler KeyDownEventHandler;
+        private void KeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (_commandMap.ContainsKey(e.KeyCode)) {
                 ICommand command = _commandMap[e.KeyCode];
