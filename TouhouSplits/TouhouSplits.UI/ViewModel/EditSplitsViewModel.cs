@@ -36,6 +36,9 @@ namespace TouhouSplits.UI.ViewModel
         {
             SplitsFile = splitsFile;
             _splitsFacade = facade;
+            if (_splitsFacade.AvailableGames.Contains(splitsFile.Object.GameId)) {
+                _gameName = _splitsFacade.LoadGameManager(splitsFile.Object.GameId).GameName;
+            };
 
             AddSegmentCommand = new RelayCommand<int>((param) => AddSegment(param));
             RemoveSegmentCommand = new RelayCommand<int>((param) => RemoveSegment(param));
