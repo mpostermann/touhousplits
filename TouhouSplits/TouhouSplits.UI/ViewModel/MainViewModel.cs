@@ -182,7 +182,7 @@ namespace TouhouSplits.UI.ViewModel
         {
             MainModel.SplitToNextSegment();
             if (!MainModel.IsPolling) {
-                MainModel.StopScorePoller();
+                StopRecordingSplits();
             }
         }
 
