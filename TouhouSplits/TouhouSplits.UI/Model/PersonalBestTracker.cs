@@ -93,6 +93,15 @@ namespace TouhouSplits.UI.Model
             }
         }
 
+        public bool IsNewPersonalBest {
+            get {
+                if (_personalBestBuilder == null) {
+                    return false;
+                }
+                return _personalBestBuilder.IsNewPersonalBest();
+            }
+        }
+
         public void StartScorePoller()
         {
             if (IsPolling) {
@@ -119,6 +128,7 @@ namespace TouhouSplits.UI.Model
         private void UpdateCurrentRecordingScore()
         {
             NotifyPropertyChanged("CurrentScore");
+            NotifyPropertyChanged("IsNewPersonalBest");
             _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
         }
 
