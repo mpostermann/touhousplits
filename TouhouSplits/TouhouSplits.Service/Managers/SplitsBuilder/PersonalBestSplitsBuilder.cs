@@ -9,11 +9,15 @@ namespace TouhouSplits.Service.Managers
     public class PersonalBestSplitsBuilder : ISplitsBuilder
     {
         private long _personalBestScore;
+        GameId _gameId;
+        string _splitsName;
 
         public PersonalBestSplitsBuilder(ISplits personalBest)
         {
             _currentSegment = 0;
             _personalBestScore = personalBest.EndingSegment.Score;
+            _gameId = personalBest.GameId;
+            _splitsName = personalBest.SplitName;
 
             _segments = new List<IPersonalBestSegment>();
             foreach (ISegment segment in personalBest.Segments) {
@@ -62,7 +66,11 @@ namespace TouhouSplits.Service.Managers
 
         public ISplits GetOutput()
         {
-            var newSplits = new Splits();
+            var newSplits = new Splits() {
+                GameId = _gameId,
+                SplitName = _splitsName
+            };
+
             long previousScore = 0;
             for (int i = 0; i < _segments.Count; i++) { 
                 var newSegment = new Segment() {

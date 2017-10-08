@@ -197,6 +197,28 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
             Assert.Equal(false, builder.IsNewPersonalBest());
         }
 
+        [Fact]
+        public void GetOutput_GameID_Is_Equal_To_Personal_Best_GameID()
+        {
+            var pb = CreateDefaultSplits(1);
+            pb.GameId.Returns(new GameId("Some game id"));
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            var newSplits = builder.GetOutput();
+            Assert.Equal(new GameId("Some game id"), newSplits.GameId);
+        }
+
+        [Fact]
+        public void GetOutput_SplitName_Is_Equal_To_Personal_Best_SplitName()
+        {
+            var pb = CreateDefaultSplits(1);
+            pb.SplitName.Returns("Some split name");
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            var newSplits = builder.GetOutput();
+            Assert.Equal("Some split name", newSplits.SplitName);
+        }
+
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
