@@ -23,9 +23,9 @@ namespace TouhouSplits.UI.Hotkey
                 ICommand command = _commandMap[e.KeyCode];
                 if (command.CanExecute(null)) {
                     command.Execute(null);
+                    e.Handled = true;
                 }
             }
-            e.Handled = true;
         }
 
         public void RegisterHotkey(Keys keys, ICommand command)
