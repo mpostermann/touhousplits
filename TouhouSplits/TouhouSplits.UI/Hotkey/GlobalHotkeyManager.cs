@@ -1,7 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Input;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using KeyEventHandler = System.Windows.Forms.KeyEventHandler;
 
 namespace TouhouSplits.UI.Hotkey
 {
@@ -9,29 +12,46 @@ namespace TouhouSplits.UI.Hotkey
     {
         private IGlobalKeyboardHook _keyboardHook;
         private IDictionary<Keys, ICommand> _commandMap;
+        private bool _isEnabled;
+        private ICommand _toggleIsEnabledCommand;
+
+        private Keys _enableToggleHotkey;
 
         public GlobalHotkeyManager(IGlobalKeyboardHook globalKeyboardHook)
         {
-            _commandMap = new Dictionary<Keys, ICommand>();
             _keyboardHook = globalKeyboardHook;
-            KeyDownEventHandler = new System.Windows.Forms.KeyEventHandler(KeyDownEvent);
+            _commandMap = new Dictionary<Keys, ICommand>();
+            _isEnabled = true;
+
+            _toggleIsEnabledCommand = new RelayCommand(() => ToggleIsEnabled());
+
+            KeyDownEventHandler = new KeyEventHandler(KeyDownEvent);
             _keyboardHook.KeyDown -= KeyDownEventHandler;
             _keyboardHook.KeyDown += KeyDownEventHandler;
         }
 
-        private System.Windows.Forms.KeyEventHandler KeyDownEventHandler;
+        private KeyEventHandler KeyDownEventHandler;
 
-        public List<Keys> RegisteredHotkeys => throw new NotImplementedException();
-
-        private void KeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void KeyDownEvent(object sender, KeyEventArgs e)
         {
             if (_commandMap.ContainsKey(e.KeyCode)) {
                 ICommand command = _commandMap[e.KeyCode];
-                if (command.CanExecute(null)) {
+
+                /* If this is the special EnableToggleHotkey,
+                 * then execute irregardless of whether this manager is enabled or not. */
+                if (e.KeyCode == _enableToggleHotkey && command.CanExecute(null)) {
+                    command.Execute(null);
+                    e.Handled = true;
+                }
+                else if (_isEnabled && command.CanExecute(null)) {
                     command.Execute(null);
                     e.Handled = true;
                 }
             }
+        }
+
+        public ICollection<Keys> RegisteredHotkeys {
+            get { return _commandMap.Keys; }
         }
 
         public void RegisterHotkey(Keys keys, ICommand command)
@@ -49,22 +69,38 @@ namespace TouhouSplits.UI.Hotkey
 
         public void Enable()
         {
-            throw new NotImplementedException();
+            _isEnabled = true;
         }
 
         public void Disable()
         {
-            throw new NotImplementedException();
+            _isEnabled = false;
         }
 
         public void RegisterEnableToggleHotkey(Keys keys)
         {
-            throw new NotImplementedException();
+            if (_enableToggleHotkey == keys) {
+                return;
+            }
+
+            if (_commandMap.ContainsKey(keys)) {
+                throw new ArgumentException(string.Format("Hotkey \"{0}\" is already registered.", keys.ToString()));
+            }
+
+            _commandMap.Remove(_enableToggleHotkey);
+            _enableToggleHotkey = keys;
+            _commandMap.Add(_enableToggleHotkey, _toggleIsEnabledCommand);
         }
 
         public void UnregisterEnableToggleHotkey()
         {
-            throw new NotImplementedException();
+            _commandMap.Remove(_enableToggleHotkey);
+            _enableToggleHotkey = Keys.None;
+        }
+
+        private void ToggleIsEnabled()
+        {
+            _isEnabled = !_isEnabled;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace TouhouSplits.UI.Hotkey
 {
     public interface IGlobalHotkeyManager
     {
-        List<Keys> RegisteredHotkeys { get; }
+        ICollection<Keys> RegisteredHotkeys { get; }
         void RegisterHotkey(Keys keys, ICommand command);
         void UnregisterHotkey(Keys keys);
         void Enable();
