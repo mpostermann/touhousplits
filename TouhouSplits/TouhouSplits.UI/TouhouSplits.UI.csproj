@@ -88,6 +88,7 @@
     <Compile Include="Hotkey\IGlobalKeyboardHook.cs" />
     <Compile Include="Model\PersonalBestTracker.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\EditSplitsWindow.xaml.cs">
       <DependentUpon>EditSplitsWindow.xaml</DependentUpon>

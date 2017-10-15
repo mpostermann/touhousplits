@@ -18,7 +18,7 @@ using TouhouSplits.UI.View;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class MainViewModel
+    public class MainViewModel : ViewModelBase
     {
         private ISplitsFacade _splitsFacade;
         private IFileHandler<ISplits> _currentSplitsFile;
@@ -238,11 +238,6 @@ namespace TouhouSplits.UI.ViewModel
                 _currentSplitsFile = newSplitsFile;
                 _currentSplitsFile.Save();
             }
-        }
-
-        private static void ShowErrorDialog(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButton.OK);
         }
     }       
 }
