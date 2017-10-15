@@ -64,7 +64,7 @@ namespace TouhouSplits.Service.Hook.Impl
                     return process[0];
                 }
             }
-            throw new InvalidOperationException("Process is not running.");
+            throw new InvalidOperationException("Game is not running.");
         }
 
         public void Unhook()
