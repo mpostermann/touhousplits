@@ -9,7 +9,7 @@ using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.UI.ViewModel
 {
-    public class EditSplitsViewModel : IDialogResultViewModel
+    public class EditSplitsViewModel : ViewModelBase, IDialogResultViewModel
     {
         private ISplitsFacade _splitsFacade;
 
@@ -94,8 +94,14 @@ namespace TouhouSplits.UI.ViewModel
 
             if (dialog.ShowDialog() == true) {
                 SplitsFile.FileInfo = new FileInfo(dialog.FileName);
-                SplitsFile.Save();
-                InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+
+                try {
+                    SplitsFile.Save();
+                    InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+                }
+                catch (Exception e) {
+                    ShowErrorDialog("File could not be saved. Please choose a different location and try again.");
+                }
             }
         }
 
