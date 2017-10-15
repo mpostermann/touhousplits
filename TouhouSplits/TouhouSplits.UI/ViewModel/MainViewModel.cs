@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Input;
 using TouhouSplits.Manager.Config;
@@ -157,17 +158,34 @@ namespace TouhouSplits.UI.ViewModel
 
         private void ReloadCurrentSplitsFile(IFileHandler<ISplits> splitsFile)
         {
-            if (_currentSplitsFile != null) {
-                _currentSplitsFile.Close();
-            }
-            _currentSplitsFile = splitsFile;
+            var origSplitsFile = _currentSplitsFile;
+            try {
+                if (_currentSplitsFile != null) {
+                    _currentSplitsFile.Close();
+                }
+                _currentSplitsFile = splitsFile;
 
-            var personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
-            MainModel.LoadPersonalBest(
-                _currentSplitsFile.Object.GameId,
-                _currentSplitsFile.Object.SplitName,
-                personalBestBuilder
-            );
+                var personalBestBuilder = new PersonalBestSplitsBuilder(_currentSplitsFile.Object);
+                MainModel.LoadPersonalBest(
+                    _currentSplitsFile.Object.GameId,
+                    _currentSplitsFile.Object.SplitName,
+                    personalBestBuilder
+                );
+            }
+            catch (Exception e) {
+                _currentSplitsFile = origSplitsFile;
+                if (e is FileNotFoundException || e is DirectoryNotFoundException) {
+                    ShowErrorDialog(e.Message);
+                }
+                else if (e is SerializationException || e is NotSupportedException) {
+                    ShowErrorDialog(string.Format(
+                        "An error occurred while opening the file \"{0}\". Check that the file is formatted correctly and is not corrupted.",
+                        splitsFile.FileInfo.FullName));
+                }
+                else {
+                    throw;
+                }
+            }
         }
 
         private void StartOrStopRecordingSplits()
@@ -190,7 +208,7 @@ namespace TouhouSplits.UI.ViewModel
                 MainModel.StartScorePoller();
             }
             catch (InvalidOperationException e) {
-                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK);
+                ShowErrorDialog(e.Message);
             }
         }
 
@@ -221,5 +239,10 @@ namespace TouhouSplits.UI.ViewModel
                 _currentSplitsFile.Save();
             }
         }
-    }
+
+        private static void ShowErrorDialog(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButton.OK);
+        }
+    }       
 }
