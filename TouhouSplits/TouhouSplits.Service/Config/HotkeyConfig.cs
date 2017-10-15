@@ -34,6 +34,9 @@ namespace TouhouSplits.Service.Config
             }
             Keys keys = ParseKeys(hotkeyElement.Attribute("keys").Value);
 
+            if (keyMap.ContainsKey(methodName)) {
+                throw new ConfigurationErrorsException(string.Format("Multiple hotkeys defined for the method \"{0}\"", methodName));
+            }
             keyMap.Add(methodName, keys);
         }
 
