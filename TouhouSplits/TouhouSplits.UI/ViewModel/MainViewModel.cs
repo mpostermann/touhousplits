@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Input;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
+using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Config;
@@ -46,10 +47,22 @@ namespace TouhouSplits.UI.ViewModel
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => _currentSplitsFile != null && !_dialogIsOpen);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling && !_dialogIsOpen);
+        }
 
-            /* Register hotkeys */
-            GlobalHotkeyManagerFactory.Instance.RegisterHotkey(System.Windows.Forms.Keys.P, StartOrStopRecordingSplitsCommand);
-            GlobalHotkeyManagerFactory.Instance.RegisterHotkey(System.Windows.Forms.Keys.Space, SplitToNextSegmentCommand);
+        private void RegisterHotkeys(IHotkeyConfig config)
+        {
+            if (config.HasHotkey("ToggleHotkeys")) {
+                GlobalHotkeyManagerFactory.Instance.RegisterEnableToggleHotkey(config.GetHotkey("ToggleHotkeys"));
+            }
+            RegisterSingleHotkey(config, "StartOrStopRecordingSplits", StartOrStopRecordingSplitsCommand);
+            RegisterSingleHotkey(config, "SplitToNextSegment", SplitToNextSegmentCommand);
+        }
+
+        private static void RegisterSingleHotkey(IHotkeyConfig config, string hotkeyName, ICommand command)
+        {
+            if (config.HasHotkey(hotkeyName)) {
+                GlobalHotkeyManagerFactory.Instance.RegisterHotkey(config.GetHotkey(hotkeyName), command);
+            }
         }
 
         private void NewSplit()

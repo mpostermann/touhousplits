@@ -41,6 +41,7 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -50,7 +51,9 @@
     <Compile Include="Config\GameConfig.cs" />
     <Compile Include="Config\Hook\IKernel32HookConfig.cs" />
     <Compile Include="Config\Hook\Kernel32HookConfig.cs" />
+    <Compile Include="Config\HotkeyConfig.cs" />
     <Compile Include="Config\IGameConfig.cs" />
+    <Compile Include="Config\IHotkeyConfig.cs" />
     <Compile Include="Data\FileHandler.cs" />
     <Compile Include="Data\GameId.cs" />
     <Compile Include="Data\IFileHandler.cs" />

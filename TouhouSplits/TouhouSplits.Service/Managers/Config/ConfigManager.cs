@@ -11,10 +11,12 @@ namespace TouhouSplits.Service.Managers.Config
     public class ConfigManager : IConfigManager
     {
         public IList<IGameConfig> AvailableGames { get; private set; }
+        public IHotkeyConfig Hotkeys { get; private set; }
 
         public ConfigManager()
         {
-            AvailableGames = LoadGamesConfig(); 
+            AvailableGames = LoadGamesConfig();
+            Hotkeys = LoadHotkeyConfig();
         }
 
         private static IList<IGameConfig> LoadGamesConfig()
@@ -35,6 +37,11 @@ namespace TouhouSplits.Service.Managers.Config
             catch (Exception e) {
                 throw new ConfigurationErrorsException("Could not load Games.xml configuration.", e);
             }
+        }
+
+        private static IHotkeyConfig LoadHotkeyConfig()
+        {
+            throw new NotImplementedException();
         }
     }
 }
