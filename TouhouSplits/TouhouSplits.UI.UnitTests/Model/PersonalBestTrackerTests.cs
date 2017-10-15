@@ -27,6 +27,15 @@ namespace TouhouSplits.UI.UnitTests.Model
             return builder;
         }
 
+        private static ISplitsFacade DefaultSplitsFacade()
+        {
+            var facade = Substitute.For<ISplitsFacade>();
+            var hook = facade.LoadGameManager(Arg.Any<GameId>()).Hook;
+            hook.When(n => n.Hook()).Do(n => hook.IsHooked.Returns(true));
+            hook.When(n => n.Unhook()).Do(n => hook.IsHooked.Returns(false));
+            return facade;
+        }
+
         [Fact]
         public void LoadPersonalBest_Fires_NotifyPropertyChanged_Event_For_RecordingSplits()
         {
@@ -207,7 +216,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void StartScorePoller_Causes_Loaded_Builder_To_Continuously_Set_CurrentScore()
         {
-            var facade = Substitute.For<ISplitsFacade>();
+            var facade = DefaultSplitsFacade();
             var model = new PersonalBestTracker(facade);
 
             var builderMock = GetDefaultSplitsBuilder(1);
@@ -247,7 +256,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void SplitToNextSegment_Fires_Method_In_Builder_If_Polling_Is_Started()
         {
-            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
             var builderMock = GetDefaultSplitsBuilder(2);
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
 
@@ -327,7 +336,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void StopScorePoller_Stops_Continuous_Firing_Of_NotifyPropertyChangedEvent_For_CurrentScore()
         {
-            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
             var eventCatcher = new NotifyPropertyChangedCatcher();
 
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
@@ -341,7 +350,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         [Fact]
         public void StopScorePoller_Stops_Continuous_Firing_Of_NotifyPropertyChangedEvent_For_IsNewPersonalBest()
         {
-            var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
             var eventCatcher = new NotifyPropertyChangedCatcher();
 
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
@@ -375,6 +384,20 @@ namespace TouhouSplits.UI.UnitTests.Model
 
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builder);
             Assert.Equal(expectedSplits, model.StopScorePoller());
+        }
+
+        [Fact]
+        public void Polling_Is_Stopped_If_GameManager_Hook_Becomes_Unhooked()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+
+            var hook = facade.LoadGameManager(Arg.Any<GameId>()).Hook;
+            hook.IsHooked.Returns(false);
+            Thread.Sleep(500);
+            Assert.False(model.IsPolling);
         }
     }
 }

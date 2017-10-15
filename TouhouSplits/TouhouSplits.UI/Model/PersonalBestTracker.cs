@@ -127,6 +127,10 @@ namespace TouhouSplits.UI.Model
 
         private void UpdateCurrentRecordingScore()
         {
+            if (!_gameManager.Hook.IsHooked) {
+                StopScorePoller();
+            }
+
             NotifyPropertyChanged("CurrentScore");
             NotifyPropertyChanged("IsNewPersonalBest");
             _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
