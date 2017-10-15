@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using TouhouSplits.Service.Config;
@@ -17,7 +12,7 @@ namespace TouhouSplits.Service.UnitTests.Config
         {
             string xml = @"<Hotkeys>
     <Hotkey method=""Method 1"" keys=""Add"" />
-    <Hotkey method=""Method 2"" keys=""7"" />
+    <Hotkey method=""Method 2"" keys=""NumPad7"" />
 </Hotkeys>";
             return XElement.Parse(xml);
         }
@@ -43,6 +38,16 @@ namespace TouhouSplits.Service.UnitTests.Config
         {
             var xml = DefaultXml();
             xml.Element("Hotkey").SetAttributeValue("method", string.Empty);
+            Assert.Throws<ConfigurationErrorsException>(() => new HotkeyConfig(xml));
+        }
+
+        [Fact]
+        public void Constructor_Throws_Exception_If_Multiple_Hotkey_Nodes_Have_An_Equal_method_Attribute()
+        {
+            var xml = XElement.Parse(@"<Hotkeys>
+    <Hotkey method=""Method 1"" keys=""Add"" />
+    <Hotkey method=""Method 1"" keys=""NumPad7"" />
+</Hotkeys>");
             Assert.Throws<ConfigurationErrorsException>(() => new HotkeyConfig(xml));
         }
 
@@ -82,15 +87,16 @@ namespace TouhouSplits.Service.UnitTests.Config
         {
             var config = new HotkeyConfig(DefaultXml());
             Assert.Equal(Keys.Add, config.GetHotkey("Method 1"));
-            Assert.Equal(Keys.NumPad7, config.GetHotkey("NumPad7"));
+            Assert.Equal(Keys.NumPad7, config.GetHotkey("Method 2"));
         }
 
         [Fact]
         public void GetHotkey_Returns_Keys_Enum_For_keys_With_Modifiers()
         {
-            var xml = DefaultXml();
-            xml.Elements("Hotkeys").FirstOrDefault(n => n.Name == "Method 1").SetAttributeValue("keys", "Shift+P");
-            var config = new HotkeyConfig(DefaultXml());
+            var xml = XElement.Parse(@"<Hotkeys>
+    <Hotkey method=""Method 1"" keys=""Shift+P"" />
+</Hotkeys>");
+            var config = new HotkeyConfig(xml);
             Assert.Equal(Keys.Shift | Keys.P, config.GetHotkey("Method 1"));
         }
     }
