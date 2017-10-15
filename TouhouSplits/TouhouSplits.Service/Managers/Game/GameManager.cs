@@ -17,6 +17,7 @@ namespace TouhouSplits.Service.Managers.Game
         public string GameName { get { return _config.GameName; } } 
         public IHookStrategy Hook { get; private set; } 
         public IList<IFileHandler<ISplits>> FavoriteSplits { get; private set; }
+        public bool FavoriteSplitsFileLoaded { get; private set; }
 
         public GameManager(
             IGameConfig config,
@@ -27,31 +28,31 @@ namespace TouhouSplits.Service.Managers.Game
             _config = config;
             _favoriteSplitsSerializer = favoriteSplitsSerializer;
             Hook = hookFactory.Create(config.HookConfig);
-            FavoriteSplits = LoadFavoriteSplits(_config.FavoriteSplitsList, _favoriteSplitsSerializer, splitsSerializer);
+            SetFavoriteSplits(_config.FavoriteSplitsList, _favoriteSplitsSerializer, splitsSerializer);
         }
 
-        private static List<IFileHandler<ISplits>> LoadFavoriteSplits(
+        private void SetFavoriteSplits(
             FileInfo favoriteSplitsFile,
             IFileSerializer<List<string>> favoriteSplitsSerializer,
             IFileSerializer<Splits> splitsSerializer)
         {
-            List<IFileHandler<ISplits>> favoriteSplits = new List<IFileHandler<ISplits>>();
+            FavoriteSplitsFileLoaded = false;
+            FavoriteSplits = new List<IFileHandler<ISplits>>();
             try {
                 List<string> favoriteSplitsPaths = favoriteSplitsSerializer.Deserialize(favoriteSplitsFile);
                 foreach (string path in favoriteSplitsPaths) {
                     var splitsFile = new FileHandler<ISplits, Splits>(new FileInfo(path), splitsSerializer);
-                    favoriteSplits.Add(splitsFile);
+                    FavoriteSplits.Add(splitsFile);
+                }
+                FavoriteSplitsFileLoaded = true;
+            }
+            catch (Exception e) {
+                if (e is DirectoryNotFoundException || e is FileNotFoundException) {
+                    /* If the favorite splits file doesn't exist, then create a new, empty file */
+                    favoriteSplitsSerializer.Serialize(new List<string>(), favoriteSplitsFile);
+                    FavoriteSplitsFileLoaded = true;
                 }
             }
-            catch (DirectoryNotFoundException) {
-                /* If the favorite splits file doesn't exist, then create a new, empty file */
-                favoriteSplitsSerializer.Serialize(new List<string>(), favoriteSplitsFile);
-            }
-            catch (FileNotFoundException) {
-                /* If the favorite splits file doesn't exist, then create a new, empty file */
-                favoriteSplitsSerializer.Serialize(new List<string>(), favoriteSplitsFile);
-            }
-            return favoriteSplits;
         }
 
         /// <summary>

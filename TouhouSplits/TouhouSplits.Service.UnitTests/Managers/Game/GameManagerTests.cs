@@ -116,6 +116,37 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         }
 
         [Fact]
+        public void FavoriteSplitsFileLoaded_Returns_True_If_FavoriteSplits_Was_Deserialized_Without_Error()
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                favoriteSplitsSerializer,
+                Substitute.For<IFileSerializer<Splits>>()
+            );
+
+            Assert.True(manager.FavoriteSplitsFileLoaded);
+        }
+
+        [Fact]
+        public void FavoriteSplitsFileLoaded_Returns_False_If_FavoriteSplits_Was_Deserialized_With_Errors()
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var favoriteSplitsSerializer = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
+            favoriteSplitsSerializer.Deserialize(Arg.Any<FileInfo>()).Returns(n => { throw new Exception(); });
+            var manager = new GameManager(
+                config,
+                Substitute.For<IHookStrategyFactory>(),
+                favoriteSplitsSerializer,
+                Substitute.For<IFileSerializer<Splits>>()
+            );
+
+            Assert.False(manager.FavoriteSplitsFileLoaded);
+        }
+
+        [Fact]
         public void FavoriteSplits_Returns_Splits_Filepaths_Loaded_From_FavoriteSplitsSerializer()
         {
             var config = CreateConfig("Some id", "Some game name");
