@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
+using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
@@ -183,8 +185,13 @@ namespace TouhouSplits.UI.ViewModel
             if (MainModel.IsNewPersonalBest) {
                 ReloadCurrentSplitsFile(_currentSplitsFile);
             }
-                
-            MainModel.StartScorePoller();
+
+            try {
+                MainModel.StartScorePoller();
+            }
+            catch (InvalidOperationException e) {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK);
+            }
         }
 
         private void StopRecordingSplits()
