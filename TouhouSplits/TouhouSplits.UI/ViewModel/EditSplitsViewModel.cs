@@ -85,6 +85,12 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveSplitsAs()
         {
+            string validationMessage;
+            if (!IsSplitsValid(SplitsFile.Object, out validationMessage)) {
+                ShowErrorDialog(validationMessage);
+                return;
+            }
+
             SaveFileDialog dialog = new SaveFileDialog();
             if (SplitsFile.FileInfo != null) {
                 dialog.FileName = SplitsFile.FileInfo.FullName;
@@ -114,6 +120,30 @@ namespace TouhouSplits.UI.ViewModel
             else {
                 SaveSplitsAs();
             }
+        }
+
+        private static bool IsSplitsValid(ISplits splits, out string message)
+        {
+            message = string.Empty;
+            if (string.IsNullOrEmpty(splits.GameId.ToString())) {
+                message = "Select a game.";
+                return false;
+            }
+            if (string.IsNullOrEmpty(splits.SplitName)) {
+                message = "Enter a name for this splits.";
+                return false;
+            }
+            if (splits.Segments.Count == 0) {
+                message = "Add a segment.";
+                return false;
+            }
+            foreach (ISegment segment in splits.Segments) {
+                if (string.IsNullOrEmpty(segment.SegmentName)) {
+                    message = "All segments must have a name.";
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void CloseWithoutSaving()
