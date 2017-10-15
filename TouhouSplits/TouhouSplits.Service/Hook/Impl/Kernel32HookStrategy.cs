@@ -17,12 +17,12 @@ namespace TouhouSplits.Service.Hook.Impl
 
         IKernel32HookConfig _config;
         private IntPtr _processHandle;
-        private bool _isHooked;
+        public bool IsHooked { get; private set; }
 
         public Kernel32HookStrategy(IKernel32HookConfig config)
         {
             _config = config;
-            _isHooked = false;
+            IsHooked = false;
         }
 
         public long GetCurrentScore()
@@ -36,7 +36,9 @@ namespace TouhouSplits.Service.Hook.Impl
                 buffer = new byte[8];
             }
 
-            ReadProcessMemory((int)_processHandle, _config.Address, buffer, buffer.Length, ref bytesRead);
+            if (!ReadProcessMemory((int)_processHandle, _config.Address, buffer, buffer.Length, ref bytesRead)) {
+                Unhook();
+            }
 
             if (_config.Encoding == EncodingEnum.int32) {
                 return BitConverter.ToInt32(buffer, 0);
@@ -48,12 +50,12 @@ namespace TouhouSplits.Service.Hook.Impl
 
         public void Hook()
         {
-            if (_isHooked) {
+            if (IsHooked) {
                 return;
             }
             Process process = GetFirstRunningProcess(_config.ProcessNames);
             _processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
-            _isHooked = true;
+            IsHooked = true;
         }
 
         private static Process GetFirstRunningProcess(string[] processNames)
@@ -69,7 +71,7 @@ namespace TouhouSplits.Service.Hook.Impl
 
         public void Unhook()
         {
-            _isHooked = false;
+            IsHooked = false;
         }
     }
 }

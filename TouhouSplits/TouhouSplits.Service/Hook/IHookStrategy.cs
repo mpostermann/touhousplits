@@ -5,6 +5,7 @@ namespace TouhouSplits.Service.Hook
     {
         void Hook();
         void Unhook();
+        bool IsHooked { get; }
         long GetCurrentScore();
     }
 }
