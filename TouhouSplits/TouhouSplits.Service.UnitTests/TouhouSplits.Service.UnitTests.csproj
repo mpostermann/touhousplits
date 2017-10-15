@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Hook\Kernel32HookConfigTests.cs" />
+    <Compile Include="Config\HotkeyConfigTests.cs" />
     <Compile Include="Data\FileHandlerTests.cs" />
     <Compile Include="Data\GameIdTests.cs" />
     <Compile Include="Data\SegmentTests.cs" />
