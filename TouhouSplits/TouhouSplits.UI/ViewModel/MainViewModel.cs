@@ -47,6 +47,8 @@ namespace TouhouSplits.UI.ViewModel
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => _currentSplitsFile != null && !_dialogIsOpen);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling && !_dialogIsOpen);
+
+            RegisterHotkeys(configuration.Hotkeys);
         }
 
         private void RegisterHotkeys(IHotkeyConfig config)

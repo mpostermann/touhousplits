@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using TouhouSplits.Manager.Config;
@@ -41,7 +42,33 @@ namespace TouhouSplits.Service.Managers.Config
 
         private static IHotkeyConfig LoadHotkeyConfig()
         {
-            throw new NotImplementedException();
+            try {
+                FileInfo filepath = new FileInfo(Path.Combine(FilePaths.DIR_APP_CONFIG, "Hotkeys.xml"));
+                XDocument configDoc;
+                if (!filepath.Exists) {
+                    configDoc = CreateDefaultHotkeyXml(filepath);
+                }
+                else {
+                    configDoc = XDocument.Load(filepath.FullName);
+                }
+
+                return new HotkeyConfig(configDoc.Root);
+            }
+            catch (Exception e) {
+                throw new ConfigurationErrorsException("Could not load Hotkeys.xml configuration.", e);
+            }
+        }
+
+        private static XDocument CreateDefaultHotkeyXml(FileInfo filepath)
+        {
+            var configDoc = XDocument.Parse(Properties.Resources.Hotkeys);
+            try {
+                configDoc.Save(filepath.FullName);
+            }
+            catch {
+                //Do nothing
+            }
+            return configDoc;
         }
     }
 }
