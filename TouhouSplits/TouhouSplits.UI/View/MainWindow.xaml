@@ -24,7 +24,7 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="_Exit"/>
+                <MenuItem Header="_Exit" Command="{Binding ExitApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="_Splits">
                 <MenuItem Header="_Open Splits..." Command="{Binding OpenSplitCommand}"/>

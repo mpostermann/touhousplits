@@ -34,6 +34,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand PreviousSplitsCommand { get; private set; }
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
         public ICommand SplitToNextSegmentCommand { get; private set; }
+        public ICommand ExitApplicationCommand { get; private set; }
 
         public MainViewModel()
         {
@@ -50,6 +51,7 @@ namespace TouhouSplits.UI.ViewModel
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => _currentSplitsFile != null && !_dialogIsOpen);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling && !_dialogIsOpen);
+            ExitApplicationCommand = new RelayCommand(() => ExitApplication(), () => !_dialogIsOpen);
 
             RegisterHotkeys(configuration.Hotkeys);
         }
@@ -238,6 +240,18 @@ namespace TouhouSplits.UI.ViewModel
                 _currentSplitsFile = newSplitsFile;
                 _currentSplitsFile.Save();
             }
+        }
+
+        private void ExitApplication()
+        {
+            if (MainModel.IsPolling) {
+                var result = MessageBox.Show("Score polling is in progress. Are you sure you want to exit?", "Polling In Progress", MessageBoxButton.YesNo);
+                if (result != MessageBoxResult.Yes) {
+                    return;
+                }
+            }
+
+            Application.Current.Shutdown();
         }
     }       
 }
