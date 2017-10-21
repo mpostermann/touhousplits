@@ -342,8 +342,8 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             model.StopScorePoller();
-            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             Thread.Sleep(500);
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             Assert.False(eventCatcher.CaughtProperties.Contains("CurrentScore"));
         }
 
@@ -356,8 +356,8 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
             model.StopScorePoller();
-            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             Thread.Sleep(500);
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
             Assert.False(eventCatcher.CaughtProperties.Contains("IsNewPersonalBest"));
         }
 
