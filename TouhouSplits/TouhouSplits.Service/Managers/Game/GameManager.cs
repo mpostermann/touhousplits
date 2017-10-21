@@ -92,5 +92,14 @@ namespace TouhouSplits.Service.Managers.Game
             _favoriteSplitsSerializer.Serialize(favoriteSplitsPaths, _config.FavoriteSplitsList);
         }
 
+        public bool GameIsRunning()
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetCurrentScore()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

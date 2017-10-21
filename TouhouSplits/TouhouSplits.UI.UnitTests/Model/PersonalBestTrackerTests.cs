@@ -30,9 +30,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         private static ISplitsFacade DefaultSplitsFacade()
         {
             var facade = Substitute.For<ISplitsFacade>();
-            var hook = facade.LoadGameManager(Arg.Any<GameId>()).Hook;
-            hook.When(n => n.Hook()).Do(n => hook.IsHooked.Returns(true));
-            hook.When(n => n.Unhook()).Do(n => hook.IsHooked.Returns(false));
+            facade.LoadGameManager(Arg.Any<GameId>()).GameIsRunning().Returns(true);
             return facade;
         }
 
@@ -167,6 +165,17 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
+        public void StartScorePoller_Throws_Exception_If_Game_Is_Not_Running()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+
+            facade.LoadGameManager(Arg.Any<GameId>()).GameIsRunning().Returns(false);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            Assert.Throws<InvalidOperationException>(() => model.StartScorePoller());
+        }
+
+        [Fact]
         public void StartScorePoller_Resets_Builder_If_Polling_Is_Not_Already_Started()
         {
             var model = new PersonalBestTracker(Substitute.For<ISplitsFacade>());
@@ -222,7 +231,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             var builderMock = GetDefaultSplitsBuilder(1);
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
-            facade.LoadGameManager(new GameId("Game Id")).Hook.GetCurrentScore().Returns(12345);
+            facade.LoadGameManager(new GameId("Game Id")).GetCurrentScore().Returns(12345);
             Thread.Sleep(500);
             builderMock.Received().SetScoreForCurrentSegment(12345);
         }
@@ -314,7 +323,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
             model.StopScorePoller();
-            facade.LoadGameManager(new GameId("Game Id")).Hook.GetCurrentScore().Returns(12345);
+            facade.LoadGameManager(new GameId("Game Id")).GetCurrentScore().Returns(12345);
             Thread.Sleep(500);
             builderMock.DidNotReceive().SetScoreForCurrentSegment(12345);
         }
@@ -394,8 +403,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
 
-            var hook = facade.LoadGameManager(Arg.Any<GameId>()).Hook;
-            hook.IsHooked.Returns(false);
+            facade.LoadGameManager(Arg.Any<GameId>()).GameIsRunning().Returns(false);
             Thread.Sleep(500);
             Assert.False(model.IsPolling);
         }

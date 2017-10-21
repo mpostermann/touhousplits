@@ -87,7 +87,7 @@ namespace TouhouSplits.UI.Model
         public long CurrentScore {
             get {
                 if (IsPolling) {
-                    return _gameManager.Hook.GetCurrentScore();
+                    return _gameManager.GetCurrentScore();
                 }
                 return -1;
             }
@@ -112,8 +112,11 @@ namespace TouhouSplits.UI.Model
                 throw new InvalidOperationException("A personal best splits must be loaded before polling can start.");
             }
 
+            if (!_gameManager.GameIsRunning()) {
+                throw new InvalidOperationException("Game is not running.");
+            }
+
             _personalBestBuilder.Reset();
-            _gameManager.Hook.Hook();
 
             // Set a poller to check the updated score
             _timer = new Timer(
@@ -127,7 +130,7 @@ namespace TouhouSplits.UI.Model
 
         private void UpdateCurrentRecordingScore()
         {
-            if (!_gameManager.Hook.IsHooked) {
+            if (!_gameManager.GameIsRunning()) {
                 StopScorePoller();
             }
 
@@ -159,7 +162,6 @@ namespace TouhouSplits.UI.Model
                 return _personalBestBuilder.GetOutput();
             }
 
-            _gameManager.Hook.Unhook();
             if (_timer != null) {
                 _timer.Dispose();
                 _timer = null;
