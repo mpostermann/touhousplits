@@ -298,5 +298,82 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
             var splitsFile = CreateSplitsFile("some path", "Not matching game id");
             Assert.Throws<InvalidOperationException>(() => manager.AddOrUpdateFavorites(splitsFile));
         }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void GameIsRunning_Returns_Hook_GameIsRunning_Method(bool isRunning)
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var factory = Substitute.For<IHookStrategyFactory>();
+            var manager = new GameManager(
+                config,
+                factory,
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
+                Substitute.For<IFileSerializer<Splits>>());
+
+            factory.Create(config.HookConfig).GameIsRunning().Returns(isRunning);
+            Assert.Equal(isRunning, manager.GameIsRunning());
+        }
+
+        [Fact]
+        public void GetCurrentScore_Invokes_Hooks_Hook_Method_If_Game_Is_Not_Already_Hooked()
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var factory = Substitute.For<IHookStrategyFactory>();
+            var manager = new GameManager(
+                config,
+                factory,
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
+                Substitute.For<IFileSerializer<Splits>>());
+
+            var hook = factory.Create(config.HookConfig);
+            hook.GameIsRunning().Returns(true);
+            hook.IsHooked.Returns(false);
+
+            manager.GetCurrentScore();
+            hook.Received().Hook();
+        }
+
+        [Fact]
+        public void GetCurrentScore_Does_Not_Invoke_Hooks_Hook_Method_If_Game_Is_Already_Hooked()
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var factory = Substitute.For<IHookStrategyFactory>();
+            var manager = new GameManager(
+                config,
+                factory,
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
+                Substitute.For<IFileSerializer<Splits>>());
+
+            var hook = factory.Create(config.HookConfig);
+            hook.GameIsRunning().Returns(true);
+            hook.IsHooked.Returns(true);
+
+            manager.GetCurrentScore();
+            hook.DidNotReceive().Hook();
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(-1)]
+        [InlineData(23409823)]
+        public void GetCurrentScore_Returns_Hook_GetCurrentScore_Method(long score)
+        {
+            var config = CreateConfig("Some id", "Some game name");
+            var factory = Substitute.For<IHookStrategyFactory>();
+            var manager = new GameManager(
+                config,
+                factory,
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
+                Substitute.For<IFileSerializer<Splits>>());
+
+            var hook = factory.Create(config.HookConfig);
+            hook.GameIsRunning().Returns(true);
+            hook.GetCurrentScore().Returns(score);
+
+            Assert.Equal(score, manager.GetCurrentScore());
+        }
     }
 }
