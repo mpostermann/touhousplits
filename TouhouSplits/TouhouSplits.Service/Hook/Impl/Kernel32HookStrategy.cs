@@ -25,6 +25,17 @@ namespace TouhouSplits.Service.Hook.Impl
             IsHooked = false;
         }
 
+        public bool GameIsRunning()
+        {
+            try {
+                GetFirstRunningProcess(_config.ProcessNames);
+                return true;
+            }
+            catch {
+                return false;
+            }
+        }
+
         public long GetCurrentScore()
         {
             int bytesRead = 0;
