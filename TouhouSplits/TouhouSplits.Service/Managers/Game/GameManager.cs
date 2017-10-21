@@ -11,11 +11,11 @@ namespace TouhouSplits.Service.Managers.Game
     public class GameManager : IGameManager
     {
         private IGameConfig _config;
+        private IHookStrategy _hook;
         private IFileSerializer<List<string>> _favoriteSplitsSerializer;
 
         public GameId Id { get { return _config.Id; } }
         public string GameName { get { return _config.GameName; } } 
-        public IHookStrategy Hook { get; private set; } 
         public IList<IFileHandler<ISplits>> FavoriteSplits { get; private set; }
         public bool FavoriteSplitsFileLoaded { get; private set; }
 
@@ -27,7 +27,7 @@ namespace TouhouSplits.Service.Managers.Game
         {
             _config = config;
             _favoriteSplitsSerializer = favoriteSplitsSerializer;
-            Hook = hookFactory.Create(config.HookConfig);
+            _hook = hookFactory.Create(config.HookConfig);
             SetFavoriteSplits(_config.FavoriteSplitsList, _favoriteSplitsSerializer, splitsSerializer);
         }
 
@@ -94,12 +94,15 @@ namespace TouhouSplits.Service.Managers.Game
 
         public bool GameIsRunning()
         {
-            throw new NotImplementedException();
+            return _hook.GameIsRunning();
         }
 
         public long GetCurrentScore()
         {
-            throw new NotImplementedException();
+            if (!_hook.IsHooked) {
+                _hook.Hook();
+            }
+            return _hook.GetCurrentScore();
         }
     }
 }
