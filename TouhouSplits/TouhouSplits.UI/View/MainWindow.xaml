@@ -46,7 +46,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Label Content="{Binding MainModel.CurrentScore}"></Label>
+            <Label Content="{Binding MainModel.CurrentScore, Converter={StaticResource ScoreConverter}}"></Label>
         </StackPanel>
     </Grid>
 </Window>
