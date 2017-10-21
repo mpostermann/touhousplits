@@ -24,10 +24,10 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="_Exit" Command="{Binding ExitApplicationCommand}"/>
                 <MenuItem Header="_Open Splits..." Command="{Binding OpenSplitCommand}"/>
                 <MenuItem Header="_New Splits..." Command="{Binding NewSplitCommand}" />
                 <MenuItem Header="_Edit Splits..." Command="{Binding EditSplitCommand}" />
+                <MenuItem Header="_Exit" Command="{Binding ExitApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="_Game">
                 <MenuItem Header="Start _Recording Split" Command="{Binding StartOrStopRecordingSplitsCommand}"/>
