@@ -32,9 +32,9 @@ namespace TouhouSplits.Service.Hook
                 case "kernel32ptrhookstrategy":
                     var ptrconfig = new Kernel32PtrHookConfig(configElement);
                     return new Kernel32PtrHookStrategy(ptrconfig, new Kernel32MemoryReader());
-                case "touhou32ptrhookstrategy":
+                case "touhouptrhookstrategy":
                     var thconfig = new Kernel32PtrHookConfig(configElement);
-                    return new Touhou32PtrHookStrategy(thconfig, new Kernel32MemoryReader());
+                    return new TouhouPtrHookStrategy(thconfig, new Kernel32MemoryReader());
                 default:
                     throw new NotSupportedException(string.Format("Unknown hook strategy {0}", strategyType));
             }

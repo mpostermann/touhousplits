@@ -7,7 +7,7 @@
         </Game>
         <Game id="th08" favoriteslist="th08.trs">
             <Name>Touhou 8: Imperishable Night</Name>
-            <Hook strategy="Touhou32PtrHookStrategy" process="th08|th08e" address="0120F510" offset="8" encoding="int32"/>
+            <Hook strategy="TouhouPtrHookStrategy" process="th08|th08e" address="0120F510" offset="8" encoding="int32"/>
         </Game>
     </Games>
 </Configuration>
