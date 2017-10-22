@@ -3,12 +3,12 @@ using TouhouSplits.Service.Hook.Reader;
 
 namespace TouhouSplits.Service.Hook.Impl
 {
-    public class Kernel32HookStrategy : Kernel32BaseHookStrategy
+    public class Kernel32StaticHookStrategy : Kernel32BaseHookStrategy
     {
         private EncodingEnum _encoding;
         private int _memoryAddress;
 
-        public Kernel32HookStrategy(IKernel32HookConfig config, IKernel32MemoryReader memoryReader)
+        public Kernel32StaticHookStrategy(IKernel32HookConfig config, IKernel32MemoryReader memoryReader)
             : base(config.ProcessNames, memoryReader)
         {
             _encoding = config.Encoding;

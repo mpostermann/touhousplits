@@ -69,7 +69,7 @@
     <Compile Include="Hook\Reader\IGameProcess.cs" />
     <Compile Include="Hook\Reader\IKernel32MemoryReader.cs" />
     <Compile Include="Hook\Impl\Kernel32BaseHookStrategy.cs" />
-    <Compile Include="Hook\Impl\Kernel32HookStrategy.cs" />
+    <Compile Include="Hook\Impl\Kernel32StaticHookStrategy.cs" />
     <Compile Include="Hook\Impl\Touhou32PtrHookStrategy.cs" />
     <Compile Include="Hook\Reader\Kernel32MemoryReader.cs" />
     <Compile Include="ISplitsFacade.cs" />

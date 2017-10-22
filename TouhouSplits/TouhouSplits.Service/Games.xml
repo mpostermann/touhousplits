@@ -3,7 +3,11 @@
     <Games>
         <Game id="th06" favoriteslist="th06.trs">
             <Name>Touhou 6: the Embodiment of Scarlet Devil</Name>
-            <Hook strategy="Kernel32HookStrategy" process="東方紅魔郷|th06e|“Œ•ûg–‚‹½" address="0069BCA4" encoding="int32"/>
+            <Hook strategy="Kernel32StaticHookStrategy" process="東方紅魔郷|th06e|“Œ•ûg–‚‹½" address="0069BCA4" encoding="int32"/>
+        </Game>
+        <Game id="th08" favoriteslist="th08.trs">
+            <Name>Touhou 8: Imperishable Night</Name>
+            <Hook strategy="Touhou32PtrHookStrategy" process="th08|th08e" address="0120F510" offset="8" encoding="int32"/>
         </Game>
     </Games>
 </Configuration>

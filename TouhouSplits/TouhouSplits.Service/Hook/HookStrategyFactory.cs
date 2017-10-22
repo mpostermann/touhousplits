@@ -26,9 +26,9 @@ namespace TouhouSplits.Service.Hook
         {
             string strategyType = configElement.Attribute("strategy").Value.Trim().ToLower();
             switch (strategyType) {
-                case "kernel32hookstrategy":
+                case "kernel32statichookstrategy":
                     var config = new Kernel32HookConfig(configElement);
-                    return new Kernel32HookStrategy(config, new Kernel32MemoryReader());
+                    return new Kernel32StaticHookStrategy(config, new Kernel32MemoryReader());
                 case "touhou32ptrhookstrategy":
                     var ptrconfig = new Kernel32PtrHookConfig(configElement);
                     return new Touhou32PtrHookStrategy(ptrconfig);
