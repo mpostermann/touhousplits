@@ -75,6 +75,13 @@
                 <DataTrigger Binding="{Binding MainModel.IsNewPersonalBest}" Value="True">
                     <Setter Property="Control.Foreground" Value="#65f156"/>
                 </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding MainModel.IsNewPersonalBest}" Value="False"/>
+                        <Condition Binding="{Binding MainModel.IsPolling}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Control.Foreground" Value="#ff5d5d"/>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
