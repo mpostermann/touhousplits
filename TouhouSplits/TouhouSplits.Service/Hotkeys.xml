@@ -2,6 +2,8 @@
 <Hotkeys>
 	<Hotkey method="ToggleHotkeys" keys="Add" />
 	<Hotkey method="StartOrStopRecordingSplits" keys="NumPad7" />
-	<Hotkey method="SplitToNextSegment" keys="NumPad0" />
+    <Hotkey method="StartOrStopRecordingSplits" keys="Home" />
+    <Hotkey method="SplitToNextSegment" keys="NumPad0" />
+    <Hotkey method="SplitToNextSegment" keys="Insert" />
 </Hotkeys>
 
