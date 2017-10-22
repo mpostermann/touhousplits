@@ -15,7 +15,7 @@ namespace TouhouSplits.Service.Hook.Impl
 
         protected IKernel32MemoryReader MemoryReader { get; private set; }
 
-        protected Process HookedProcess { get; private set; }
+        protected IGameProcess HookedProcess { get; private set; }
 
         public Kernel32BaseHookStrategy(ICollection<string> processNames, IKernel32MemoryReader memoryReader)
         {
@@ -48,10 +48,10 @@ namespace TouhouSplits.Service.Hook.Impl
             HookedProcess = GetFirstRunningProcess(ProcessNames, MemoryReader);
         }
 
-        private static Process GetFirstRunningProcess(ICollection<string> processNames, IKernel32MemoryReader memoryReader)
+        private static IGameProcess GetFirstRunningProcess(ICollection<string> processNames, IKernel32MemoryReader memoryReader)
         {
             foreach (string name in processNames) {
-                Process[] process = memoryReader.GetProcessesByName(name);
+                IGameProcess[] process = memoryReader.GetProcessesByName(name);
                 if (process.Length != 0) {
                     return process[0];
                 }

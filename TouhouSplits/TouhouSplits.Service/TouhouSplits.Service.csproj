@@ -65,6 +65,8 @@
     <Compile Include="Hook\EncodingEnum.cs" />
     <Compile Include="Hook\HookStrategyFactory.cs" />
     <Compile Include="Hook\IHookStrategyFactory.cs" />
+    <Compile Include="Hook\Reader\GameProcess.cs" />
+    <Compile Include="Hook\Reader\IGameProcess.cs" />
     <Compile Include="Hook\Reader\IKernel32MemoryReader.cs" />
     <Compile Include="Hook\Impl\Kernel32BaseHookStrategy.cs" />
     <Compile Include="Hook\Impl\Kernel32HookStrategy.cs" />

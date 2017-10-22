@@ -5,9 +5,9 @@ namespace TouhouSplits.Service.Hook.Reader
 {
     public interface IKernel32MemoryReader
     {
-        Process[] GetProcessesByName(string name);
+        IGameProcess[] GetProcessesByName(string name);
         IntPtr ProcessHandle(int dwProcessId);
-        int ReadInt(Process process, int memoryAddress);
-        long ReadLong(Process proces, int memoryAddress);
+        int ReadInt(IGameProcess process, int memoryAddress);
+        long ReadLong(IGameProcess proces, int memoryAddress);
     }
 }

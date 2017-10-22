@@ -14,9 +14,19 @@ namespace TouhouSplits.Service.Hook.Reader
         [DllImport("kernel32.dll")]
         private static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
-        public Process[] GetProcessesByName(string name)
+        public IGameProcess[] GetProcessesByName(string name)
         {
-            return Process.GetProcessesByName(name);
+            var processes = Process.GetProcessesByName(name);
+            int count = 0;
+            if (processes != null) {
+                count = processes.Length;
+            }
+
+            IGameProcess[] gameProcesses = new GameProcess[count];
+            for (int i = 0; i < count; i++) {
+                gameProcesses[0] = new GameProcess(processes[0]);
+            }
+            return gameProcesses;
         }
 
         public IntPtr ProcessHandle(int dwProcessId)
@@ -24,19 +34,19 @@ namespace TouhouSplits.Service.Hook.Reader
             return OpenProcess(PROCESS_WM_READ, false, dwProcessId);
         }
 
-        public int ReadInt(Process process, int memoryAddress)
+        public int ReadInt(IGameProcess process, int memoryAddress)
         {
             byte[] buffer = ReadBytes(process, memoryAddress, 4);
             return BitConverter.ToInt32(buffer, 0);
         }
 
-        public long ReadLong(Process process, int memoryAddress)
+        public long ReadLong(IGameProcess process, int memoryAddress)
         {
             byte[] buffer = ReadBytes(process, memoryAddress, 8);
             return BitConverter.ToInt64(buffer, 0);
         }
 
-        private byte[] ReadBytes(Process process, int memoryAddress, int numBytes)
+        private byte[] ReadBytes(IGameProcess process, int memoryAddress, int numBytes)
         {
             if (process == null || process.HasExited) {
                 throw new InvalidOperationException("Game is not running");
