@@ -8,7 +8,7 @@ namespace TouhouSplits.Service.Config
 {
     public class HotkeyConfig : IHotkeyConfig
     {
-        private Dictionary<string, Keys> _keyMap;
+        private Dictionary<string, IList<Keys>> _keyMap;
 
         public HotkeyConfig(XElement configElement)
         {
@@ -16,13 +16,13 @@ namespace TouhouSplits.Service.Config
                 throw new ConfigurationErrorsException(string.Format("Unexpected config element {0}", configElement.Name));
             }
 
-            _keyMap = new Dictionary<string, Keys>();
+            _keyMap = new Dictionary<string, IList<Keys>>();
             foreach (XElement hotkeyElement in configElement.Elements("Hotkey")) {
                 AddHotkey(_keyMap, hotkeyElement);
             }
         }
 
-        private static void AddHotkey(Dictionary<string, Keys> keyMap, XElement hotkeyElement)
+        private static void AddHotkey(Dictionary<string, IList<Keys>> keyMap, XElement hotkeyElement)
         {
             if (hotkeyElement.Attribute("method") == null || string.IsNullOrEmpty(hotkeyElement.Attribute("method").Value)) {
                 throw new ConfigurationErrorsException("Hotkey must have a non-empty \"method\" attribute.");
@@ -34,10 +34,10 @@ namespace TouhouSplits.Service.Config
             }
             Keys keys = ParseKeys(hotkeyElement.Attribute("keys").Value);
 
-            if (keyMap.ContainsKey(methodName)) {
-                throw new ConfigurationErrorsException(string.Format("Multiple hotkeys defined for the method \"{0}\"", methodName));
+            if (!keyMap.ContainsKey(methodName)) {
+                keyMap.Add(methodName, new List<Keys>());
             }
-            keyMap.Add(methodName, keys);
+            keyMap[methodName].Add(keys);
         }
 
         private static Keys ParseKeys(string value)
@@ -63,8 +63,7 @@ namespace TouhouSplits.Service.Config
 
         public IList<Keys> GetHotkeys(string method)
         {
-            throw new NotImplementedException();
-            //return _keyMap[method];
+            return _keyMap[method];
         }
 
         public bool HasHotkey(string method)
