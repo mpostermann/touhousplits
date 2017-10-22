@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using TouhouSplits.Service.Hook.Reader;
 
 namespace TouhouSplits.Service.Hook.Impl
 {
@@ -27,7 +28,7 @@ namespace TouhouSplits.Service.Hook.Impl
         public bool GameIsRunning()
         {
             try {
-                GetFirstRunningProcess(ProcessNames);
+                GetFirstRunningProcess(ProcessNames, MemoryReader);
                 return true;
             }
             catch {
@@ -44,13 +45,13 @@ namespace TouhouSplits.Service.Hook.Impl
         public virtual void Hook()
         {
             HookedProcess = null;
-            HookedProcess = GetFirstRunningProcess(ProcessNames);
+            HookedProcess = GetFirstRunningProcess(ProcessNames, MemoryReader);
         }
 
-        private static Process GetFirstRunningProcess(ICollection<string> processNames)
+        private static Process GetFirstRunningProcess(ICollection<string> processNames, IKernel32MemoryReader memoryReader)
         {
             foreach (string name in processNames) {
-                Process[] process = Process.GetProcessesByName(name);
+                Process[] process = memoryReader.GetProcessesByName(name);
                 if (process.Length != 0) {
                     return process[0];
                 }

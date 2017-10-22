@@ -1,7 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using TouhouSplits.Service.Config.Hook;
+﻿using TouhouSplits.Service.Config.Hook;
+using TouhouSplits.Service.Hook.Reader;
 
 namespace TouhouSplits.Service.Hook.Impl
 {

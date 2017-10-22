@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using TouhouSplits.Service.Config.Hook;
 using TouhouSplits.Service.Hook.Impl;
+using TouhouSplits.Service.Hook.Reader;
 
 namespace TouhouSplits.Service.Hook
 {

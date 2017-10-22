@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace TouhouSplits.Service.Hook
+namespace TouhouSplits.Service.Hook.Reader
 {
     public class Kernel32MemoryReader : IKernel32MemoryReader
     {
@@ -13,6 +13,11 @@ namespace TouhouSplits.Service.Hook
 
         [DllImport("kernel32.dll")]
         private static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+
+        public Process[] GetProcessesByName(string name)
+        {
+            return Process.GetProcessesByName(name);
+        }
 
         public IntPtr ProcessHandle(int dwProcessId)
         {

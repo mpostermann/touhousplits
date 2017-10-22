@@ -65,11 +65,11 @@
     <Compile Include="Hook\EncodingEnum.cs" />
     <Compile Include="Hook\HookStrategyFactory.cs" />
     <Compile Include="Hook\IHookStrategyFactory.cs" />
-    <Compile Include="Hook\IKernel32MemoryReader.cs" />
+    <Compile Include="Hook\Reader\IKernel32MemoryReader.cs" />
     <Compile Include="Hook\Impl\Kernel32BaseHookStrategy.cs" />
     <Compile Include="Hook\Impl\Kernel32HookStrategy.cs" />
     <Compile Include="Hook\Impl\Touhou32PtrHookStrategy.cs" />
-    <Compile Include="Hook\Kernel32MemoryReader.cs" />
+    <Compile Include="Hook\Reader\Kernel32MemoryReader.cs" />
     <Compile Include="ISplitsFacade.cs" />
     <Compile Include="Managers\Config\ConfigManager.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />
