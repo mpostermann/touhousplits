@@ -42,7 +42,7 @@ namespace TouhouSplits.Service.Hook.Impl
             }
         }
 
-        public virtual void Hook()
+        public void Hook()
         {
             HookedProcess = null;
             HookedProcess = GetFirstRunningProcess(ProcessNames, MemoryReader);
