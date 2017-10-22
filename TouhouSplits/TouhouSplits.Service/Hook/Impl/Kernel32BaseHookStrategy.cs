@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using TouhouSplits.Service.Hook.Reader;
 
 namespace TouhouSplits.Service.Hook.Impl
