@@ -59,7 +59,9 @@ namespace TouhouSplits.UI.ViewModel
         private void RegisterHotkeys(IHotkeyConfig config)
         {
             if (config.HasHotkey("ToggleHotkeys")) {
-                GlobalHotkeyManagerFactory.Instance.RegisterEnableToggleHotkey(config.GetHotkey("ToggleHotkeys"));
+                foreach (System.Windows.Forms.Keys keys in config.GetHotkeys("ToggleHotkeys")) {
+                    GlobalHotkeyManagerFactory.Instance.RegisterEnableToggleHotkey(keys);
+                }
             }
             RegisterSingleHotkey(config, "StartOrStopRecordingSplits", StartOrStopRecordingSplitsCommand);
             RegisterSingleHotkey(config, "SplitToNextSegment", SplitToNextSegmentCommand);
@@ -68,7 +70,9 @@ namespace TouhouSplits.UI.ViewModel
         private static void RegisterSingleHotkey(IHotkeyConfig config, string hotkeyName, ICommand command)
         {
             if (config.HasHotkey(hotkeyName)) {
-                GlobalHotkeyManagerFactory.Instance.RegisterHotkey(config.GetHotkey(hotkeyName), command);
+                foreach (System.Windows.Forms.Keys keys in config.GetHotkeys(hotkeyName)) {
+                    GlobalHotkeyManagerFactory.Instance.RegisterHotkey(keys, command);
+                }
             }
         }
 

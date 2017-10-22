@@ -42,16 +42,6 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void Constructor_Throws_Exception_If_Multiple_Hotkey_Nodes_Have_An_Equal_method_Attribute()
-        {
-            var xml = XElement.Parse(@"<Hotkeys>
-    <Hotkey method=""Method 1"" keys=""Add"" />
-    <Hotkey method=""Method 1"" keys=""NumPad7"" />
-</Hotkeys>");
-            Assert.Throws<ConfigurationErrorsException>(() => new HotkeyConfig(xml));
-        }
-
-        [Fact]
         public void Constructor_Throws_Exception_If_Hotkey_Node_Is_Missing_keys_Attribute()
         {
             var xml = DefaultXml();
@@ -83,21 +73,34 @@ namespace TouhouSplits.Service.UnitTests.Config
         }
 
         [Fact]
-        public void GetHotkey_Returns_Keys_Enum_For_keys_In_Xml()
+        public void GetHotkeys_Returns_Keys_Enum_For_keys_In_Xml()
         {
             var config = new HotkeyConfig(DefaultXml());
-            Assert.Equal(Keys.Add, config.GetHotkey("Method 1"));
-            Assert.Equal(Keys.NumPad7, config.GetHotkey("Method 2"));
+            Assert.Equal(Keys.Add, config.GetHotkeys("Method 1")[0]);
+            Assert.Equal(Keys.NumPad7, config.GetHotkeys("Method 2")[0]);
         }
 
         [Fact]
-        public void GetHotkey_Returns_Keys_Enum_For_keys_With_Modifiers()
+        public void GetHotkeys_Returns_Keys_Enum_For_keys_With_Modifiers()
         {
             var xml = XElement.Parse(@"<Hotkeys>
     <Hotkey method=""Method 1"" keys=""Shift+P"" />
 </Hotkeys>");
             var config = new HotkeyConfig(xml);
-            Assert.Equal(Keys.Shift | Keys.P, config.GetHotkey("Method 1"));
+            Assert.Equal(Keys.Shift | Keys.P, config.GetHotkeys("Method 1")[0]);
+        }
+
+        [Fact]
+        public void GetHotkeys_Returns_All_Keys_Enums_For_Methods_With_Multiple_Hotkeys()
+        {
+            var xml = XElement.Parse(@"<Hotkeys>
+    <Hotkey method=""Method 1"" keys=""Add"" />
+    <Hotkey method=""Method 1"" keys=""NumPad7"" />
+</Hotkeys>");
+            var config = new HotkeyConfig(xml);
+            Assert.Equal(1, config.GetHotkeys("Method 1").Count);
+            Assert.Contains(Keys.Add, config.GetHotkeys("Method 1"));
+            Assert.Contains(Keys.NumPad7, config.GetHotkeys("Method 1"));
         }
     }
 }

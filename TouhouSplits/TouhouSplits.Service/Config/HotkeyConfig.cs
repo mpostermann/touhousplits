@@ -61,9 +61,10 @@ namespace TouhouSplits.Service.Config
             return keys;
         }
 
-        public Keys GetHotkey(string method)
+        public IList<Keys> GetHotkeys(string method)
         {
-            return _keyMap[method];
+            throw new NotImplementedException();
+            //return _keyMap[method];
         }
 
         public bool HasHotkey(string method)
