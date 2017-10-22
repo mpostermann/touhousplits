@@ -24,15 +24,19 @@ namespace TouhouSplits.Service.Hook.Impl
                 Hook();
             }
 
-            IntPtr baseAddress = IntPtr.Add(HookedProcess.BaseAddress, _memoryAddress);
-            int nextAddress = MemoryReader.ReadInt(HookedProcess, baseAddress.ToInt32());
+            int nextAddress = IntPtr.Add(HookedProcess.BaseAddress, _memoryAddress).ToInt32();
 
-            for (int i = 0; i < _pointerOffsets.Length - 1; i++) {
-                nextAddress += _pointerOffsets[i];
+            int i = 0;
+            do {
                 nextAddress = MemoryReader.ReadInt(HookedProcess, nextAddress);
-            }
 
-            nextAddress += _pointerOffsets[_pointerOffsets.Length - 1];
+                if (i < _pointerOffsets.Length) {
+                    nextAddress += _pointerOffsets[i];
+                    i++;
+                }
+            }
+            while (i < _pointerOffsets.Length);
+
             if (_encoding == EncodingEnum.int32) {
                 return MemoryReader.ReadInt(HookedProcess, nextAddress);
             }
