@@ -98,7 +98,7 @@ namespace TouhouSplits.Service.UnitTests.Config
     <Hotkey method=""Method 1"" keys=""NumPad7"" />
 </Hotkeys>");
             var config = new HotkeyConfig(xml);
-            Assert.Equal(1, config.GetHotkeys("Method 1").Count);
+            Assert.Equal(2, config.GetHotkeys("Method 1").Count);
             Assert.Contains(Keys.Add, config.GetHotkeys("Method 1"));
             Assert.Contains(Keys.NumPad7, config.GetHotkeys("Method 1"));
         }
