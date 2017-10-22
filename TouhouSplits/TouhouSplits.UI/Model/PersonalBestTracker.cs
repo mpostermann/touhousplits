@@ -37,6 +37,7 @@ namespace TouhouSplits.UI.Model
             SplitsName = splitsName;
             _personalBestBuilder = personalBestSplits;
             NotifyPropertyChanged("RecordingSplits");
+            NotifyPropertyChanged("CurrentScore");
         }
 
         private string _gameName;
@@ -88,6 +89,12 @@ namespace TouhouSplits.UI.Model
             get {
                 if (IsPolling) {
                     return _gameManager.GetCurrentScore();
+                }
+                else if (_personalBestBuilder != null) {
+                    var score = _personalBestBuilder.GetOutput().EndingSegment.Score;
+                    if (score > 0) {
+                        return score;
+                    }
                 }
                 return -1;
             }

@@ -121,12 +121,24 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void Get_CurrentScore_Returns_Negative_One_If_Game_Is_Not_Polling()
+        public void Get_CurrentScore_Returns_Negative_One_If_Game_Is_Not_Polling_And_No_Builder_Is_Loaded()
         {
             var model = new PersonalBestTracker(DefaultSplitsFacade());
 
             model.StopScorePoller();
             Assert.Equal(-1, model.CurrentScore);
+        }
+
+        [Fact]
+        public void Get_CurrentScore_Returns_PersonalBestBuilder_Score_If_Game_Is_Not_Polling()
+        {
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
+
+            var builder = GetDefaultSplitsBuilder(1);
+            builder.GetOutput().EndingSegment.Score.Returns(12345);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builder);
+            model.StopScorePoller();
+            Assert.Equal(12345, model.CurrentScore);
         }
 
         [Theory]
