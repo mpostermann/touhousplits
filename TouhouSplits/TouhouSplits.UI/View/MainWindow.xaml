@@ -1,6 +1,8 @@
 ﻿<Window x:Class="TouhouSplits.UI.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:toolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
+        xmlns:exttoolkit="clr-namespace:TouhouSplits.UI.Control.DataGrid"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI"
@@ -85,15 +87,14 @@
         <StackPanel Grid.Row="1">
             <Label Style="{StaticResource labelStyle}" Content="{Binding MainModel.GameName, FallbackValue='Open a split!'}"></Label>
             <Label Style="{StaticResource labelStyle}"  Content="{Binding MainModel.SplitsName}"></Label>
-            <ListView Style="{StaticResource listViewStyle}" ItemContainerStyle="{StaticResource listViewItemStyle}" ItemsSource="{Binding MainModel.RecordingSplits}" AlternationCount="2">
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource listViewHeaderStyle}" AllowsColumnReorder="True">
-                        <GridViewColumn Header="Segment" DisplayMemberBinding="{Binding SegmentName}"/>
-                        <GridViewColumn Header="Score" DisplayMemberBinding="{Binding RecordingScore, Converter={StaticResource ScoreConverter}}"/>
-                        <GridViewColumn Header="PB" DisplayMemberBinding="{Binding PersonalBestScore}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <DataGrid Name="ScoresDataGrid" ItemsSource="{Binding MainModel.RecordingSplits}" AutoGenerateColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="5*" Header="Segment" Binding="{Binding SegmentName}" CanUserReorder="False"/>
+                    <DataGridTextColumn Width="3*" Header="Score" Binding="{Binding RecordingScore, Converter={StaticResource ScoreConverter}}" CanUserReorder="False"/>
+                    <DataGridTextColumn Width="3*" Header="PB" Binding="{Binding PersonalBestScore}" CanUserReorder="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
             <Label Style="{StaticResource scoreStyle}" Content="{Binding MainModel.CurrentScore, Converter={StaticResource ScoreConverter}}"></Label>
         </StackPanel>
     </Grid>
