@@ -75,6 +75,7 @@
     <Compile Include="Data\SplitsTests.cs" />
     <Compile Include="Hook\Impl\FakeKernel32BaseHookStrategy.cs" />
     <Compile Include="Hook\Impl\Kernel32BaseHookStrategyTests.cs" />
+    <Compile Include="Hook\Impl\Kernel32StaticHookStrategyTests.cs" />
     <Compile Include="Managers\Game\GameManagerTests.cs" />
     <Compile Include="Managers\SplitsBuilder\PersonalBestSplitsBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
