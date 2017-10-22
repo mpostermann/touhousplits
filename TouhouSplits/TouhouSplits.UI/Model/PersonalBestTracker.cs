@@ -14,11 +14,13 @@ namespace TouhouSplits.UI.Model
         private ISplitsFacade _facade;
         private IGameManager _gameManager;
         private ISplitsBuilder _personalBestBuilder;
+        private long _initialPollingScore;
         private Timer _timer;
 
         public PersonalBestTracker(ISplitsFacade facade)
         {
             _facade = facade;
+            _initialPollingScore = -1;
             IsPolling = false;
         }
 
@@ -36,6 +38,7 @@ namespace TouhouSplits.UI.Model
             GameName = _gameManager.GameName;
             SplitsName = splitsName;
             _personalBestBuilder = personalBestSplits;
+            _initialPollingScore = -1;
             NotifyPropertyChanged("RecordingSplits");
             NotifyPropertyChanged("CurrentScore");
         }
@@ -88,7 +91,11 @@ namespace TouhouSplits.UI.Model
         public long CurrentScore {
             get {
                 if (IsPolling) {
-                    return _gameManager.GetCurrentScore();
+                    long score = _gameManager.GetCurrentScore();
+                    if (GameHasStartedRun(score)) {
+                        return 0;
+                    }
+                    return score;
                 }
                 else if (_personalBestBuilder != null) {
                     var score = _personalBestBuilder.GetOutput().EndingSegment.Score;
@@ -98,6 +105,16 @@ namespace TouhouSplits.UI.Model
                 }
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// In some games (for example Touhou 6), after finishing a run and returning to the main menu, the score in memory will
+        /// still read your score from the previous run. This method determines whether a new run has started by checking whether
+        /// this score has changed or not.
+        /// </summary>
+        private bool GameHasStartedRun(long currentScore)
+        {
+            return currentScore == _initialPollingScore;
         }
 
         public bool IsNewPersonalBest {
@@ -124,6 +141,7 @@ namespace TouhouSplits.UI.Model
             }
 
             _personalBestBuilder.Reset();
+            _initialPollingScore = _gameManager.GetCurrentScore();
 
             // Set a poller to check the updated score
             _timer = new Timer(

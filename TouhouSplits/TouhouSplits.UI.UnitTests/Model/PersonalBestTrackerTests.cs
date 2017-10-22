@@ -419,5 +419,38 @@ namespace TouhouSplits.UI.UnitTests.Model
             Thread.Sleep(500);
             Assert.False(model.IsPolling);
         }
+
+        /// <summary>
+        /// In some games (for example Touhou 6), after finishing a run and returning to the main menu, the score in memory will
+        /// still read your score from the prevous run. This test and the next test is to check that the PersonalBestTracker
+        /// can detect this and returns an initial score of 0 even when this occurs.
+        /// </summary>
+        [Fact]
+        public void CurrentScore_Is_Zero_After_StartPolling_Is_Called_Even_If_GameManager_Is_Greater_Than_Zero()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+
+            facade.LoadGameManager(Arg.Any<GameId>()).GetCurrentScore().Returns(12345);
+            model.StartScorePoller();
+            Thread.Sleep(500);
+            Assert.Equal(0, model.CurrentScore);
+        }
+
+        [Fact]
+        public void CurrentScore_Is_Invokes_GameManager_CurrentScore_After_StartPolling_Is_Called_And_Score_Changes_From_Initial_Value()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+
+            facade.LoadGameManager(Arg.Any<GameId>()).GetCurrentScore().Returns(12345);
+            model.StartScorePoller();
+            Thread.Sleep(500);
+            facade.LoadGameManager(Arg.Any<GameId>()).GetCurrentScore().Returns(67890);
+            Thread.Sleep(500);
+            Assert.Equal(67890, model.CurrentScore);
+        }
     }
 }
