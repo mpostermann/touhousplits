@@ -50,7 +50,7 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
         {
             var memoryReader = DefaultMemoryReader("process1", baseAddress);
             var strategy = new Kernel32PtrHookStrategy(
-                DefaultConfig("process1", baseAddress, new int[0], EncodingEnum.int32),
+                DefaultConfig("process1", pointerAddress, new int[0], EncodingEnum.int32),
                 memoryReader);
 
             memoryReader
@@ -118,7 +118,7 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
         {
             var memoryReader = DefaultMemoryReader("process1", baseAddress);
             var strategy = new Kernel32PtrHookStrategy(
-                DefaultConfig("process1", baseAddress, new int[0], EncodingEnum.int64),
+                DefaultConfig("process1", pointerAddress, new int[0], EncodingEnum.int64),
                 memoryReader);
 
             memoryReader
