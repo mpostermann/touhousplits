@@ -14,16 +14,22 @@ namespace TouhouSplits.Service.Config.Hook
 
         private static int[] ParseOffsets(XElement configElement)
         {
-            if (configElement.Attribute("offset") == null ||
-                string.IsNullOrEmpty(configElement.Attribute("offset").Value)) {
-                throw new ConfigurationErrorsException("Attribute \"offset\" is missing");
+            if (configElement.Attribute("offsets") == null ||
+                string.IsNullOrEmpty(configElement.Attribute("offsets").Value)) {
+                throw new ConfigurationErrorsException("Attribute \"offsets\" is missing");
             }
             try {
-                throw new NotImplementedException();
-                //return int.Parse(configElement.Attribute("offset").Value, System.Globalization.NumberStyles.Integer);
+                string[] offsetStrings = configElement.Attribute("offsets").Value.Split('|');
+
+                int[] offsets = new int[offsetStrings.Length];
+                for (int i = 0; i < offsetStrings.Length; i++) {
+                    int offset = int.Parse(offsetStrings[i], System.Globalization.NumberStyles.Integer);
+                    offsets[i] = offset;
+                }
+                return offsets;
             }
             catch (Exception e) {
-                throw new ConfigurationErrorsException("Cannot parse \"offset\" attribute as an int.", e);
+                throw new ConfigurationErrorsException("Cannot parse \"offsets\" attribute as a series of ints.", e);
             }
         }
 

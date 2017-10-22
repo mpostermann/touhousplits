@@ -29,6 +29,14 @@ namespace TouhouSplits.Service.UnitTests.Config.Hook
         }
 
         [Fact]
+        public void Constructor_Throws_Exception_If_offsets_Attribute_Cannot_Be_Parsed_As_Int()
+        {
+            XElement xml = DefaultValidXml();
+            xml.SetAttributeValue("offsets", "AE");
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32PtrHookConfig(xml));
+        }
+
+        [Fact]
         public void PointerOffsets_Returns_Pipe_Delimited_Ints_From_offsets_Attribute()
         {
             var config = new Kernel32PtrHookConfig(DefaultValidXml());
