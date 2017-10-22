@@ -80,6 +80,7 @@
     </ApplicationDefinition>
     <Compile Include="Control\DataGrid\DataGridLongColumn.cs" />
     <Compile Include="Converter\AdditionConverter.cs" />
+    <Compile Include="Converter\IsGreaterThanOrEqualConverter.cs" />
     <Compile Include="Converter\ScoreConverter.cs" />
     <Compile Include="Hotkey\GlobalHotkeyManager.cs" />
     <Compile Include="Hotkey\GlobalHotkeyManagerFactory.cs" />
