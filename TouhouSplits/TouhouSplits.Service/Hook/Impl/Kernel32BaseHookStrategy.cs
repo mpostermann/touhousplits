@@ -14,13 +14,12 @@ namespace TouhouSplits.Service.Hook.Impl
 
         protected IKernel32MemoryReader MemoryReader { get; private set; }
 
-        protected IntPtr ProcessHandle { get; private set; }
+        protected Process HookedProcess { get; private set; }
 
         public Kernel32BaseHookStrategy(ICollection<string> processNames, IKernel32MemoryReader memoryReader)
         {
             _processNames = processNames;
             MemoryReader = memoryReader;
-            IsHooked = false;
         }
 
         public abstract long GetCurrentScore();
@@ -36,16 +35,16 @@ namespace TouhouSplits.Service.Hook.Impl
             }
         }
 
-        public bool IsHooked { get; private set; }
+        public bool IsHooked {
+            get {
+                return HookedProcess != null && !HookedProcess.HasExited;
+            }
+        }
 
         public virtual void Hook()
         {
-            if (IsHooked) {
-                return;
-            }
-            Process process = GetFirstRunningProcess(ProcessNames);
-            ProcessHandle = MemoryReader.ProcessHandle(process.Id);
-            IsHooked = true;
+            HookedProcess = null;
+            HookedProcess = GetFirstRunningProcess(ProcessNames);
         }
 
         private static Process GetFirstRunningProcess(ICollection<string> processNames)
@@ -61,7 +60,7 @@ namespace TouhouSplits.Service.Hook.Impl
 
         public void Unhook()
         {
-            IsHooked = false;
+            HookedProcess = null;
         }
     }
 }

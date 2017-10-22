@@ -19,11 +19,15 @@ namespace TouhouSplits.Service.Hook.Impl
 
         public override long GetCurrentScore()
         {
+            if (!IsHooked) {
+                Hook();
+            }
+
             if (_encoding == EncodingEnum.int32) {
-                return MemoryReader.ReadInt(ProcessHandle, _memoryAddress);
+                return MemoryReader.ReadInt(HookedProcess, _memoryAddress);
             }
             else {
-                return MemoryReader.ReadLong(ProcessHandle, _memoryAddress);
+                return MemoryReader.ReadLong(HookedProcess, _memoryAddress);
             }
         }
     }

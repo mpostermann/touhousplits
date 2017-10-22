@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace TouhouSplits.Service.Hook
@@ -18,22 +19,27 @@ namespace TouhouSplits.Service.Hook
             return OpenProcess(PROCESS_WM_READ, false, dwProcessId);
         }
 
-        public int ReadInt(IntPtr processHandle, int memoryAddress)
+        public int ReadInt(Process process, int memoryAddress)
         {
-            byte[] buffer = ReadBytes(processHandle, memoryAddress, 4);
+            byte[] buffer = ReadBytes(process, memoryAddress, 4);
             return BitConverter.ToInt32(buffer, 0);
         }
 
-        public long ReadLong(IntPtr processHandle, int memoryAddress)
+        public long ReadLong(Process process, int memoryAddress)
         {
-            byte[] buffer = ReadBytes(processHandle, memoryAddress, 8);
+            byte[] buffer = ReadBytes(process, memoryAddress, 8);
             return BitConverter.ToInt64(buffer, 0);
         }
 
-        private static byte[] ReadBytes(IntPtr processHandle, int memoryAddress, int numBytes)
+        private byte[] ReadBytes(Process process, int memoryAddress, int numBytes)
         {
+            if (process == null || process.HasExited) {
+                throw new InvalidOperationException("Game is not running");
+            }
+
             byte[] buffer = new byte[numBytes];
             int bytesRead = 0;
+            IntPtr processHandle = this.ProcessHandle(process.Id);
             if (!ReadProcessMemory((int)processHandle, memoryAddress, buffer, buffer.Length, ref bytesRead)) {
                 throw new InvalidOperationException("Read process memory failed");
             }
