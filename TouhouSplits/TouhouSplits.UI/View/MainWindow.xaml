@@ -55,6 +55,11 @@
         </Style>
         <Style BasedOn="{StaticResource baseStyle}" x:Key="scoreStyle">
             <Setter Property="Control.FontSize" Value="26"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding MainModel.IsNewPersonalBest}" Value="True">
+                    <Setter Property="Control.Foreground" Value="#65f156"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
     <Grid Style="{StaticResource gridStyle}">
