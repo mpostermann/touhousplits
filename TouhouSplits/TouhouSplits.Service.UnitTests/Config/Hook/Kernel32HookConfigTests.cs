@@ -8,7 +8,7 @@ namespace TouhouSplits.Service.UnitTests.Config.Hook
     public class Kernel32HookConfigTests
     {
         private static XElement DefaultValidXml() {
-            return XElement.Parse(@"<Hook strategy=""Kernel32HookStrategy"" process=""process1|process2"" address=""0069BCA4"" encoding=""int32""/>");
+            return XElement.Parse(@"<Hook strategy=""Kernel32StaticHookStrategy"" process=""process1|process2"" address=""0069BCA4"" encoding=""int32""/>");
         }
 
         [Fact]

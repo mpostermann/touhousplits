@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Hook\Kernel32HookConfigTests.cs" />
+    <Compile Include="Config\Hook\Kernel32PtrHookConfigTests.cs" />
     <Compile Include="Config\HotkeyConfigTests.cs" />
     <Compile Include="Data\FileHandlerTests.cs" />
     <Compile Include="Data\GameIdTests.cs" />
