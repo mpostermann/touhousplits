@@ -6,5 +6,6 @@ namespace TouhouSplits.Service.Hook.Reader
     {
         bool HasExited { get; }
         int Id { get; }
+        IntPtr BaseAddress { get; }
     }
 }

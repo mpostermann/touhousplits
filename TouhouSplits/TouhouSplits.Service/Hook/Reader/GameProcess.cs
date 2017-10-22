@@ -24,6 +24,12 @@ namespace TouhouSplits.Service.Hook.Reader
             }
         }
 
+        public IntPtr BaseAddress {
+            get {
+                return _process.MainModule.BaseAddress;
+            }
+        }
+
         public void Dispose()
         {
             if (_process != null) {
