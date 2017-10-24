@@ -39,7 +39,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>TouhouSplitsIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Images\TouhouSplitsIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=bb738e8c4ab8c76c, processorArchitecture=MSIL">
@@ -156,7 +156,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="TouhouSplitsIcon.ico" />
+    <Resource Include="Resources\Images\TouhouSplitsIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\warning.png" />
