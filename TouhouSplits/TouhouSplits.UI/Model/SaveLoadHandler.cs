@@ -67,9 +67,8 @@ namespace TouhouSplits.UI.Model
             try {
                 _currentSplitsFile.Close();
                 _currentSplitsFile = newSplitsFile;
-                HasUnsavedChanges = true;
-                //_currentSplitsFile.Save();
-                //HasUnsavedChanges = false;
+                _currentSplitsFile.Save();
+                HasUnsavedChanges = false;
             }
             catch (Exception e) {
                 _currentSplitsFile = newSplitsFile;
