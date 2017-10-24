@@ -91,6 +91,7 @@
     <Compile Include="Hotkey\IGlobalHotkeyManager.cs" />
     <Compile Include="Hotkey\IGlobalKeyboardHook.cs" />
     <Compile Include="Model\PersonalBestTracker.cs" />
+    <Compile Include="Model\SaveLoadHandler.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
