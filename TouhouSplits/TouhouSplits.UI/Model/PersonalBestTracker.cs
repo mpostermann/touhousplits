@@ -31,6 +31,7 @@ namespace TouhouSplits.UI.Model
 
         public void LoadPersonalBest(GameId gameId, string splitsName, ISplitsBuilder personalBestSplits)
         {
+            StopScorePoller();
             if (_gameManager == null || _gameManager.Id != gameId) {
                 _gameManager = _facade.LoadGameManager(gameId);
             }
@@ -186,6 +187,11 @@ namespace TouhouSplits.UI.Model
 
         public ISplits StopScorePoller()
         {
+            if (_timer != null) {
+                _timer.Dispose();
+                _timer = null;
+            }
+
             if (!IsPolling) {
                 if (_personalBestBuilder == null) {
                     return null;
@@ -193,12 +199,7 @@ namespace TouhouSplits.UI.Model
                 return _personalBestBuilder.GetOutput();
             }
 
-            if (_timer != null) {
-                _timer.Dispose();
-                _timer = null;
-            }
             IsPolling = false;
-
             return _personalBestBuilder.GetOutput();
         }
     }
