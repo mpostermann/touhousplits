@@ -14,6 +14,7 @@
     <Window.Resources>
         <conv:ScoreConverter x:Key="ScoreConverter"/>
         <conv:IsGreaterThanOrEqualConverter x:Key="IsGreaterThanOrEqualConverter"/>
+        <BitmapImage UriSource="pack://application:,,,/Resources/Images/warning.png" x:Key="WarningImage"/>
         <Style x:Key="baseStyle">
             <Setter Property="Control.Background" Value="#172123"/>
             <Setter Property="Control.FontSize" Value="16"/>
@@ -86,6 +87,7 @@
         </Style>
         <Style BasedOn="{StaticResource baseStyle}" TargetType="{x:Type Button}" x:Key="warningStyle">
             <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="Foreground" Value="Yellow"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -147,11 +149,18 @@
             </DataGrid>
             <Label Style="{StaticResource scoreStyle}" Content="{Binding MainModel.CurrentScore, Converter={StaticResource ScoreConverter}}"></Label>
             <Button Style="{StaticResource warningStyle}" Command="{Binding SaveCurrentSplitsAsCommand}">
-                <TextBlock TextWrapping="Wrap">
-                    <TextBlock.Text>
-                        <Binding Path="FileModel.FileName" StringFormat="Warning: Saving of splits file '{0}' failed. Click here to save to a new location."/>
-                    </TextBlock.Text>
-                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Source="{StaticResource WarningImage}" Width="20" Height="20" />
+                    <TextBlock Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center">
+                        <TextBlock.Text>
+                            <Binding Path="FileModel.FileName" StringFormat="Auto-saving of splits file '{0}' failed. Click here to save to a new location."/>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
             </Button>
         </StackPanel>
     </Grid>

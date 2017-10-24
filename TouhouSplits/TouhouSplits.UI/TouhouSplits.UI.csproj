@@ -158,6 +158,9 @@
   <ItemGroup>
     <Resource Include="TouhouSplitsIcon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
