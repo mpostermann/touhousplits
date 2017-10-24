@@ -92,7 +92,7 @@ namespace TouhouSplits.UI.Model
             get {
                 if (IsPolling) {
                     long score = _gameManager.GetCurrentScore();
-                    if (GameHasStartedRun(score)) {
+                    if (!GameHasStartedRun(score)) {
                         return 0;
                     }
                     return score;
@@ -114,7 +114,7 @@ namespace TouhouSplits.UI.Model
         /// </summary>
         private bool GameHasStartedRun(long currentScore)
         {
-            return currentScore == _initialPollingScore;
+            return currentScore != _initialPollingScore;
         }
 
         public bool IsNewPersonalBest {
