@@ -192,14 +192,10 @@ namespace TouhouSplits.UI.Model
                 _timer = null;
             }
 
-            if (!IsPolling) {
-                if (_personalBestBuilder == null) {
-                    return null;
-                }
-                return _personalBestBuilder.GetOutput();
-            }
-
             IsPolling = false;
+            if (_personalBestBuilder == null) {
+                return null;
+            }
             return _personalBestBuilder.GetOutput();
         }
     }
