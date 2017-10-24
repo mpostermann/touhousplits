@@ -84,6 +84,33 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+        <Style BasedOn="{StaticResource baseStyle}" TargetType="{x:Type Button}" x:Key="warningStyle">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkGoldenrod"/>
+                </Trigger>
+                <DataTrigger Binding="{Binding FileModel.HasUnsavedChanges}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FileModel.HasUnsavedChanges}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid Style="{StaticResource gridStyle}">
         <Grid.RowDefinitions>
@@ -119,6 +146,13 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Label Style="{StaticResource scoreStyle}" Content="{Binding MainModel.CurrentScore, Converter={StaticResource ScoreConverter}}"></Label>
+            <Button Style="{StaticResource warningStyle}" Command="{Binding SaveCurrentSplitsAsCommand}">
+                <TextBlock TextWrapping="Wrap">
+                    <TextBlock.Text>
+                        <Binding Path="FileModel.FileName" StringFormat="Warning: Saving of splits file '{0}' failed. Click here to save to a new location."/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
