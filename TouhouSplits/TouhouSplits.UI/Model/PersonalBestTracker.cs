@@ -158,10 +158,16 @@ namespace TouhouSplits.UI.Model
             if (!_gameManager.GameIsRunning()) {
                 StopScorePoller();
             }
-
-            NotifyPropertyChanged("CurrentScore");
-            NotifyPropertyChanged("IsNewPersonalBest");
-            _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
+            else {
+                NotifyPropertyChanged("CurrentScore");
+                NotifyPropertyChanged("IsNewPersonalBest");
+                try {
+                    _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
+                }
+                catch (InvalidOperationException) {
+                    StopScorePoller();
+                }
+            }
         }
 
         public void SplitToNextSegment()
