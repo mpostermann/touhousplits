@@ -96,6 +96,7 @@ namespace TouhouSplits.UI.Model
                 _currentSplitsFile.FileInfo = newPath;
                 _currentSplitsFile.Save();
                 HasUnsavedChanges = false;
+                NotifyPropertyChanged("FileName");
                 return true;
             }
             catch (Exception e) {
