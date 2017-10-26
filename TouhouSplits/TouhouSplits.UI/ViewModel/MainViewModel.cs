@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Windows;
@@ -45,7 +46,7 @@ namespace TouhouSplits.UI.ViewModel
             Application.Current.DispatcherUnhandledException -= CrashDialog.UnhandledEventHandler;
             Application.Current.DispatcherUnhandledException += CrashDialog.UnhandledEventHandler;
 
-            IConfigManager configuration = new ConfigManager();
+            IConfigManager configuration = LoadConfiguration();
             _splitsFacade = new SplitsFacade(configuration, new JsonSerializer<Splits>());
             _mainModel = new PersonalBestTracker(_splitsFacade);
             _fileModel = new SaveLoadHandler(_splitsFacade);
@@ -63,6 +64,18 @@ namespace TouhouSplits.UI.ViewModel
             ExitApplicationCommand = new RelayCommand(() => ExitApplication());
 
             RegisterHotkeys(configuration.Hotkeys);
+        }
+
+        private static IConfigManager LoadConfiguration()
+        {
+            try {
+                return new ConfigManager();
+            }
+            catch (ConfigurationErrorsException e) {
+                ShowErrorDialog(e.Message);
+                Application.Current.Shutdown();
+                return null;
+            }
         }
 
         private void RegisterHotkeys(IHotkeyConfig config)
