@@ -44,48 +44,6 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
         }
 
         [Fact]
-        public void Constructor_Invokes_FavoriteSplitsSerializer_If_File_Does_Not_Exist()
-        {
-            var config = CreateConfig("Some id", "Some game name");
-            var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
-            favoriteSplitsSerializerMock
-                .Deserialize(config.FavoriteSplitsList)
-                .Returns(n => { throw new FileNotFoundException(); });
-
-            var manager = new GameManager(
-                config,
-                Substitute.For<IHookStrategyFactory>(),
-                favoriteSplitsSerializerMock,
-                Substitute.For<IFileSerializer<Splits>>()
-            );
-            favoriteSplitsSerializerMock.Received().Serialize(
-                Arg.Is<List<string>>(n => n.Count == 0),
-                config.FavoriteSplitsList
-            );
-        }
-
-        [Fact]
-        public void Constructor_Invokes_FavoriteSplitsSerializer_If_Directory_Does_Not_Exist()
-        {
-            var config = CreateConfig("Some id", "Some game name");
-            var favoriteSplitsSerializerMock = CreateFavoriteSplitsSerializer(config.FavoriteSplitsList);
-            favoriteSplitsSerializerMock
-                .Deserialize(config.FavoriteSplitsList)
-                .Returns(n => { throw new DirectoryNotFoundException(); });
-
-            var manager = new GameManager(
-                config,
-                Substitute.For<IHookStrategyFactory>(),
-                favoriteSplitsSerializerMock,
-                Substitute.For<IFileSerializer<Splits>>()
-            );
-            favoriteSplitsSerializerMock.Received().Serialize(
-                Arg.Is<List<string>>(n => n.Count == 0),
-                config.FavoriteSplitsList
-            );
-        }
-
-        [Fact]
         public void Id_Returns_Id_From_Config()
         {
             var config = CreateConfig("Some id", "Some game name");

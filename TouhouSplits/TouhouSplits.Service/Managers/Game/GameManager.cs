@@ -48,9 +48,10 @@ namespace TouhouSplits.Service.Managers.Game
             }
             catch (Exception e) {
                 if (e is DirectoryNotFoundException || e is FileNotFoundException) {
-                    /* If the favorite splits file doesn't exist, then create a new, empty file */
-                    favoriteSplitsSerializer.Serialize(new List<string>(), favoriteSplitsFile);
-                    FavoriteSplitsFileLoaded = true;
+                    /* If the favorite splits file doesn't exist, then don't load anything. */
+
+                    /* TODO: Once working with favorite splits is implemented, then update behavior so
+                     * that if the favorite splits file doesn't exist, then a new empty file is created. */
                 }
             }
         }
