@@ -85,6 +85,7 @@
     <Compile Include="Converter\AdditionConverter.cs" />
     <Compile Include="Converter\IsGreaterThanOrEqualConverter.cs" />
     <Compile Include="Converter\ScoreConverter.cs" />
+    <Compile Include="Dialog\CrashDialog.cs" />
     <Compile Include="Hotkey\GlobalHotkeyManager.cs" />
     <Compile Include="Hotkey\GlobalHotkeyManagerFactory.cs" />
     <Compile Include="Hotkey\GlobalKeyboardHook.cs" />
@@ -92,14 +93,22 @@
     <Compile Include="Hotkey\IGlobalKeyboardHook.cs" />
     <Compile Include="Model\PersonalBestTracker.cs" />
     <Compile Include="Model\SaveLoadHandler.cs" />
+    <Compile Include="ViewModel\CrashViewModel.cs" />
     <Compile Include="ViewModel\IDialogResultViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\CrashWindow.xaml.cs">
+      <DependentUpon>CrashWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EditSplitsWindow.xaml.cs">
       <DependentUpon>EditSplitsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\EditSplitsViewModel.cs" />
+    <Page Include="View\CrashWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

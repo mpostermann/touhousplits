@@ -12,6 +12,7 @@ using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Config;
 using TouhouSplits.Service.Serialization;
+using TouhouSplits.UI.Dialog;
 using TouhouSplits.UI.Hotkey;
 using TouhouSplits.UI.Model;
 using TouhouSplits.UI.View;
@@ -41,6 +42,9 @@ namespace TouhouSplits.UI.ViewModel
 
         public MainViewModel()
         {
+            Application.Current.DispatcherUnhandledException -= CrashDialog.UnhandledEventHandler;
+            Application.Current.DispatcherUnhandledException += CrashDialog.UnhandledEventHandler;
+
             IConfigManager configuration = new ConfigManager();
             _splitsFacade = new SplitsFacade(configuration, new JsonSerializer<Splits>());
             _mainModel = new PersonalBestTracker(_splitsFacade);
