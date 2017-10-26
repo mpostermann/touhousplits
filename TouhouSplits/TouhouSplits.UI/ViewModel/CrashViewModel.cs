@@ -62,7 +62,7 @@ namespace TouhouSplits.UI.ViewModel
 
         private void ExitApplication()
         {
-            Application.Current.Shutdown();
+            //Do nothing
         }
     }
 }
