@@ -36,7 +36,7 @@ namespace TouhouSplits.Service.Managers.Config
                 return gamesList;
             }
             catch (Exception e) {
-                throw new ConfigurationErrorsException("Could not load Games.xml configuration.", e);
+                throw new ConfigurationErrorsException("Could not load Games.xml configuration. " + e.Message, e);
             }
         }
 
@@ -55,7 +55,7 @@ namespace TouhouSplits.Service.Managers.Config
                 return new HotkeyConfig(configDoc.Root);
             }
             catch (Exception e) {
-                throw new ConfigurationErrorsException("Could not load Hotkeys.xml configuration.", e);
+                throw new ConfigurationErrorsException("Could not load Hotkeys.xml configuration. " + e.Message, e);
             }
         }
 
