@@ -20,7 +20,7 @@ namespace TouhouSplits.UI.Model
         public PersonalBestTracker(ISplitsFacade facade)
         {
             _facade = facade;
-            _initialPollingScore = -1;
+            _initialPollingScore = Constants.UNSET_SCORE;
             IsPolling = false;
         }
 
@@ -39,7 +39,7 @@ namespace TouhouSplits.UI.Model
             GameName = _gameManager.GameName;
             SplitsName = splitsName;
             _personalBestBuilder = personalBestSplits;
-            _initialPollingScore = -1;
+            _initialPollingScore = Constants.UNSET_SCORE;
             NotifyPropertyChanged("RecordingSplits");
             NotifyPropertyChanged("CurrentScore");
         }
@@ -104,7 +104,7 @@ namespace TouhouSplits.UI.Model
                         return score;
                     }
                 }
-                return -1;
+                return Constants.UNSET_SCORE;
             }
         }
 

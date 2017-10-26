@@ -54,7 +54,7 @@ namespace TouhouSplits.Service.Managers
         {
             _currentSegment = 0;
             foreach (PersonalBestSegment segment in _segments) {
-                segment.RecordingScore = PersonalBestSegment.UNSET_SCORE;
+                segment.RecordingScore = Constants.UNSET_SCORE;
             }
         }
 

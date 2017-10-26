@@ -1,4 +1,5 @@
 ﻿using TouhouSplits.MVVM;
+using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers.SplitsBuilder;
 
@@ -6,13 +7,11 @@ namespace TouhouSplits.UI.Model
 {
     public class PersonalBestSegment : ModelBase, IPersonalBestSegment
     {
-        public static long UNSET_SCORE = -1;
-
         public PersonalBestSegment(ISegment personalBest)
         {
             SegmentName = personalBest.SegmentName;
             PersonalBestScore = personalBest.Score;
-            RecordingScore = UNSET_SCORE;
+            RecordingScore = Constants.UNSET_SCORE;
         }
 
         private string _segmentName;

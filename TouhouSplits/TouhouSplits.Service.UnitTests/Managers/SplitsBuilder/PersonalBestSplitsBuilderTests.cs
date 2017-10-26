@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers;
-using TouhouSplits.UI.Model;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
@@ -159,9 +158,9 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
             builder.SetScoreForCurrentSegment(3);
 
             builder.Reset();
-            Assert.Equal(PersonalBestSegment.UNSET_SCORE, builder.Segments[0].RecordingScore);
-            Assert.Equal(PersonalBestSegment.UNSET_SCORE, builder.Segments[1].RecordingScore);
-            Assert.Equal(PersonalBestSegment.UNSET_SCORE, builder.Segments[2].RecordingScore);
+            Assert.Equal(Constants.UNSET_SCORE, builder.Segments[0].RecordingScore);
+            Assert.Equal(Constants.UNSET_SCORE, builder.Segments[1].RecordingScore);
+            Assert.Equal(Constants.UNSET_SCORE, builder.Segments[2].RecordingScore);
         }
 
         [Fact]

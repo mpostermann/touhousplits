@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using TouhouSplits.Service;
 
 namespace TouhouSplits.UI.Converter
 {
@@ -26,7 +27,7 @@ namespace TouhouSplits.UI.Converter
                 return long.Parse(value.ToString());
             }
             catch (Exception) {
-                return (long) -1;
+                return Constants.UNSET_SCORE;
             }
         }
     }

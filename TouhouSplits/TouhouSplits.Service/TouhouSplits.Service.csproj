@@ -56,6 +56,7 @@
     <Compile Include="Config\HotkeyConfig.cs" />
     <Compile Include="Config\IGameConfig.cs" />
     <Compile Include="Config\IHotkeyConfig.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Data\FileHandler.cs" />
     <Compile Include="Data\GameId.cs" />
     <Compile Include="Data\IFileHandler.cs" />
