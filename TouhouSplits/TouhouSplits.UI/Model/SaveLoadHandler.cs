@@ -61,6 +61,10 @@ namespace TouhouSplits.UI.Model
         {
             errorMessage = string.Empty;
 
+            if (_currentSplitsFile == null || _currentSplitsFile.FileInfo == null) {
+                throw new InvalidOperationException("No FileInfo is set for the current file, or no file is currently loaded.");
+            }
+
             var newSplitsFile = _splitsFacade.NewSplitsFile(newSplits);
             newSplitsFile.FileInfo = _currentSplitsFile.FileInfo;
 
@@ -82,6 +86,10 @@ namespace TouhouSplits.UI.Model
         public bool SaveCurrentSplitsAs(FileInfo newPath, out string errorMessage)
         {
             errorMessage = string.Empty;
+
+            if (_currentSplitsFile == null) {
+                throw new InvalidOperationException("No file is currently loaded.");
+            }
 
             FileInfo originalFileInfo = _currentSplitsFile.FileInfo;
             try {
