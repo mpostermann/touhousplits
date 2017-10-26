@@ -27,7 +27,7 @@ namespace TouhouSplits.UI.Dialog
                 e.Message);
 
             var dialog = new CrashWindow();
-            dialog.DataContext = new CrashViewModel(message);
+            dialog.DataContext = new CrashViewModel(message, e);
             dialog.ShowDialog();
         }
     }

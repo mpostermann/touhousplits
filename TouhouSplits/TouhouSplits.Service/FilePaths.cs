@@ -7,6 +7,7 @@ namespace TouhouSplits.Service
     {
         public const string EXT_SPLITS_FILE = ".tsf";
         public const string EXT_FAVORITE_SPLITS_LIST_FILE = ".trs";
+        public const string EXT_CRASH_FILE = ".crash";
 
         private static readonly string _dir_app_config_default = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TouhouSplits");
         private static string _dir_app_config = _dir_app_config_default;
