@@ -15,6 +15,7 @@
         <conv:ScoreConverter x:Key="ScoreConverter"/>
         <conv:IsGreaterThanOrEqualConverter x:Key="IsGreaterThanOrEqualConverter"/>
         <BitmapImage UriSource="pack://application:,,,/Resources/Images/warning.png" x:Key="WarningImage"/>
+        <BitmapImage UriSource="pack://application:,,,/Resources/Images/delete.png" x:Key="CancelImage"/>
         <Style x:Key="baseStyle">
             <Setter Property="Control.Background" Value="#172123"/>
             <Setter Property="Control.FontSize" Value="16"/>
@@ -129,6 +130,26 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style BasedOn="{StaticResource baseStyle}" TargetType="{x:Type Button}" x:Key="clearWarningStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Height" Value="9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid Style="{StaticResource gridStyle}">
         <Grid.RowDefinitions>
@@ -170,7 +191,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="20*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" Source="{StaticResource WarningImage}" Width="20" Height="20" />
+                    <Image Grid.Column="0" Source="{StaticResource WarningImage}" Width="20" Height="20" Margin="0,0,5,0" />
                     <TextBlock Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center">
                         <TextBlock.Text>
                             <Binding Path="FileModel.FileName" StringFormat="Auto-saving of splits file '{0}' failed. Click here to save to a new location."/>
@@ -183,11 +204,15 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" Source="{StaticResource WarningImage}" Width="20" Height="20" />
+                    <Image Grid.Column="0" Source="{StaticResource WarningImage}" Width="20" Height="20" Margin="0,0,5,0" />
                     <TextBlock Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center">
                         <TextBlock.Text>An error occurred during recording. Click here to save a bug report.</TextBlock.Text>
                     </TextBlock>
+                    <Button Grid.Column="2" Style="{StaticResource clearWarningStyle}" Command="{Binding ClearPollingErrorCommand}" Margin="5,0,0,0">
+                        <Image Source="{StaticResource CancelImage}"/>
+                    </Button>
                 </Grid>
             </Button>
         </StackPanel>
