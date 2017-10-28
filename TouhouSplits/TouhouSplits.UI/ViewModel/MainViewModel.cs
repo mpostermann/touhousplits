@@ -287,7 +287,7 @@ namespace TouhouSplits.UI.ViewModel
             if (bugReporter.ShowSaveBugReportDialog(MainModel.LastError, out error)) {
                 ClearPollingError();
             }
-            else {
+            else if (!string.IsNullOrEmpty(error)) {
                 ShowErrorDialog("Unable to save bug report to the specified location. Please select a different file location and try again.\n\n Error: " + error);
             }
         }
