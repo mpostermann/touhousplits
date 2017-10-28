@@ -1,5 +1,5 @@
-﻿using Microsoft.Windows.Controls;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace TouhouSplits.UI.Control.DataGrid
 {

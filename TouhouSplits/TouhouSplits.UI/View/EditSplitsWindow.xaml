@@ -1,8 +1,7 @@
 ﻿<Window x:Class="TouhouSplits.UI.View.EditSplitsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:toolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
-        xmlns:exttoolkit="clr-namespace:TouhouSplits.UI.Control.DataGrid"
+        xmlns:ext="clr-namespace:TouhouSplits.UI.Control.DataGrid"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
@@ -34,21 +33,21 @@
              </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">Add Segment Above</Button>
             <Button Grid.Row="1" Grid.Column="0" Command="{Binding AddSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView, Converter={StaticResource AdditionConverter}, ConverterParameter=1}">Add Segment Below</Button>
-            <toolkit:DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Splits.Segments}" AutoGenerateColumns="False">
-                <toolkit:DataGrid.Columns>
-                    <toolkit:DataGridTextColumn Width="74*" Binding="{Binding SegmentName}" Header="Segment"/>
-                    <exttoolkit:DataGridLongColumn Width="24*"  Binding="{Binding Score}" Header="Score"/>
-                    <toolkit:DataGridTemplateColumn Width="2*" IsReadOnly="True" CanUserResize="False">
-                        <toolkit:DataGridTemplateColumn.CellTemplate>
+            <DataGrid Name="SegmentsListView" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" ItemsSource="{Binding Splits.Segments}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="74*" Binding="{Binding SegmentName}" Header="Segment"/>
+                    <ext:DataGridLongColumn Width="24*"  Binding="{Binding Score}" Header="Score"/>
+                    <DataGridTemplateColumn Width="2*" IsReadOnly="True" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type toolkit:DataGrid}}, Path=DataContext.RemoveSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">
+                                <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.RemoveSegmentCommand}" CommandParameter="{Binding SelectedIndex, ElementName=SegmentsListView}">
                                     <Image Source="{StaticResource DeleteImage}" />
                                 </Button>
                             </DataTemplate>
-                        </toolkit:DataGridTemplateColumn.CellTemplate>
-                    </toolkit:DataGridTemplateColumn>
-                </toolkit:DataGrid.Columns>
-            </toolkit:DataGrid>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
         <WrapPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <Button Command="{Binding CloseWithoutSavingCommand}">Cancel</Button>
