@@ -16,7 +16,16 @@
             <Setter.Value>
                 <DrawingImage>
                     <DrawingImage.Drawing>
-                        <GeometryDrawing Brush="Orange">
+                        <GeometryDrawing>
+                            <GeometryDrawing.Brush>
+                                <RadialGradientBrush GradientOrigin="0.4, 0.4" Center="0.5, 0.5" RadiusX="0.5" RadiusY="0.5">
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Color="#ffafaf" Offset="0"/>
+                                        <GradientStop Color="#ff5050" Offset="0.5"/>
+                                        <GradientStop Color="#ff1d1d" Offset="1.0"/>
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </GeometryDrawing.Brush>
                             <GeometryDrawing.Pen>
                                 <Pen Brush="Black" Thickness="2"/>
                             </GeometryDrawing.Pen>
