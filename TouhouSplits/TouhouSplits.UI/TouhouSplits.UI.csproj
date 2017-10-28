@@ -176,4 +176,12 @@
     <Resource Include="Resources\Images\warning.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+    robocopy $(TargetDir) $(SolutionDir)Deployment *.exe
+    robocopy $(TargetDir) $(SolutionDir)Deployment *.dll
+    robocopy $(TargetDir) $(SolutionDir)Deployment Games.xml
+    if %25errorlevel%25 leq 1 exit 0 else exit %25errorlevel%25
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
