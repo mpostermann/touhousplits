@@ -43,7 +43,7 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand ClearPollingErrorCommand { get; private set; }
         public ICommand ExitApplicationCommand { get; private set; }
 
-        public MainViewModel()
+        public MainViewModel(FileInfo splitsFileInfo = null)
         {
             Application.Current.DispatcherUnhandledException -= CrashDialog.UnhandledEventHandler;
             Application.Current.DispatcherUnhandledException += CrashDialog.UnhandledEventHandler;
@@ -68,6 +68,11 @@ namespace TouhouSplits.UI.ViewModel
             ExitApplicationCommand = new RelayCommand(() => ExitApplication());
 
             RegisterHotkeys(configuration.Hotkeys);
+
+            if (splitsFileInfo != null) {
+                var file = _splitsFacade.LoadSplitsFile(splitsFileInfo);
+                ReloadCurrentSplitsFile(file);
+            }
         }
 
         private static IConfigManager LoadConfiguration()

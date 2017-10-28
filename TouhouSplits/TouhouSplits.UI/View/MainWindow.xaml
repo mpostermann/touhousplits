@@ -8,9 +8,6 @@
         xmlns:vm="clr-namespace:TouhouSplits.UI.ViewModel"
         mc:Ignorable="d"
         Title="Touhou Splits" SizeToContent="Height" Width="525">
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
