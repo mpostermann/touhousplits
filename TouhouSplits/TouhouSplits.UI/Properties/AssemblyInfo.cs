@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TouhouSplits.UI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Touhou Splits")]
+[assembly: AssemblyDescription("Track scores in your favorite Touhou games!")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TouhouSplits.UI")]
+[assembly: AssemblyCompany("MPOstermann")]
+[assembly: AssemblyProduct("Touhou Splits")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
