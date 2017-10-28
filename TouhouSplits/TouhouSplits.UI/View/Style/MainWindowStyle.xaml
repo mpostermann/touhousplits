@@ -11,6 +11,24 @@
     <Style BasedOn="{StaticResource baseStyle}" x:Key="gridStyle"/>
     <Style BasedOn="{StaticResource baseStyle}" x:Key="labelStyle"/>
     <Style BasedOn="{StaticResource baseStyle}" x:Key="listViewStyle"/>
+    <Style TargetType="{x:Type Image}" x:Key="recordingIndicatorStyle">
+        <Setter Property="Source">
+            <Setter.Value>
+                <DrawingImage>
+                    <DrawingImage.Drawing>
+                        <GeometryDrawing Brush="Orange">
+                            <GeometryDrawing.Pen>
+                                <Pen Brush="Black" Thickness="2"/>
+                            </GeometryDrawing.Pen>
+                            <GeometryDrawing.Geometry>
+                                <EllipseGeometry RadiusX="10" RadiusY="10"/>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style BasedOn="{StaticResource baseStyle}" TargetType="{x:Type DataGridColumnHeader}" x:Key="tableHeaderStyle">
         <Setter Property="Background">
             <Setter.Value>

@@ -42,7 +42,10 @@
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1">
-            <Label Style="{StaticResource labelStyle}" Content="{Binding MainModel.GameName, FallbackValue='Open a split!'}"></Label>
+            <DockPanel>
+                <Label HorizontalAlignment="Left" Style="{StaticResource labelStyle}" Content="{Binding MainModel.GameName, FallbackValue='Open a split!'}"></Label>
+                <Image Style="{StaticResource recordingIndicatorStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Height="15" Margin="0,5,5,0"/>
+            </DockPanel>
             <Label Style="{StaticResource labelStyle}" Content="{Binding MainModel.SplitsName}"></Label>
             <DataGrid RowStyle="{StaticResource tableRowStyle}" ColumnHeaderStyle="{StaticResource tableHeaderStyle}" CellStyle="{StaticResource tableCellStyle}" RowHeaderWidth="0"
                       HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
