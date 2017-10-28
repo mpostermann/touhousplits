@@ -37,7 +37,7 @@ namespace TouhouSplits.UI
                     }
                 }
             }
-            catch (Exception e) {
+            catch (Exception) {
                 // Do nothing
             }
             return null;

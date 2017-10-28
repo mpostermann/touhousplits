@@ -5,10 +5,6 @@ namespace TouhouSplits.Service.Hook.Impl
 {
     public class TouhouPtrHookStrategy : Kernel32PtrHookStrategy
     {
-        private EncodingEnum _encoding;
-        private int _memoryAddress;
-        private int[] _pointerOffsets;
-
         public TouhouPtrHookStrategy(IKernel32PtrHookConfig config, IKernel32MemoryReader memoryReader)
             : base(config, memoryReader)
         {

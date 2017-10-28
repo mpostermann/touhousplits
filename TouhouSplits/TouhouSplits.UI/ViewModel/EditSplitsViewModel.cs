@@ -105,7 +105,7 @@ namespace TouhouSplits.UI.ViewModel
                     SplitsFile.Save();
                     InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     ShowErrorDialog("File could not be saved. Please choose a different location and try again.");
                 }
             }

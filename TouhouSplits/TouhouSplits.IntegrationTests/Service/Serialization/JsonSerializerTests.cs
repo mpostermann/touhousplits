@@ -32,7 +32,7 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
                 serializer.Serialize(splits, testfilepath);
                 deserializedSplits = serializer.Deserialize(testfilepath);
             }
-            catch (Exception e) {
+            catch (Exception) {
                 File.Delete(testfilepath.FullName);
                 throw;
             }
@@ -67,7 +67,7 @@ namespace TouhouSplits.IntegrationTests.Service.Serialization
                 serializer.Serialize(list, testfilepath);
                 deserializedList = serializer.Deserialize(testfilepath);
             }
-            catch (Exception e) {
+            catch (Exception) {
                 File.Delete(testfilepath.FullName);
                 throw;
             }
