@@ -39,6 +39,8 @@ namespace TouhouSplits.UI.ViewModel
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
         public ICommand SplitToNextSegmentCommand { get; private set; }
         public ICommand SaveCurrentSplitsAsCommand { get; private set; }
+        public ICommand SavePollingErrorBugReportCommand { get; private set; }
+        public ICommand ClearPollingErrorCommand { get; private set; }
         public ICommand ExitApplicationCommand { get; private set; }
 
         public MainViewModel()
@@ -61,6 +63,8 @@ namespace TouhouSplits.UI.ViewModel
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => FileModel.CurrentFile() != null && !_dialogIsOpen);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling && !_dialogIsOpen);
             SaveCurrentSplitsAsCommand = new RelayCommand(() => SaveCurrentSplitsAs(), () => FileModel.CurrentFile() != null && !MainModel.IsPolling);
+            SavePollingErrorBugReportCommand = new RelayCommand(() => SavePollingErrorBugReport(), () => !MainModel.IsPolling && MainModel.HasError);
+            ClearPollingErrorCommand = new RelayCommand(() => ClearPollingError(), () => !MainModel.IsPolling && MainModel.HasError);
             ExitApplicationCommand = new RelayCommand(() => ExitApplication());
 
             RegisterHotkeys(configuration.Hotkeys);
@@ -186,6 +190,7 @@ namespace TouhouSplits.UI.ViewModel
         private void ReloadCurrentSplitsFile(IFileHandler<ISplits> splitsFile)
         {
             try {
+                ClearPollingError();
                 FileModel.LoadSplitsFile(splitsFile);
 
                 var personalBestBuilder = new PersonalBestSplitsBuilder(splitsFile.Object);
@@ -222,6 +227,7 @@ namespace TouhouSplits.UI.ViewModel
 
         private void StartRecordingSplits()
         {
+            ClearPollingError();
             if (MainModel.IsNewPersonalBest) {
                 ReloadCurrentSplitsFile(FileModel.CurrentFile());
             }
@@ -272,6 +278,23 @@ namespace TouhouSplits.UI.ViewModel
                 string errorMessage;
                 FileModel.SaveCurrentSplitsAs(fileInfo, out errorMessage);
             }
+        }
+
+        private void SavePollingErrorBugReport()
+        {
+            var bugReporter = new BugReporter();
+            string error;
+            if (bugReporter.ShowSaveBugReportDialog(MainModel.LastError, out error)) {
+                ClearPollingError();
+            }
+            else {
+                ShowErrorDialog("Unable to save bug report to the specified location. Please select a different file location and try again.\n\n Error: " + error);
+            }
+        }
+
+        private void ClearPollingError()
+        {
+            MainModel.ClearError();
         }
 
         private void ExitApplication()
