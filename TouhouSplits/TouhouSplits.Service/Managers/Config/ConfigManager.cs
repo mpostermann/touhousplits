@@ -23,7 +23,8 @@ namespace TouhouSplits.Service.Managers.Config
         private static IList<IGameConfig> LoadGamesConfig()
         {
             try {
-                XDocument gamesXml = XDocument.Load("Games.xml");
+                var xmlPath = Path.Combine(FilePaths.DIR_EXECUTION_PATH, "Games.xml");
+                XDocument gamesXml = XDocument.Load(xmlPath);
 
                 var gamesList = new List<IGameConfig>();
                 foreach (XElement gameXml in gamesXml.Root.Element("Games").Elements("Game")) {
