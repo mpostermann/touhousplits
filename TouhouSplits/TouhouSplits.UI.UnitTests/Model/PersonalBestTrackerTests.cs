@@ -35,6 +35,20 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
+        public void HasError_Returns_False_By_Default()
+        {
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
+            Assert.False(model.HasError);
+        }
+
+        [Fact]
+        public void LastError_Returns_Null_By_Default()
+        {
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
+            Assert.Null(model.LastError);
+        }
+
+        [Fact]
         public void LoadPersonalBest_Fires_NotifyPropertyChanged_Event_For_RecordingSplits()
         {
             var model = new PersonalBestTracker(DefaultSplitsFacade());
@@ -414,10 +428,173 @@ namespace TouhouSplits.UI.UnitTests.Model
             var model = new PersonalBestTracker(facade);
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             model.StartScorePoller();
+            Thread.Sleep(500);
 
             facade.LoadGameManager(Arg.Any<GameId>()).GameIsRunning().Returns(false);
             Thread.Sleep(500);
             Assert.False(model.IsPolling);
+        }
+
+        [Fact]
+        public void Polling_Is_Stopped_If_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            Assert.False(model.IsPolling);
+        }
+
+        [Fact]
+        public void HasError_Returns_True_If_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+
+            model.StartScorePoller();
+            Thread.Sleep(500);
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+
+            Thread.Sleep(500);
+            Assert.True(model.HasError);
+        }
+
+        [Fact]
+        public void Fires_NotifyPropertyChanged_Event_For_HasError_When_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            Assert.True(eventCatcher.CaughtProperties.Contains("HasError"));
+        }
+
+        [Fact]
+        public void LastError_Returns_Exception_Thrown_From_GameManager_GetCurrentScore_While_Polling()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            Exception expectedException = new Exception("Some error message");
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(expectedException);
+            Thread.Sleep(500);
+            Assert.Equal(expectedException.Message, model.LastError.Message);
+        }
+
+        [Fact]
+        public void Fires_NotifyPropertyChanged_Event_For_LastError_When_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            Assert.True(eventCatcher.CaughtProperties.Contains("LastError"));
+        }
+
+        [Fact]
+        public void ClearError_Sets_LastError_To_Null()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            model.ClearError();
+            Assert.Null(model.LastError);
+        }
+
+        [Fact]
+        public void ClearError_Fires_NotifyPropertyChangedEvent_For_LastError()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            model.ClearError();
+            Assert.True(eventCatcher.CaughtProperties.Contains("LastError"));
+        }
+
+        [Fact]
+        public void ClearError_Sets_HasError_To_False()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            model.ClearError();
+            Assert.False(model.HasError);
+        }
+
+        [Fact]
+        public void ClearError_Fires_NotifyPropertyChangedEvent_For_HasError()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new Exception());
+            Thread.Sleep(500);
+            model.ClearError();
+            Assert.True(eventCatcher.CaughtProperties.Contains("HasError"));
         }
 
         /// <summary>

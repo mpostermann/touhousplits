@@ -44,6 +44,20 @@ namespace TouhouSplits.UI.Model
             NotifyPropertyChanged("CurrentScore");
         }
 
+        public bool HasError {
+            get { return _lastException != null; }
+        }
+
+        private Exception _lastException;
+        public Exception LastError {
+            get { return _lastException; }
+            set {
+                _lastException = value;
+                NotifyPropertyChanged("LastError");
+                NotifyPropertyChanged("HasError");
+            }
+        }
+
         private string _gameName;
         public string GameName {
             get { return _gameName; }
@@ -127,6 +141,11 @@ namespace TouhouSplits.UI.Model
             }
         }
 
+        public void ClearError()
+        {
+            LastError = null;
+        }
+
         public void StartScorePoller()
         {
             if (IsPolling) {
@@ -141,8 +160,14 @@ namespace TouhouSplits.UI.Model
                 throw new InvalidOperationException("Game is not running.");
             }
 
-            _personalBestBuilder.Reset();
-            _initialPollingScore = _gameManager.GetCurrentScore();
+            try {
+                _personalBestBuilder.Reset();
+                _initialPollingScore = _gameManager.GetCurrentScore();
+            }
+            catch (Exception e) {
+                LastError = e;
+                return;
+            }
 
             // Set a poller to check the updated score
             _timer = new Timer(
@@ -156,18 +181,26 @@ namespace TouhouSplits.UI.Model
 
         private void UpdateCurrentRecordingScore()
         {
-            if (!_gameManager.GameIsRunning()) {
-                StopScorePoller();
-            }
-            else {
-                NotifyPropertyChanged("CurrentScore");
-                NotifyPropertyChanged("IsNewPersonalBest");
-                try {
-                    _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
-                }
-                catch (InvalidOperationException) {
+            try {
+                if (!_gameManager.GameIsRunning()) {
                     StopScorePoller();
                 }
+                else {
+                    NotifyPropertyChanged("CurrentScore");
+                    NotifyPropertyChanged("IsNewPersonalBest");
+                    try {
+                        _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
+                    }
+                    catch (InvalidOperationException) {
+                        /* An InvalidOperationException is thrown if the game process dies while polling.
+                         * This isn't considered an error, so simply stop polling without tracking the exception. */
+                        StopScorePoller();
+                    }
+                }
+            }
+            catch (Exception e) {
+                LastError = e;
+                StopScorePoller();
             }
         }
 
