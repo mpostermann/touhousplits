@@ -34,13 +34,24 @@
                 <MenuItem Header="_Exit" Command="{Binding ExitApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="_Game">
-                <MenuItem Header="Start _Recording Split" Command="{Binding StartOrStopRecordingSplitsCommand}"/>
+                <MenuItem Command="{Binding StartOrStopRecordingSplitsCommand}">
+                    <MenuItem.Style>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header" Value="Start _Recording Splits"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MainModel.IsPolling}" Value="True">
+                                    <Setter Property="Header" Value="Stop _Recording Splits"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
                 <MenuItem Header="_Split" Command="{Binding SplitToNextSegmentCommand}"/>
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1">
             <DockPanel>
-                <Label HorizontalAlignment="Left" Style="{StaticResource labelStyle}" Content="{Binding MainModel.GameName, FallbackValue='Open a split!'}"></Label>
+                <Label HorizontalAlignment="Left" Style="{StaticResource labelStyle}" Content="{Binding MainModel.GameName, TargetNullValue='Open a split!'}"></Label>
                 <Image Style="{StaticResource recordingIndicatorStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Height="15" Margin="0,5,5,0"/>
             </DockPanel>
             <Label Style="{StaticResource labelStyle}" Content="{Binding MainModel.SplitsName}"></Label>
