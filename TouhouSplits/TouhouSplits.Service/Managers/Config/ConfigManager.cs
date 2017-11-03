@@ -64,6 +64,7 @@ namespace TouhouSplits.Service.Managers.Config
         {
             var configDoc = XDocument.Parse(Properties.Resources.Hotkeys);
             try {
+                filepath.Directory.Create();
                 configDoc.Save(filepath.FullName);
             }
             catch {
