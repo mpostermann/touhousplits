@@ -13,5 +13,25 @@
             <Name>Touhou 8: Imperishable Night</Name>
             <Hook strategy="TouhouPtrHookStrategy" process="th08|th08e" address="0120F510" offsets="8" encoding="int32"/>
         </Game>
+        <Game id="th10" favoriteslist="th10.trs">
+            <Name>Touhou 10: Mountain of Faith</Name>
+            <Hook strategy="TouhouStaticHookStrategy" process="th10|th10e" address="00474C44" encoding="int32"/>
+        </Game>
+        <Game id="th11" favoriteslist="th11.trs">
+            <Name>Touhou 11: Subterranean Animism</Name>
+            <Hook strategy="TouhouStaticHookStrategy" process="th11|th11e" address="004A56E4" encoding="int32"/>
+        </Game>
+        <Game id="th12" favoriteslist="th12.trs">
+            <Name>Touhou 12: Undefined Fantastic Object</Name>
+            <Hook strategy="TouhouStaticHookStrategy" process="th12|th12e" address="004B0C44" encoding="int32"/>
+        </Game>
+        <Game id="th12_8" favoriteslist="th12_8.trs">
+            <Name>Touhou 12.8: Yousei Daisensou</Name>
+            <Hook strategy="TouhouStaticHookStrategy" process="th128|th128e" address="004B4CC4" encoding="int32"/>
+        </Game>
+        <Game id="th14" favoriteslist="th14.trs">
+            <Name>Touhou 14: Double Dealing Character</Name>
+            <Hook strategy="TouhouStaticHookStrategy" process="th14|th14e" address="004F5830" encoding="int32"/>
+        </Game>
     </Games>
 </Configuration>
