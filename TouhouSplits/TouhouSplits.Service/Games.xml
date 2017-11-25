@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
     <Games>
+        <Game id="EdensAegis111" favoriteslist="edensaegis111.trs">
+            <Name>Eden's Aegis 1.11</Name>
+            <Hook strategy="Kernel32StaticHookStrategy" process="EdensAegis1.11" address="00745F28" encoding="int32"/>
+        </Game>
+        <Game id="EdensEdge131" favoriteslist="edensedge131.trs">
+            <Name>Eden's Edge 1.31</Name>
+            <Hook strategy="Kernel32StaticHookStrategy" process="EdensEdge1.31" address="007CC18C" encoding="int32"/>
+        </Game>
         <Game id="th06" favoriteslist="th06.trs">
             <Name>Touhou 6: the Embodiment of Scarlet Devil</Name>
             <Hook strategy="Kernel32StaticHookStrategy" process="東方紅魔郷|th06e|“Œ•ûg–‚‹½" address="0069BCA4" encoding="int32"/>
