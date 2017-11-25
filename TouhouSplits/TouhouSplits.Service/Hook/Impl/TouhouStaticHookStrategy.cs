@@ -5,7 +5,7 @@ namespace TouhouSplits.Service.Hook.Impl
 {
     public class TouhouStaticHookStrategy : Kernel32StaticHookStrategy
     {
-        public TouhouStaticHookStrategy(IKernel32PtrHookConfig config, IKernel32MemoryReader memoryReader)
+        public TouhouStaticHookStrategy(IKernel32HookConfig config, IKernel32MemoryReader memoryReader)
             : base(config, memoryReader)
         {
         }

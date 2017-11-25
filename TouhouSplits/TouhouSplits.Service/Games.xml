@@ -45,13 +45,13 @@
             <Name>Touhou 14: Double Dealing Character</Name>
             <Hook strategy="TouhouStaticHookStrategy" process="th14|th14e" address="004F5830" encoding="int32"/>
         </Game>
-        <Game id="th15" favoritesList="th15.trs">
+        <Game id="th15" favoriteslist="th15.trs">
             <Name>Touhou 15: Legacy of Lunatic Kingdom</Name>
             <Hook strategy="TouhouStaticHookStrategy" process="th15|th15e" address="004E740C" encoding="int32"/>
         </Game>
         <Game id="th16" favoriteslist="th16.trs">
             <Name>Touhou 16: Hidden Star in Four Seasons</Name>
-            <hook strategy="TouhouStaticHookStrategy" process="th16|th16e" address="004A57B0" encoding="int32"/>
+            <Hook strategy="TouhouStaticHookStrategy" process="th16|th16e" address="004A57B0" encoding="int32"/>
         </Game>
     </Games>
 </Configuration>
