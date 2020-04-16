@@ -96,6 +96,10 @@
             </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="{Binding MyProperty}" />
+        <Setter Property="TextBlock.TextAlignment" Value="Right" />
+    </Style>
+    <Style BasedOn="{StaticResource tableCellStyle}" TargetType="{x:Type DataGridCell}" x:Key="tableLabelCellStyle">
+        <Setter Property="TextBlock.TextAlignment" Value="Left" />
     </Style>
     <Style BasedOn="{StaticResource tableCellStyle}" TargetType="{x:Type DataGridCell}" x:Key="tableScoreCellStyle">
         <Style.Triggers>

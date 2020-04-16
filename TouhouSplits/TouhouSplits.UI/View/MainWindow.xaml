@@ -60,7 +60,7 @@
                       ItemsSource="{Binding MainModel.RecordingSplits}" AutoGenerateColumns="False" AlternationCount="2"
                       IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserSortColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="5*" Header="Segment" Binding="{Binding SegmentName}" CanUserReorder="False"/>
+                    <DataGridTextColumn Width="5*" Header="Segment" Binding="{Binding SegmentName}" CellStyle="{StaticResource tableLabelCellStyle}" CanUserReorder="False"/>
                     <DataGridTextColumn Width="3*" Header="Score" Binding="{Binding RecordingScore, Converter={StaticResource ScoreConverter}}" CellStyle="{StaticResource tableScoreCellStyle}" CanUserReorder="False"/>
                     <DataGridTextColumn Width="3*" Header="PB" Binding="{Binding PersonalBestScore}" CanUserReorder="False"/>
                 </DataGrid.Columns>
