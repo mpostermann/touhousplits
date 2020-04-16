@@ -9,9 +9,17 @@
             <Name>Eden's Edge 1.31</Name>
             <Hook strategy="Kernel32StaticHookStrategy" process="EdensEdge1.31" address="007CC18C" encoding="int32"/>
         </Game>
-        <Game id="MuchiMuchiPork100" favoriteslist="muchimuchipork100.trs">
-            <Name>Muchi Muchi Pork v1.00</Name>
-            <Hook strategy="NonHookingStrategy"/>
+        <Game id="MushihimesamaNovice" favoriteslist="mushihimesama_novice.trs">
+            <Name>Mushihimesama Novice</Name>
+            <Hook strategy="Kernel32StaticHookStrategy" process="default" address="7AD2A528" encoding="int64"/>
+        </Game>
+        <Game id="MushihimesamaNormal" favoriteslist="mushihimesama_normal.trs">
+            <Name>Mushihimesama Normal</Name>
+            <Hook strategy="Kernel32StaticHookStrategy" process="default" address="7A5B0468" encoding="int64"/>
+        </Game>
+        <Game id="RollingGunner2.10" favoriteslist="rollinggunner210.trs">
+            <Name>Rolling Gunner v1.30 / v2.10</Name>
+            <Hook strategy="Kernel32PtrHookStrategy" process="rollgun" address="00F980D4" offsets="312" encoding="int64"/>
         </Game>
         <Game id="th06" favoriteslist="th06.trs">
             <Name>Touhou 6: the Embodiment of Scarlet Devil</Name>
