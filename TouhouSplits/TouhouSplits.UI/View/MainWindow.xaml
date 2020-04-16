@@ -18,6 +18,10 @@
             <BitmapImage UriSource="pack://application:,,,/Resources/Images/delete.png" x:Key="CancelImage"/>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenSplitCommand}"/>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewSplitCommand}"/>
+    </Window.InputBindings>
     <Grid Style="{StaticResource gridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
