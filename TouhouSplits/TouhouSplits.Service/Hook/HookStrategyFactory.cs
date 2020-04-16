@@ -38,6 +38,8 @@ namespace TouhouSplits.Service.Hook
                 case "touhouptrhookstrategy":
                     var thPtrConfig = new Kernel32PtrHookConfig(configElement);
                     return new TouhouPtrHookStrategy(thPtrConfig, new Kernel32MemoryReader());
+                case "nonhookingstrategy":
+                    return new NonHookingStrategy();
                 default:
                     throw new NotSupportedException(string.Format("Unknown hook strategy {0}", strategyType));
             }
