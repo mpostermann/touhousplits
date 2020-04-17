@@ -60,7 +60,7 @@ namespace TouhouSplits.UI.ViewModel
             OpenSplitCommand = new RelayCommand(() => OpenSplit(), () => !MainModel.IsPolling);
             NextSplitsCommand = new RelayCommand(() => NextSplits(), () => !MainModel.IsPolling);
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
-            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => FileModel.CurrentFile() != null && !_dialogIsOpen);
+            StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => FileModel.CurrentFile() != null && !_dialogIsOpen && MainModel.IsHookable);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling && !_dialogIsOpen);
             SaveCurrentSplitsAsCommand = new RelayCommand(() => SaveCurrentSplitsAs(), () => FileModel.CurrentFile() != null && !MainModel.IsPolling);
             SavePollingErrorBugReportCommand = new RelayCommand(() => SavePollingErrorBugReport(), () => !MainModel.IsPolling && MainModel.HasError);
