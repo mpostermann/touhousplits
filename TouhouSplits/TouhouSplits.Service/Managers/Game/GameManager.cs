@@ -4,6 +4,7 @@ using System.IO;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
+using TouhouSplits.Service.Hook.Impl;
 using TouhouSplits.Service.Serialization;
 
 namespace TouhouSplits.Service.Managers.Game
@@ -92,6 +93,8 @@ namespace TouhouSplits.Service.Managers.Game
             favoriteSplitsPaths.Add(filePath.FullName);
             _favoriteSplitsSerializer.Serialize(favoriteSplitsPaths, _config.FavoriteSplitsList);
         }
+
+        public bool GameIsHookable => !(_hook is NonHookingStrategy);
 
         public bool GameIsRunning()
         {

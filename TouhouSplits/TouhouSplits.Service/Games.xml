@@ -9,6 +9,18 @@
             <Name>Eden's Edge 1.31</Name>
             <Hook strategy="Kernel32StaticHookStrategy" process="EdensEdge1.31" address="007CC18C" encoding="int32"/>
         </Game>
+        <Game id="Espgaluda" favoriteslist="espgaluda.trs">
+            <Name>Espgaluda</Name>
+            <Hook strategy="NonHookingStrategy"/>
+        </Game>
+        <Game id="EspgaludaII" favoriteslist="espgaluda2.trs">
+            <Name>Espgaluda II</Name>
+            <Hook strategy="NonHookingStrategy"/>
+        </Game>
+        <Game id="MuchiMuchiPork" favoriteslist="muchimuchipork.trs">
+            <Name>Muchi Muchi Pork</Name>
+            <Hook strategy="NonHookingStrategy"/>
+        </Game>
         <Game id="MushihimesamaNovice" favoriteslist="mushihimesama_novice.trs">
             <Name>Mushihimesama Novice</Name>
             <Hook strategy="Kernel32StaticHookStrategy" process="default" address="7AD2A528" encoding="int64"/>

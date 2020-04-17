@@ -6,6 +6,7 @@ using System.Linq;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Hook;
+using TouhouSplits.Service.Hook.Impl;
 using TouhouSplits.Service.Managers.Game;
 using TouhouSplits.Service.Serialization;
 using Xunit;
@@ -255,6 +256,41 @@ namespace TouhouSplits.Service.UnitTests.Managers.Game
 
             var splitsFile = CreateSplitsFile("some path", "Not matching game id");
             Assert.Throws<InvalidOperationException>(() => manager.AddOrUpdateFavorites(splitsFile));
+        }
+
+        [Fact]
+        public void GameIsHookable_Returns_True_If_Hook_Is_NonHookingStrategy()
+        {
+            // Setup the strategy factory to create a NonHookingStrategy
+            var config = CreateConfig("Some id", "Some game name");
+            var factory = Substitute.For<IHookStrategyFactory>();
+            factory.Create(config.HookConfig).Returns(new NonHookingStrategy());
+
+            // GameIsHookable should be false since we're using a NonHookingStrategy
+            var manager = new GameManager(
+                config,
+                factory,
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
+                Substitute.For<IFileSerializer<Splits>>());
+
+            Assert.Equal(false, manager.GameIsHookable);
+        }
+
+        [Fact]
+        public void GameIsHookable_Returns_False_If_Hook_Is_Not_NonHookingStrategy()
+        {
+            // Setup the strategy factory as normal
+            var config = CreateConfig("Some id", "Some game name");
+            var factory = Substitute.For<IHookStrategyFactory>();
+
+            // GameIsHookable should be true since we're using a strategy that is not a NonHookingStrategy
+            var manager = new GameManager(
+                config,
+                factory,
+                CreateFavoriteSplitsSerializer(config.FavoriteSplitsList),
+                Substitute.For<IFileSerializer<Splits>>());
+
+            Assert.Equal(true, manager.GameIsHookable);
         }
 
         [Theory]

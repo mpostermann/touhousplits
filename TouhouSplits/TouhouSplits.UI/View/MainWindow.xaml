@@ -59,7 +59,7 @@
                 <Image Style="{StaticResource recordingIndicatorStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Height="15" Margin="0,5,5,0"/>
             </DockPanel>
             <Label Style="{StaticResource labelStyle}" Content="{Binding MainModel.SplitsName}"></Label>
-            <DataGrid RowStyle="{StaticResource tableRowStyle}" ColumnHeaderStyle="{StaticResource tableHeaderStyle}" CellStyle="{StaticResource tableCellStyle}" RowHeaderWidth="0"
+            <DataGrid x:Name="ScoreDataGrid" RowStyle="{StaticResource tableRowStyle}" ColumnHeaderStyle="{StaticResource tableHeaderStyle}" CellStyle="{StaticResource tableCellStyle}" RowHeaderWidth="0"
                       HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
                       ItemsSource="{Binding MainModel.RecordingSplits}" AutoGenerateColumns="False" AlternationCount="2"
                       IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserSortColumns="False">

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Data;
-using TouhouSplits.Service.Managers.Game;
 using TouhouSplits.Service.Managers.SplitsBuilder;
 using TouhouSplits.UI.Model;
 using TouhouSplits.UnitTests.Utils;
@@ -24,6 +23,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             builder
                 .When(n => n.SplitToNextSegment())
                 .Do(n => builder.CurrentSegment.Returns(builder.CurrentSegment + 1));
+
             return builder;
         }
 
@@ -31,6 +31,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         {
             var facade = Substitute.For<ISplitsFacade>();
             facade.LoadGameManager(Arg.Any<GameId>()).GameIsRunning().Returns(true);
+            facade.LoadGameManager(Arg.Any<GameId>()).GameIsHookable.Returns(true);
             return facade;
         }
 
@@ -109,6 +110,26 @@ namespace TouhouSplits.UI.UnitTests.Model
 
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
             Assert.True(eventCatcher.CaughtProperties.Contains("SplitsName"));
+        }
+
+        [Fact]
+        public void LoadPersonalBest_Sets_IsHookable_Using_Passed_In_Builder()
+        {
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
+
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            Assert.Equal(true, model.IsHookable);
+        }
+
+        [Fact]
+        public void LoadPersonalBest_Fires_NotifyPropertyChanged_Event_For_IsHookable()
+        {
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
+            var eventCatcher = new NotifyPropertyChangedCatcher();
+            model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
+
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            Assert.True(eventCatcher.CaughtProperties.Contains("IsHookable"));
         }
 
         [Fact]

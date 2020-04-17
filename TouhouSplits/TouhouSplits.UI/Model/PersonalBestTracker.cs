@@ -37,6 +37,7 @@ namespace TouhouSplits.UI.Model
             }
 
             GameName = _gameManager.GameName;
+            IsHookable = _gameManager.GameIsHookable;
             SplitsName = splitsName;
             _personalBestBuilder = personalBestSplits;
             _initialPollingScore = Constants.UNSET_SCORE;
@@ -73,6 +74,15 @@ namespace TouhouSplits.UI.Model
             private set {
                 _splitsName = value;
                 NotifyPropertyChanged("SplitsName");
+            }
+        }
+
+        private bool _isHookable;
+        public bool IsHookable {
+            get { return _isHookable; }
+            private set {
+                _isHookable = value;
+                NotifyPropertyChanged("IsHookable");
             }
         }
 

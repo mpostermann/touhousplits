@@ -13,8 +13,8 @@ namespace TouhouSplits.UI
     {
         public void ApplicationStartup(object sender, StartupEventArgs e)
         {
-            MainWindow window = new MainWindow();
-            window.DataContext = CreateViewModel(e.Args);
+            var viewModel = CreateViewModel(e.Args);
+            MainWindow window = new MainWindow(viewModel);
             window.Show();
         }
 

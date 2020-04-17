@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TouhouSplits.Service.Data;
-using TouhouSplits.Service.Hook;
 
 namespace TouhouSplits.Service.Managers.Game
 {
@@ -11,6 +10,7 @@ namespace TouhouSplits.Service.Managers.Game
         IList<IFileHandler<ISplits>> FavoriteSplits { get; }
         bool FavoriteSplitsFileLoaded { get; }
         void AddOrUpdateFavorites(IFileHandler<ISplits> splitsFile);
+        bool GameIsHookable { get; }
         bool GameIsRunning();
         long GetCurrentScore();
     }
