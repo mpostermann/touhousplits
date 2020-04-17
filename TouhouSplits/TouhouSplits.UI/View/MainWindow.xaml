@@ -69,7 +69,7 @@
                     <DataGridTextColumn Width="3*" Header="PB" Binding="{Binding PersonalBestScore, StringFormat=\{0:N0\}}" CanUserReorder="False"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Label Style="{StaticResource scoreStyle}" Content="{Binding MainModel.CurrentScore, Converter={StaticResource ScoreConverter}}"></Label>
+            <Label Style="{StaticResource scoreStyle}" Content="{Binding MainModel.CurrentScore, Converter={StaticResource ScoreConverter}}" ContentStringFormat="N0"></Label>
             <Button Style="{StaticResource saveWarningStyle}" Command="{Binding SaveCurrentSplitsAsCommand}">
                 <Grid>
                     <Grid.ColumnDefinitions>
