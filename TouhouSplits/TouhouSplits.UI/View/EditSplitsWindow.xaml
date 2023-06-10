@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TouhouSplits.UI.View"
         xmlns:conv="clr-namespace:TouhouSplits.UI.Converter"
+        xmlns:extToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="New / Edit Splits" Height="300" Width="600">
     <Window.Resources>
@@ -19,8 +20,8 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding GameName}"/>
-        <TextBox Grid.Row="1" Text="{Binding Splits.SplitName}"/>
+        <extToolkit:WatermarkComboBox Grid.Row="0" ItemsSource="{Binding AvailableGames}" SelectedItem="{Binding GameName}" Watermark="Select Game..."/>
+        <extToolkit:WatermarkTextBox Grid.Row="1" Text="{Binding Splits.SplitName}" Watermark="Enter Category..."/>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
