@@ -9,6 +9,7 @@ namespace TouhouSplits.Service.Hook.Impl
         private EncodingEnum _encoding;
         private int _memoryAddress;
         private int[] _pointerOffsets;
+        private bool _useThreadStack0;
 
         public Kernel32PtrHookStrategy(IKernel32PtrHookConfig config, IKernel32MemoryReader memoryReader)
             : base(config.ProcessNames, memoryReader)
@@ -16,6 +17,7 @@ namespace TouhouSplits.Service.Hook.Impl
             _encoding = config.Encoding;
             _memoryAddress = config.Address;
             _pointerOffsets = config.PointerOffsets;
+            _useThreadStack0 = config.UseThreadStack0;
         }
 
         public override long GetCurrentScore()
@@ -24,8 +26,15 @@ namespace TouhouSplits.Service.Hook.Impl
                 Hook();
             }
 
+            /* Get the starting address to evaluate the pointer from.
+             * The method for this varies depending on whether the pointer starts from the process or the thread stack.
+             */
             int nextAddress = IntPtr.Add(HookedProcess.BaseAddress, _memoryAddress).ToInt32();
+            if (_useThreadStack0) {
+                nextAddress = IntPtr.Subtract(HookedProcess.ThreadStack0Address, _memoryAddress).ToInt32();
+            }
 
+            /* Iterate through the pointer chain */
             int i = 0;
             do {
                 nextAddress = MemoryReader.ReadInt(HookedProcess, nextAddress);
@@ -40,9 +49,7 @@ namespace TouhouSplits.Service.Hook.Impl
             if (_encoding == EncodingEnum.int32) {
                 return MemoryReader.ReadInt(HookedProcess, nextAddress);
             }
-            else {
-                return MemoryReader.ReadLong(HookedProcess, nextAddress);
-            }
+            return MemoryReader.ReadLong(HookedProcess, nextAddress);
         }
     }
 }

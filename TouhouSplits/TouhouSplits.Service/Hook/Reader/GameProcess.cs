@@ -7,31 +7,19 @@ namespace TouhouSplits.Service.Hook.Reader
     {
         private Process _process;
 
-        public GameProcess(Process p)
-        {
+        public GameProcess(Process p) {
             _process = p;
         }
 
-        public int Id {
-            get {
-                return _process.Id;
-            }
-        }
+        public int Id => _process.Id;
 
-        public bool HasExited {
-            get {
-                return _process.HasExited;
-            }
-        }
+        public bool HasExited => _process.HasExited;
 
-        public IntPtr BaseAddress {
-            get {
-                return _process.MainModule.BaseAddress;
-            }
-        }
+        public IntPtr BaseAddress => _process.MainModule.BaseAddress;
 
-        public void Dispose()
-        {
+        public IntPtr ThreadStack0Address => new IntPtr(ProcessUtils32.GetThreadStack0(_process));
+
+        public void Dispose() {
             if (_process != null) {
                 _process.Dispose();
             }

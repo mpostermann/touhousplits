@@ -10,6 +10,16 @@ namespace TouhouSplits.Service.Config.Hook
             : base(configElement)
         {
             PointerOffsets = ParseOffsets(configElement);
+
+            UseThreadStack0 = false;
+            if (configElement.Attribute("useThreadStack0") != null) {
+                try {
+                    UseThreadStack0 = bool.Parse(configElement.Attribute("useThreadStack0").Value);
+                }
+                catch (Exception e) {
+                    throw new ConfigurationErrorsException("Cannot parse \"useThreadStack0\" attribute as a boolean", e);
+                }
+            }
         }
 
         private static int[] ParseOffsets(XElement configElement)
@@ -33,6 +43,7 @@ namespace TouhouSplits.Service.Config.Hook
             }
         }
 
-        public int[] PointerOffsets { get; private set; }
+        public int[] PointerOffsets { get; }
+        public bool UseThreadStack0 { get; }
     }
 }

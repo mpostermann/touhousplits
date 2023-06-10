@@ -7,9 +7,12 @@ namespace TouhouSplits.Service.UnitTests.Config.Hook
 {
     public class Kernel32PtrHookConfigTests
     {
-        private static XElement DefaultValidXml()
-        {
+        private static XElement DefaultValidXml() {
             return XElement.Parse(@"<Hook strategy=""Kernel32PtrHookStrategy"" process=""process1|process2"" address=""0069BCA4"" offsets=""8|20"" encoding=""int32""/>");
+        }
+
+        private static XElement ThreadStackXml() {
+            return XElement.Parse(@"<Hook strategy=""Kernel32PtrHookStrategy"" process=""process1|process2"" useThreadStack0=""true"" address=""0069BCA4"" offsets=""8|20"" encoding=""int32""/>");
         }
 
         [Fact]
@@ -43,6 +46,18 @@ namespace TouhouSplits.Service.UnitTests.Config.Hook
             Assert.Equal(2, config.PointerOffsets.Length);
             Assert.Equal(8, config.PointerOffsets[0]);
             Assert.Equal(32, config.PointerOffsets[1]);
+        }
+
+        [Fact]
+        public void UseThreadStack0_Defaults_To_False() {
+            var config = new Kernel32PtrHookConfig(DefaultValidXml());
+            Assert.Equal(false, config.UseThreadStack0);
+        }
+
+        [Fact]
+        public void UseThreadStack0_Returns_Parsed_Boolean() {
+            var config = new Kernel32PtrHookConfig(ThreadStackXml());
+            Assert.Equal(true, config.UseThreadStack0);
         }
     }
 }

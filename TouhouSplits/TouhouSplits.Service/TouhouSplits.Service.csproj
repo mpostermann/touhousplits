@@ -76,6 +76,7 @@
     <Compile Include="Hook\Impl\Kernel32StaticHookStrategy.cs" />
     <Compile Include="Hook\Impl\TouhouPtrHookStrategy.cs" />
     <Compile Include="Hook\Reader\Kernel32MemoryReader.cs" />
+    <Compile Include="Hook\Reader\ProcessUtils.cs" />
     <Compile Include="ISplitsFacade.cs" />
     <Compile Include="Managers\Config\ConfigManager.cs" />
     <Compile Include="Managers\Config\IConfigManager.cs" />
@@ -107,6 +108,7 @@
   <ItemGroup>
     <Content Include="Games.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Hotkeys.xml" />
   </ItemGroup>
