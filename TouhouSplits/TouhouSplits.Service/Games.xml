@@ -31,7 +31,7 @@
         </Game>
         <Game id="RollingGunner2.10" favoriteslist="rollinggunner210.trs">
             <Name>Rolling Gunner v1.30 / v2.10</Name>
-            <Hook strategy="Kernel32PtrHookStrategy" process="rollgun" address="00F980D4" offsets="312" encoding="int64"/>
+            <Hook strategy="Kernel32PtrHookStrategy" process="rollgun" address="00F980D4" offsets="138" encoding="int64"/>
         </Game>
         <Game id="th06" favoriteslist="th06.trs">
             <Name>Touhou 6: the Embodiment of Scarlet Devil</Name>
@@ -76,6 +76,10 @@
         <Game id="th16" favoriteslist="th16.trs">
             <Name>Touhou 16: Hidden Star in Four Seasons</Name>
             <Hook strategy="TouhouStaticHookStrategy" process="th16|th16e" address="004A57B0" encoding="int32"/>
+        </Game>
+        <Game id="thfdf2" favoriteslist="thfdf2.trs">
+            <Name>Touhou Makukasai ~ Fantastic Danmaku Festival Part II</Name>
+            <Hook strategy="Kernel32PtrHookStrategy" process="THMHJ" address="0003FBDC" offsets="818|10|D0" encoding="int64"/>
         </Game>
     </Games>
 </Configuration>

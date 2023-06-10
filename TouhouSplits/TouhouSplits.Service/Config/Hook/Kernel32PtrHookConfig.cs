@@ -23,7 +23,7 @@ namespace TouhouSplits.Service.Config.Hook
 
                 int[] offsets = new int[offsetStrings.Length];
                 for (int i = 0; i < offsetStrings.Length; i++) {
-                    int offset = int.Parse(offsetStrings[i], System.Globalization.NumberStyles.Integer);
+                    int offset = int.Parse(offsetStrings[i], System.Globalization.NumberStyles.HexNumber);
                     offsets[i] = offset;
                 }
                 return offsets;

@@ -9,6 +9,7 @@ bin
 obj
 packages
 .vs/
+.idea/
 Deployment
 /_NCrunch_TouhouSplits
 
