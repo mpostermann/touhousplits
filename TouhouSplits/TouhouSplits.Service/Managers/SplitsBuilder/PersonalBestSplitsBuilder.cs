@@ -44,10 +44,10 @@ namespace TouhouSplits.Service.Managers
 
         public void SplitToNextSegment()
         {
-            if (_currentSegment == _segments.Count - 1) {
-                throw new InvalidOperationException("Cannot split past the last existing segment.");
+            ((PersonalBestSegment) _segments[_currentSegment]).SegmentCompleted = true;
+            if (_currentSegment < _segments.Count - 1) {
+                _currentSegment++;
             }
-            _currentSegment++;
         }
 
         public void Reset()
@@ -55,6 +55,7 @@ namespace TouhouSplits.Service.Managers
             _currentSegment = 0;
             foreach (PersonalBestSegment segment in _segments) {
                 segment.RecordingScore = Constants.UNSET_SCORE;
+                segment.SegmentCompleted = false;
             }
         }
 

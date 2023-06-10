@@ -12,6 +12,7 @@ namespace TouhouSplits.UI.Model
             SegmentName = personalBest.SegmentName;
             PersonalBestScore = personalBest.Score;
             RecordingScore = Constants.UNSET_SCORE;
+            SegmentCompleted = false;
         }
 
         private string _segmentName;
@@ -38,6 +39,15 @@ namespace TouhouSplits.UI.Model
             set {
                 _recordingScore = value;
                 NotifyPropertyChanged("RecordingScore");
+            }
+        }
+
+        private bool _segmentCompleted;
+        public bool SegmentCompleted {
+            get { return _segmentCompleted; }
+            set {
+                _segmentCompleted = value;
+                NotifyPropertyChanged("SegmentCompleted");
             }
         }
     }

@@ -91,6 +91,7 @@
     <Compile Include="Converter\AdditionConverter.cs" />
     <Compile Include="Converter\IsGreaterThanOrEqualConverter.cs" />
     <Compile Include="Converter\ScoreConverter.cs" />
+    <Compile Include="Converter\ScoreDifferenceConverter.cs" />
     <Compile Include="Dialog\BugReporter.cs" />
     <Compile Include="Dialog\CrashDialog.cs" />
     <Compile Include="Hotkey\GlobalHotkeyManager.cs" />

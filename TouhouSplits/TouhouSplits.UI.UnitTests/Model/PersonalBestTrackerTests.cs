@@ -156,12 +156,12 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void Get_CurrentScore_Returns_Negative_One_If_Game_Is_Not_Polling_And_No_Builder_Is_Loaded()
+        public void Get_CurrentScore_Returns_UNSET_SCORE_If_Game_Is_Not_Polling_And_No_Builder_Is_Loaded()
         {
             var model = new PersonalBestTracker(DefaultSplitsFacade());
 
             model.StopScorePoller();
-            Assert.Equal(-1, model.CurrentScore);
+            Assert.Equal(Constants.UNSET_SCORE, model.CurrentScore);
         }
 
         [Fact]

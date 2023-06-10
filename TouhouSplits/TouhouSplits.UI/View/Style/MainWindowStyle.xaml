@@ -102,6 +102,7 @@
         <Setter Property="TextBlock.TextAlignment" Value="Left" />
     </Style>
     <Style BasedOn="{StaticResource tableCellStyle}" TargetType="{x:Type DataGridCell}" x:Key="tableScoreCellStyle">
+        <Setter Property="Foreground" Value="#ff5d5d"/>
         <Style.Triggers>
             <DataTrigger Value="True">
                 <DataTrigger.Binding>

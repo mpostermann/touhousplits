@@ -11,7 +11,7 @@ namespace TouhouSplits.UI.Converter
         {
             try {
                 long score = long.Parse(value.ToString());
-                if (score < 0) {
+                if (score == Constants.UNSET_SCORE) {
                     return string.Empty;
                 }
                 return value;

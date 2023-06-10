@@ -3,6 +3,6 @@ namespace TouhouSplits.Service
 {
     public class Constants
     {
-        public const long UNSET_SCORE = -1;
+        public const long UNSET_SCORE = long.MinValue;
     }
 }

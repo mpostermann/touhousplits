@@ -123,14 +123,29 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
         }
 
         [Fact]
-        public void SplitToNextSegment_Throws_Exception_If_Called_More_Times_Than_The_Count_Of_Segments_In_Personal_Best()
+        public void SplitToNextSegment_Marks_Segment_As_Completed()
+        {
+            var pb = CreateDefaultSplits(2);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            Assert.Equal(false, builder.Segments[0].SegmentCompleted);
+
+            builder.SplitToNextSegment();
+            Assert.Equal(true, builder.Segments[0].SegmentCompleted);
+        }
+
+        [Fact]
+        public void SplitToNextSegment_Does_Nothing_If_Called_More_Times_Than_The_Count_Of_Segments_In_Personal_Best()
         {
             var pb = CreateDefaultSplits(3);
             var builder = new PersonalBestSplitsBuilder(pb);
 
             builder.SplitToNextSegment();
             builder.SplitToNextSegment();
-            Assert.Throws<InvalidOperationException>(() => builder.SplitToNextSegment());
+
+            // Split a 3rd time, but expect that we don't advance to a new segment (since we're already at the last one)
+            builder.SplitToNextSegment();
+            Assert.Equal(2, builder.CurrentSegment);
         }
 
         [Fact]

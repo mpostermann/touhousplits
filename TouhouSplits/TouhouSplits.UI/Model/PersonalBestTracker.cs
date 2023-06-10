@@ -122,7 +122,7 @@ namespace TouhouSplits.UI.Model
                     }
                     return score;
                 }
-                else if (_personalBestBuilder != null) {
+                if (_personalBestBuilder != null) {
                     var score = _personalBestBuilder.GetOutput().EndingSegment.Score;
                     if (score > 0) {
                         return score;
@@ -137,8 +137,7 @@ namespace TouhouSplits.UI.Model
         /// still read your score from the previous run. This method determines whether a new run has started by checking whether
         /// this score has changed or not.
         /// </summary>
-        private bool GameHasStartedRun(long currentScore)
-        {
+        private bool GameHasStartedRun(long currentScore) {
             return currentScore != _initialPollingScore;
         }
 
@@ -220,10 +219,8 @@ namespace TouhouSplits.UI.Model
                 return;
             }
             _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
-            if (_personalBestBuilder.CurrentSegment < _personalBestBuilder.Segments.Count - 1) {
-                _personalBestBuilder.SplitToNextSegment();
-            }
-            else {
+            _personalBestBuilder.SplitToNextSegment();
+            if (_personalBestBuilder.CurrentSegment == _personalBestBuilder.Segments.Count - 1) {
                 StopScorePoller();
             }
         }

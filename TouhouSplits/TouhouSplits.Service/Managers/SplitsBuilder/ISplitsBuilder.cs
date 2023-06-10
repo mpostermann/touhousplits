@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TouhouSplits.Service.Data;
-using TouhouSplits.UI.Model;
 
 namespace TouhouSplits.Service.Managers.SplitsBuilder
 {
