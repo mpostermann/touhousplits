@@ -1,8 +1,11 @@
 ﻿using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms.VisualStyles;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers;
+using TouhouSplits.Service.Managers.SplitsBuilder;
+using TouhouSplits.UI.Model;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
@@ -71,6 +74,29 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
         }
 
         [Fact]
+        public void Segments_Are_Not_Running_Or_Completed_By_Default() {
+            var pb = CreateDefaultSplits(10);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            foreach (IPersonalBestSegment segment in builder.Segments) {
+                Assert.Equal(false, segment.IsRunning);
+                Assert.Equal(false, segment.IsCompleted);
+            }
+        }
+
+        [Fact]
+        public void MarkAsStarted_Sets_IsRunning_For_CurrentSegment() {
+            var pb = CreateDefaultSplits(2);
+            var builder = new PersonalBestSplitsBuilder(pb);
+
+            builder.MarkAsStarted();
+            Assert.Equal(true, builder.Segments[0].IsRunning);
+            Assert.Equal(false, builder.Segments[0].IsCompleted);
+            Assert.Equal(false, builder.Segments[1].IsRunning);
+            Assert.Equal(false, builder.Segments[1].IsCompleted);
+        }
+
+        [Fact]
         public void SetScoreForCurrentSegment_Updates_Score_For_First_Segment_Upon_Construction()
         {
             var pb = CreateDefaultSplits(2);
@@ -123,15 +149,18 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
         }
 
         [Fact]
-        public void SplitToNextSegment_Marks_Segment_As_Completed()
+        public void SplitToNextSegment_Marks_Segment_As_Completed_And_Next_Segment_As_Running()
         {
             var pb = CreateDefaultSplits(2);
             var builder = new PersonalBestSplitsBuilder(pb);
 
-            Assert.Equal(false, builder.Segments[0].SegmentCompleted);
+            Assert.Equal(false, builder.Segments[0].IsCompleted);
 
             builder.SplitToNextSegment();
-            Assert.Equal(true, builder.Segments[0].SegmentCompleted);
+            Assert.Equal(true, builder.Segments[0].IsCompleted);
+            Assert.Equal(false, builder.Segments[0].IsRunning);
+            Assert.Equal(false, builder.Segments[1].IsCompleted);
+            Assert.Equal(true, builder.Segments[1].IsRunning);
         }
 
         [Fact]
@@ -161,11 +190,12 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
         }
 
         [Fact]
-        public void Reset_Causes_Previously_Set_Scores_To_Be_Set_To_Their_Default_Value()
+        public void Reset_Causes_Previously_Set_Segments_To_Be_Set_To_Their_Default_Value()
         {
             var pb = CreateDefaultSplits(3);
             var builder = new PersonalBestSplitsBuilder(pb);
-
+            
+            builder.MarkAsStarted();
             builder.SetScoreForCurrentSegment(1);
             builder.SplitToNextSegment();
             builder.SetScoreForCurrentSegment(2);
@@ -174,8 +204,32 @@ namespace TouhouSplits.Service.UnitTests.Managers.SplitsBuilder
 
             builder.Reset();
             Assert.Equal(Constants.UNSET_SCORE, builder.Segments[0].RecordingScore);
+            Assert.Equal(false, builder.Segments[0].IsRunning);
+            Assert.Equal(false, builder.Segments[0].IsCompleted);
             Assert.Equal(Constants.UNSET_SCORE, builder.Segments[1].RecordingScore);
+            Assert.Equal(false, builder.Segments[1].IsRunning);
+            Assert.Equal(false, builder.Segments[1].IsCompleted);
             Assert.Equal(Constants.UNSET_SCORE, builder.Segments[2].RecordingScore);
+            Assert.Equal(false, builder.Segments[1].IsRunning);
+            Assert.Equal(false, builder.Segments[1].IsCompleted);
+        }
+
+        [Fact]
+        public void MarkAsStopped_Sets_Current_Segment_To_Completed_And_No_Segment_As_Running() {
+            var pb = CreateDefaultSplits(3);
+            var builder = new PersonalBestSplitsBuilder(pb);
+            
+            builder.MarkAsStarted();
+            builder.SetScoreForCurrentSegment(1);
+            builder.SplitToNextSegment();
+            builder.MarkAsStopped();
+
+            Assert.Equal(false, builder.Segments[0].IsRunning);
+            Assert.Equal(true, builder.Segments[0].IsCompleted);
+            Assert.Equal(false, builder.Segments[1].IsRunning);
+            Assert.Equal(true, builder.Segments[1].IsCompleted);
+            Assert.Equal(false, builder.Segments[2].IsRunning);
+            Assert.Equal(false, builder.Segments[2].IsCompleted);
         }
 
         [Fact]

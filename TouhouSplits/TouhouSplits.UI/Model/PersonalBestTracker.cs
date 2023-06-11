@@ -124,7 +124,7 @@ namespace TouhouSplits.UI.Model
                 }
                 if (_personalBestBuilder != null) {
                     var score = _personalBestBuilder.GetOutput().EndingSegment.Score;
-                    if (score > 0) {
+                    if (score >= 0) {
                         return score;
                     }
                 }
@@ -172,6 +172,7 @@ namespace TouhouSplits.UI.Model
             try {
                 _personalBestBuilder.Reset();
                 _initialPollingScore = _gameManager.GetCurrentScore();
+                _personalBestBuilder.MarkAsStarted();
             }
             catch (Exception e) {
                 LastError = e;
@@ -218,9 +219,13 @@ namespace TouhouSplits.UI.Model
             if (!IsPolling) {
                 return;
             }
+
             _personalBestBuilder.SetScoreForCurrentSegment(CurrentScore);
-            _personalBestBuilder.SplitToNextSegment();
-            if (_personalBestBuilder.CurrentSegment == _personalBestBuilder.Segments.Count - 1) {
+
+            if (_personalBestBuilder.CurrentSegment < _personalBestBuilder.Segments.Count - 1) {
+                _personalBestBuilder.SplitToNextSegment();
+            }
+            else {
                 StopScorePoller();
             }
         }
@@ -236,6 +241,10 @@ namespace TouhouSplits.UI.Model
             if (_personalBestBuilder == null) {
                 return null;
             }
+            
+            // End the current segment before closing out the run
+            _personalBestBuilder.MarkAsStopped();
+
             return _personalBestBuilder.GetOutput();
         }
     }

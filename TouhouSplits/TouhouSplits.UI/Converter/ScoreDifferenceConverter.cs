@@ -14,7 +14,7 @@ namespace TouhouSplits.UI.Converter
     /// Expected values order:
     /// 1) RunningScore
     /// 2) PersonalBestScore
-    /// 3) SegmentCompleted
+    /// 3) IsCompleted
     /// </summary>
     public class ScoreDifferenceConverter : IMultiValueConverter
     {

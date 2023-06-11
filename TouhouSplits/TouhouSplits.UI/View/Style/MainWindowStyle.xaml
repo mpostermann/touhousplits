@@ -86,6 +86,9 @@
             <Trigger Property="AlternationIndex" Value="1">
                 <Setter Property="ItemsControl.Background" Value="#28393d"/>
             </Trigger>
+            <DataTrigger Binding="{Binding Path=IsRunning}" Value="true">
+                <Setter Property="Background" Value="#63620d"/>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
     <Style BasedOn="{StaticResource baseStyle}" TargetType="{x:Type DataGridCell}" x:Key="tableCellStyle">

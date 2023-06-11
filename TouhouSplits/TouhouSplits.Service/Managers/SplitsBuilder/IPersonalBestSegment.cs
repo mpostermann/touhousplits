@@ -6,6 +6,7 @@ namespace TouhouSplits.Service.Managers.SplitsBuilder
         string SegmentName { get; }
         long PersonalBestScore { get; }
         long RecordingScore { get; }
-        bool SegmentCompleted { get; }
+        bool IsRunning { get; }
+        bool IsCompleted { get; }
     }
 }

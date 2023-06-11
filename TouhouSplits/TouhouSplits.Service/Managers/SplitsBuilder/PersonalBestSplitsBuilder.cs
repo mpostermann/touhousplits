@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TouhouSplits.Service.Data;
 using TouhouSplits.Service.Managers.SplitsBuilder;
 using TouhouSplits.UI.Model;
@@ -44,18 +43,37 @@ namespace TouhouSplits.Service.Managers
 
         public void SplitToNextSegment()
         {
-            ((PersonalBestSegment) _segments[_currentSegment]).SegmentCompleted = true;
+            ((PersonalBestSegment) _segments[_currentSegment]).IsCompleted = true;
+            ((PersonalBestSegment) _segments[_currentSegment]).IsRunning = false;
+
             if (_currentSegment < _segments.Count - 1) {
                 _currentSegment++;
+                ((PersonalBestSegment) _segments[_currentSegment]).IsRunning = true;
             }
         }
 
-        public void Reset()
-        {
+        public void Reset() {
             _currentSegment = 0;
             foreach (PersonalBestSegment segment in _segments) {
                 segment.RecordingScore = Constants.UNSET_SCORE;
-                segment.SegmentCompleted = false;
+                segment.IsCompleted = false;
+                segment.IsRunning = false;
+            }
+        }
+
+        public void MarkAsStarted() {
+            if (_currentSegment <= _segments.Count - 1) {
+                ((PersonalBestSegment) _segments[_currentSegment]).IsRunning = true;
+            }
+        }
+
+        public void MarkAsStopped() {
+            if (_currentSegment <= _segments.Count - 1) {
+                ((PersonalBestSegment) _segments[_currentSegment]).IsCompleted = true;
+            }
+
+            foreach (PersonalBestSegment segment in _segments) {
+                segment.IsRunning = false;
             }
         }
 

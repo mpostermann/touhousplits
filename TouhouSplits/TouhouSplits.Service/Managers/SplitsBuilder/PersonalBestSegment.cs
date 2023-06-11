@@ -12,7 +12,7 @@ namespace TouhouSplits.UI.Model
             SegmentName = personalBest.SegmentName;
             PersonalBestScore = personalBest.Score;
             RecordingScore = Constants.UNSET_SCORE;
-            SegmentCompleted = false;
+            IsCompleted = false;
         }
 
         private string _segmentName;
@@ -20,7 +20,7 @@ namespace TouhouSplits.UI.Model
             get { return _segmentName; }
             private set {
                 _segmentName = value;
-                NotifyPropertyChanged("SegmentName");
+                NotifyPropertyChanged(nameof(SegmentName));
             }
         }
 
@@ -29,7 +29,7 @@ namespace TouhouSplits.UI.Model
             get { return _personalBestScore; }
             private set {
                 _personalBestScore = value;
-                NotifyPropertyChanged("PersonalBestScore");
+                NotifyPropertyChanged(nameof(PersonalBestScore));
             }
         }
 
@@ -38,16 +38,25 @@ namespace TouhouSplits.UI.Model
             get { return _recordingScore; }
             set {
                 _recordingScore = value;
-                NotifyPropertyChanged("RecordingScore");
+                NotifyPropertyChanged(nameof(RecordingScore));
             }
         }
 
-        private bool _segmentCompleted;
-        public bool SegmentCompleted {
-            get { return _segmentCompleted; }
+        private bool _isRunning;
+        public bool IsRunning {
+            get { return _isRunning; }
             set {
-                _segmentCompleted = value;
-                NotifyPropertyChanged("SegmentCompleted");
+                _isRunning = value;
+                NotifyPropertyChanged(nameof(IsRunning));
+            }
+        }
+
+        private bool _isCompleted;
+        public bool IsCompleted {
+            get { return _isCompleted; }
+            set {
+                _isCompleted = value;
+                NotifyPropertyChanged(nameof(IsCompleted));
             }
         }
     }

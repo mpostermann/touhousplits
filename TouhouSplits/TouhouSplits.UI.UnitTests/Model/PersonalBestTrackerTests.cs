@@ -133,7 +133,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void LoadPersonalBets_Sets_RecordingSplits_Using_Passed_In_Builder()
+        public void LoadPersonalBest_Sets_RecordingSplits_Using_Passed_In_Builder()
         {
             var model = new PersonalBestTracker(DefaultSplitsFacade());
 
@@ -231,6 +231,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
             model.StartScorePoller();
             builderMock.Received().Reset();
+            builderMock.Received().MarkAsStarted();
         }
 
         [Fact]
@@ -244,6 +245,7 @@ namespace TouhouSplits.UI.UnitTests.Model
             builderMock.ClearReceivedCalls();
             model.StartScorePoller();
             builderMock.DidNotReceive().Reset();
+            builderMock.DidNotReceive().MarkAsStarted();
         }
 
         [Fact]
@@ -259,7 +261,7 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void StartScorePoller_Sets_IsPolling_To_False()
+        public void StopScorePoller_Sets_IsPolling_To_False()
         {
             var model = new PersonalBestTracker(DefaultSplitsFacade());
 
@@ -267,6 +269,19 @@ namespace TouhouSplits.UI.UnitTests.Model
             model.StartScorePoller();
             model.StopScorePoller();
             Assert.Equal(false, model.IsPolling);
+        }
+
+        [Fact]
+        public void StopScorePoller_Marks_Builder_As_Stopped() {
+            var model = new PersonalBestTracker(DefaultSplitsFacade());
+            var builderMock = GetDefaultSplitsBuilder(1);
+
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", builderMock);
+            model.StartScorePoller();
+            builderMock.ClearReceivedCalls();
+
+            model.StopScorePoller();
+            builderMock.Received().MarkAsStopped();
         }
 
         [Fact]

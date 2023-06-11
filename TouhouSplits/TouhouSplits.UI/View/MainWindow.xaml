@@ -71,7 +71,7 @@
                             <MultiBinding Converter="{StaticResource ScoreDifferenceConverter}" StringFormat="N0">
                                 <Binding Path="RecordingScore"/>
                                 <Binding Path="PersonalBestScore"/>
-                                <Binding Path="SegmentCompleted"/>
+                                <Binding Path="IsCompleted"/>
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
