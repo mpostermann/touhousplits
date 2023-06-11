@@ -46,7 +46,8 @@ Required attributes:
 Follows a pointer to find the memory address to read.
 
 Required attributes:
-* `@address`: The memory address of the pointer.
+* `useThreadStack0`: true or false. Whether to resolve the memory address off of THREADSTACK0. If false, the memory address will be resolved based off the running executable.
+* `@address`: The memory address of the pointer. When useThreadStack0 is true, this will be a negative address.
 * `@offsets`: The pointer offsets. Multiple offsets can be specified by separating each with a | character.
 * `@encoding`: How to read the bytes stored at the memory address. Supported values are `int32` and `int64`.
 
