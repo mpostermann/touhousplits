@@ -36,7 +36,12 @@ namespace TouhouSplits.UI.Converter
                 return string.Empty;
             }
 
-            return score1 - score2;
+            long difference = score1 - score2;
+
+            if (difference > 0) {
+                return $"+{difference.ToString("N0")}";
+            }
+            return difference.ToString("N0");
         }
 
         private long ParseScore(object value) {
