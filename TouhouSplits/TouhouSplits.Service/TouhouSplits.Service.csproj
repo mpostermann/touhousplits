@@ -59,9 +59,12 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Data\FileHandler.cs" />
     <Compile Include="Data\GameId.cs" />
+    <Compile Include="Data\HotkeyModel.cs" />
     <Compile Include="Data\IFileHandler.cs" />
+    <Compile Include="Data\IHotkey.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
+    <Compile Include="Enums\HotkeyableMethodEnum.cs" />
     <Compile Include="FilePaths.cs" />
     <Compile Include="Hook\EncodingEnum.cs" />
     <Compile Include="Hook\HookStrategyFactory.cs" />
@@ -121,5 +124,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,5 +13,10 @@ namespace TouhouSplits.UI.ViewModel
         {
             MessageBox.Show(message, title, MessageBoxButton.OK);
         }
+
+        public static MessageBoxResult ShowYesNoDialog(string message, string title)
+        {
+            return MessageBox.Show(message, title, MessageBoxButton.YesNo);
+        }
     }
 }

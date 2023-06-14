@@ -9,6 +9,7 @@ namespace TouhouSplits.UI.Hotkey
         ICollection<Keys> RegisteredHotkeys { get; }
         void RegisterHotkey(Keys keys, ICommand command);
         void UnregisterHotkey(Keys keys);
+        void UnregisterAllHotkeys();
         void Enable();
         void Disable();
         void RegisterEnableToggleHotkey(Keys keys);

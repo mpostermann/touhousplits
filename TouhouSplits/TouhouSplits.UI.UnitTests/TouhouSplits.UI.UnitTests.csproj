@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hotkey\GlobalHotkeyManagerTests.cs" />
+    <Compile Include="Model\HotkeyConfigModelTests.cs" />
     <Compile Include="Model\PersonalBestTrackerTests.cs" />
     <Compile Include="Model\SaveLoadHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
 using System;
 using System.Configuration;
 using System.IO;
@@ -10,6 +9,7 @@ using TouhouSplits.Manager.Config;
 using TouhouSplits.Service;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
+using TouhouSplits.Service.Enums;
 using TouhouSplits.Service.Managers;
 using TouhouSplits.Service.Managers.Config;
 using TouhouSplits.Service.Serialization;
@@ -17,23 +17,30 @@ using TouhouSplits.UI.Dialog;
 using TouhouSplits.UI.Hotkey;
 using TouhouSplits.UI.Model;
 using TouhouSplits.UI.View;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace TouhouSplits.UI.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private IConfigManager _configManager;
+
         private ISplitsFacade _splitsFacade;
         private bool _dialogIsOpen;
 
-        private PersonalBestTracker _mainModel;
-        public PersonalBestTracker MainModel { get { return _mainModel; } }
+        private readonly PersonalBestTracker _mainModel;
+        public PersonalBestTracker MainModel => _mainModel;
 
-        private SaveLoadHandler _fileModel;
-        public SaveLoadHandler FileModel { get { return _fileModel; } }
+        private readonly SaveLoadHandler _fileModel;
+        public SaveLoadHandler FileModel => _fileModel;
 
         public ICommand NewSplitCommand { get; private set; }
         public ICommand EditSplitCommand { get; private set; }
         public ICommand OpenSplitCommand { get; private set; }
+        public ICommand OpenSettingsCommand { get; private set; }
         public ICommand NextSplitsCommand { get; private set; }
         public ICommand PreviousSplitsCommand { get; private set; }
         public ICommand StartOrStopRecordingSplitsCommand { get; private set; }
@@ -48,8 +55,8 @@ namespace TouhouSplits.UI.ViewModel
             Application.Current.DispatcherUnhandledException -= CrashDialog.UnhandledEventHandler;
             Application.Current.DispatcherUnhandledException += CrashDialog.UnhandledEventHandler;
 
-            IConfigManager configuration = LoadConfiguration();
-            _splitsFacade = new SplitsFacade(configuration, new JsonSerializer<Splits>());
+            _configManager = LoadConfiguration();
+            _splitsFacade = new SplitsFacade(_configManager, new JsonSerializer<Splits>());
             _mainModel = new PersonalBestTracker(_splitsFacade);
             _fileModel = new SaveLoadHandler(_splitsFacade);
             _dialogIsOpen = false;
@@ -59,6 +66,7 @@ namespace TouhouSplits.UI.ViewModel
             EditSplitCommand = new RelayCommand(() => EditSplit(), () => FileModel.CurrentFile() != null && !MainModel.IsPolling);
             OpenSplitCommand = new RelayCommand(() => OpenSplit(), () => !MainModel.IsPolling);
             NextSplitsCommand = new RelayCommand(() => NextSplits(), () => !MainModel.IsPolling);
+            OpenSettingsCommand = new RelayCommand(() => OpenSettingsModal());
             PreviousSplitsCommand = new RelayCommand(() => PreviousSplits(), () => !MainModel.IsPolling);
             StartOrStopRecordingSplitsCommand = new RelayCommand(() => StartOrStopRecordingSplits(), () => FileModel.CurrentFile() != null && !_dialogIsOpen && MainModel.IsHookable);
             SplitToNextSegmentCommand = new RelayCommand(() => SplitToNextSegment(), () => MainModel.IsPolling && !_dialogIsOpen);
@@ -67,7 +75,7 @@ namespace TouhouSplits.UI.ViewModel
             ClearPollingErrorCommand = new RelayCommand(() => ClearPollingError(), () => !MainModel.IsPolling && MainModel.HasError);
             ExitApplicationCommand = new RelayCommand(() => ExitApplication());
 
-            RegisterHotkeys(configuration.Hotkeys);
+            RegisterHotkeys(_configManager.Hotkeys);
 
             if (splitsFileInfo != null) {
                 var file = _splitsFacade.LoadSplitsFile(splitsFileInfo);
@@ -89,21 +97,19 @@ namespace TouhouSplits.UI.ViewModel
 
         private void RegisterHotkeys(IHotkeyConfig config)
         {
-            if (config.HasHotkey("ToggleHotkeys")) {
-                foreach (System.Windows.Forms.Keys keys in config.GetHotkeys("ToggleHotkeys")) {
-                    GlobalHotkeyManagerFactory.Instance.RegisterEnableToggleHotkey(keys);
-                }
+            GlobalHotkeyManagerFactory.Instance.UnregisterAllHotkeys();
+
+            foreach (System.Windows.Forms.Keys keys in config.GetHotkeys(HotkeyableMethodEnum.ToggleHotkeys)) {
+                GlobalHotkeyManagerFactory.Instance.RegisterEnableToggleHotkey(keys);
             }
-            RegisterSingleHotkey(config, "StartOrStopRecordingSplits", StartOrStopRecordingSplitsCommand);
-            RegisterSingleHotkey(config, "SplitToNextSegment", SplitToNextSegmentCommand);
+            RegisterSingleHotkey(config, HotkeyableMethodEnum.StartOrStopRecordingSplits, StartOrStopRecordingSplitsCommand);
+            RegisterSingleHotkey(config, HotkeyableMethodEnum.SplitToNextSegment, SplitToNextSegmentCommand);
         }
 
-        private static void RegisterSingleHotkey(IHotkeyConfig config, string hotkeyName, ICommand command)
+        private static void RegisterSingleHotkey(IHotkeyConfig config, HotkeyableMethodEnum method, ICommand command)
         {
-            if (config.HasHotkey(hotkeyName)) {
-                foreach (System.Windows.Forms.Keys keys in config.GetHotkeys(hotkeyName)) {
-                    GlobalHotkeyManagerFactory.Instance.RegisterHotkey(keys, command);
-                }
+            foreach (System.Windows.Forms.Keys keys in config.GetHotkeys(method)) {
+                GlobalHotkeyManagerFactory.Instance.RegisterHotkey(keys, command);
             }
         }
 
@@ -149,6 +155,20 @@ namespace TouhouSplits.UI.ViewModel
                 var file = _splitsFacade.LoadSplitsFile(new FileInfo(dialog.FileName));
                 ReloadCurrentSplitsFile(file);
             }
+            _dialogIsOpen = false;
+        }
+        
+        private void OpenSettingsModal()
+        {
+            var settingsView = new EditSettingsWindow();
+            settingsView.DataContext = new EditSettingsViewModel(_configManager);
+            _dialogIsOpen = true;
+            settingsView.ShowDialog();
+
+            if (settingsView.DialogResult == true) {
+                RegisterHotkeys(_configManager.Hotkeys);
+            }
+
             _dialogIsOpen = false;
         }
 

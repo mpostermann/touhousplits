@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml.Linq;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.Service.Managers.Config
 {
@@ -71,6 +72,25 @@ namespace TouhouSplits.Service.Managers.Config
                 //Do nothing
             }
             return configDoc;
+        }
+
+        /// <summary>
+        /// Applies and persists to disk a new Hotkeys config
+        /// </summary>
+        public void UpdateAndPersistHotkeys(IList<IHotkey> hotkeys)
+        {
+            var newHotkeyConfig = new HotkeyConfig(hotkeys);
+            try {
+                FileInfo filepath = new FileInfo(Path.Combine(FilePaths.DIR_APP_CONFIG, "Hotkeys.xml"));
+                var xml = newHotkeyConfig.ToXml();
+                filepath.Directory.Create();
+                xml.Save(filepath.FullName);
+
+                Hotkeys = newHotkeyConfig;
+            }
+            catch (Exception e) {
+                throw new ConfigurationErrorsException("Unable to save Hotkeys.xml configuration. " + e.Message, e);
+            }
         }
     }
 }

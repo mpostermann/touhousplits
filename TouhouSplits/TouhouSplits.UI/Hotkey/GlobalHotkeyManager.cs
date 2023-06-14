@@ -56,6 +56,10 @@ namespace TouhouSplits.UI.Hotkey
 
         public void RegisterHotkey(Keys keys, ICommand command)
         {
+            if (keys == Keys.None) {
+                return;
+            }
+
             if (_commandMap.ContainsKey(keys)) {
                 throw new ArgumentException(string.Format("Hotkey \"{0}\" is already registered.", keys.ToString()));
             }
@@ -65,6 +69,11 @@ namespace TouhouSplits.UI.Hotkey
         public void UnregisterHotkey(Keys keys)
         {
             _commandMap.Remove(keys);
+        }
+
+        public void UnregisterAllHotkeys()
+        {
+            _commandMap.Clear();
         }
 
         public void Enable()
@@ -79,7 +88,7 @@ namespace TouhouSplits.UI.Hotkey
 
         public void RegisterEnableToggleHotkey(Keys keys)
         {
-            if (_enableToggleHotkey == keys) {
+            if (keys == Keys.None || _enableToggleHotkey == keys) {
                 return;
             }
 
