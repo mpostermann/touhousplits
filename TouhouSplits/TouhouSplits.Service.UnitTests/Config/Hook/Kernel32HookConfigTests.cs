@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using TouhouSplits.Service.Config.Hook;
+using TouhouSplits.Service.Hook;
 using Xunit;
 
 namespace TouhouSplits.Service.UnitTests.Config.Hook
@@ -99,8 +101,41 @@ namespace TouhouSplits.Service.UnitTests.Config.Hook
         public void Constructor_Throws_Exception_If_process_Attribute_Is_Empty()
         {
             XElement xml = DefaultValidXml();
-            xml.Attribute("process").Value = string.Empty;
+            xml.SetAttributeValue("process", string.Empty);
             Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
+        }
+
+        [Fact]
+        public void Constructor_Throws_Exception_If_length_Attribute_Is_Empty_And_encoding_Is_arrayOfNumbers()
+        {
+            var xml = DefaultValidXml();
+            xml.SetAttributeValue("encoding", "arrayofnumbers");
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-8)]
+        public void Constructor_Throws_Exception_If_length_Is_Not_Positive(int invalidLength)
+        {
+            var xml = DefaultValidXml();
+            xml.SetAttributeValue("encoding", "arrayofnumbers");
+            xml.SetAttributeValue("length", invalidLength);
+            Assert.Throws<ConfigurationErrorsException>(() => new Kernel32HookConfig(xml));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(16)]
+        public void Constructor_Parses_Length(int expectedLength)
+        {
+            var xml = DefaultValidXml();
+            xml.SetAttributeValue("encoding", "arrayofnumbers");
+            xml.SetAttributeValue("length", expectedLength);
+            var config = new Kernel32HookConfig(xml);
+
+            Assert.Equal(EncodingEnum.arrayOfNumbers, config.Encoding);
+            Assert.Equal(expectedLength, config.Length);
         }
     }
 }

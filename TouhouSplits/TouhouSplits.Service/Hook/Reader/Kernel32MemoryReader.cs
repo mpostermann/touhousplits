@@ -42,6 +42,24 @@ namespace TouhouSplits.Service.Hook.Reader
             return BitConverter.ToInt64(buffer, 0);
         }
 
+        public long ReadArrayOfNumbers(IGameProcess process, int memoryAddress, int length)
+        {
+            if (length <= 0) {
+                throw new ArgumentOutOfRangeException(nameof(length), "length must be greater than 0");
+            }
+
+            long value = 0;
+            for (int i = 0; i < length; i++) {
+                byte digit = ReadBytes(process, memoryAddress, 1)[0];
+                memoryAddress++;
+
+                value *= 10;
+                value += digit;
+            }
+
+            return value;
+        }
+
         private byte[] ReadBytes(IGameProcess process, int memoryAddress, int numBytes) {
             if (process == null || process.HasExited) {
                 throw new InvalidOperationException("Game is not running");

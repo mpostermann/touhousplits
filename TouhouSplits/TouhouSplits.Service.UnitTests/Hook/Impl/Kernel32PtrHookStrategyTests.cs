@@ -10,7 +10,7 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
 {
     public class Kernel32PtrHookStrategyTests
     {
-        private static IKernel32PtrHookConfig DefaultConfig(string processName, int address, int[] offsets, EncodingEnum encoding, bool useThreadStack0 = false)
+        private static IKernel32PtrHookConfig DefaultConfig(string processName, int address, int[] offsets, EncodingEnum encoding, bool useThreadStack0 = false, int length = 0)
         {
             var config = Substitute.For<IKernel32PtrHookConfig>();
             config.ProcessNames.Returns(new[] { processName });
@@ -18,6 +18,7 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
             config.Encoding.Returns(encoding);
             config.PointerOffsets.Returns(offsets);
             config.UseThreadStack0.Returns(useThreadStack0);
+            config.Length.Returns(length);
             return config;
         }
 
@@ -200,6 +201,33 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
                 .Returns(589918964);
 
             Assert.Equal(589918964, strategy.GetCurrentScore());
+        }
+
+        [Fact]
+        public void GetCurrentScore_Reads_arrayOfNumbers_From_Pointed_Address_With_Many_PointerOffsets()
+        {
+            var memoryReader = DefaultMemoryReader("process1", 98765, 54321);
+            var strategy = new Kernel32PtrHookStrategy(
+                DefaultConfig("process1", 12345, new[] { 16, 32, 0, 20 }, EncodingEnum.arrayOfNumbers, false, 16),
+                memoryReader);
+
+            memoryReader
+                .ReadInt(memoryReader.GetProcessesByName("process1")[0], 12345 + 98765)
+                .Returns(23456);
+            memoryReader
+                .ReadInt(memoryReader.GetProcessesByName("process1")[0], 23456 + 16)
+                .Returns(34567);
+            memoryReader
+                .ReadInt(memoryReader.GetProcessesByName("process1")[0], 34567 + 32)
+                .Returns(45678);
+            memoryReader
+                .ReadInt(memoryReader.GetProcessesByName("process1")[0], 45678 + 0)
+                .Returns(56789);
+            memoryReader
+                .ReadArrayOfNumbers(memoryReader.GetProcessesByName("process1")[0], 56789 + 20, 16)
+                .Returns(89498198);
+
+            Assert.Equal(89498198, strategy.GetCurrentScore());
         }
     }
 }
