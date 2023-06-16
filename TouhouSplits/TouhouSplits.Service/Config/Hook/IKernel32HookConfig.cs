@@ -6,6 +6,7 @@ namespace TouhouSplits.Service.Config.Hook
     {
         int Address { get; }
         EncodingEnum Encoding { get; }
+        int Length { get; }
         string[] ProcessNames { get; }
     }
 }

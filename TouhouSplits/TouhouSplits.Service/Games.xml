@@ -33,6 +33,10 @@
             <Name>Rolling Gunner v1.30 / v2.10</Name>
             <Hook strategy="Kernel32PtrHookStrategy" process="rollgun" address="00F980D4" offsets="138" encoding="int64"/>
         </Game>
+        <Game id="sispriGauntlet" favoriteslist="sispriGauntlet.trs">
+            <Name>Sispri Gauntlet</Name>
+            <Hook strategy="Kernel32PtrHookStrategy" process="sg" address="1D71E0" offsets="40C|C" encoding="arrayOfNumbers" length="16"/>
+        </Game>
         <Game id="th06" favoriteslist="th06.trs">
             <Name>Touhou 6: the Embodiment of Scarlet Devil</Name>
             <Hook strategy="Kernel32StaticHookStrategy" process="東方紅魔郷|th06e|“Œ•ûg–‚‹½" address="0069BCA4" encoding="int32"/>

@@ -9,11 +9,12 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
 {
     public class Kernel32StaticHookStrategyTests
     {
-        private static IKernel32HookConfig DefaultConfig(string processName, int address, EncodingEnum encoding) {
+        private static IKernel32HookConfig DefaultConfig(string processName, int address, EncodingEnum encoding, int length = 0) {
             var config = Substitute.For<IKernel32HookConfig>();
             config.ProcessNames.Returns(new[] { processName });
             config.Address.Returns(address);
             config.Encoding.Returns(encoding);
+            config.Length.Returns(length);
             return config;
         }
 
@@ -59,7 +60,7 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(987654321)]
-        public void GetCurrentScore_Returns_MemoryReader_ReadLong_Value_If_Encoding_Enum_Is_Int64(int expectedScore)
+        public void GetCurrentScore_Returns_MemoryReader_ReadLong_Value_If_Encoding_Enum_Is_Int64(long expectedScore)
         {
             var memoryReader = DefaultMemoryReader("process1");
             var strategy = new Kernel32StaticHookStrategy(
@@ -68,6 +69,23 @@ namespace TouhouSplits.Service.UnitTests.Hook.Impl
 
             memoryReader
                 .ReadLong(memoryReader.GetProcessesByName("process1")[0], 12345)
+                .Returns(expectedScore);
+            Assert.Equal(expectedScore, strategy.GetCurrentScore());
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(987654321)]
+        public void GetCurrentScore_Returns_MemoryReader_arrayOfNumbers_Value_If_Encoding_Enum_Is_Int64(long expectedScore)
+        {
+            var memoryReader = DefaultMemoryReader("process1");
+            var strategy = new Kernel32StaticHookStrategy(
+                DefaultConfig("process1", 12345, EncodingEnum.arrayOfNumbers, 16),
+                memoryReader);
+
+            memoryReader
+                .ReadArrayOfNumbers(memoryReader.GetProcessesByName("process1")[0], 12345, 16)
                 .Returns(expectedScore);
             Assert.Equal(expectedScore, strategy.GetCurrentScore());
         }
