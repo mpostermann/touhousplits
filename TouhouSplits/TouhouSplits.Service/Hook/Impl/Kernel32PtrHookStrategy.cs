@@ -7,6 +7,7 @@ namespace TouhouSplits.Service.Hook.Impl
     public class Kernel32PtrHookStrategy : Kernel32BaseHookStrategy
     {
         private EncodingEnum _encoding;
+        private int _length;
         private int _memoryAddress;
         private int[] _pointerOffsets;
         private bool _useThreadStack0;
@@ -15,6 +16,7 @@ namespace TouhouSplits.Service.Hook.Impl
             : base(config.ProcessNames, memoryReader)
         {
             _encoding = config.Encoding;
+            _length = config.Length;
             _memoryAddress = config.Address;
             _pointerOffsets = config.PointerOffsets;
             _useThreadStack0 = config.UseThreadStack0;
@@ -49,7 +51,10 @@ namespace TouhouSplits.Service.Hook.Impl
             if (_encoding == EncodingEnum.int32) {
                 return MemoryReader.ReadInt(HookedProcess, nextAddress);
             }
-            return MemoryReader.ReadLong(HookedProcess, nextAddress);
+            if (_encoding == EncodingEnum.int64) {
+                return MemoryReader.ReadLong(HookedProcess, nextAddress);
+            }
+            return MemoryReader.ReadArrayOfNumbers(HookedProcess, nextAddress, _length);
         }
     }
 }

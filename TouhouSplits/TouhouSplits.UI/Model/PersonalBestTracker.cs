@@ -14,13 +14,13 @@ namespace TouhouSplits.UI.Model
         private ISplitsFacade _facade;
         private IGameManager _gameManager;
         private ISplitsBuilder _personalBestBuilder;
-        private long _initialPollingScore;
+        private long _initialPollingScore = Constants.UNSET_SCORE;
+        private long _previousScore = Constants.UNSET_SCORE;
         private Timer _timer;
 
         public PersonalBestTracker(ISplitsFacade facade)
         {
             _facade = facade;
-            _initialPollingScore = Constants.UNSET_SCORE;
             IsPolling = false;
         }
 
@@ -116,11 +116,25 @@ namespace TouhouSplits.UI.Model
         public long CurrentScore {
             get {
                 if (IsPolling) {
-                    long score = _gameManager.GetCurrentScore();
-                    if (!GameHasStartedRun(score)) {
-                        return 0;
+                    try {
+                        long score = _gameManager.GetCurrentScore();
+                        if (!GameHasStartedRun(score)) {
+                            return 0;
+                        }
+
+                        _previousScore = score;
+                        return score;
                     }
-                    return score;
+                    catch (InvalidOperationException) {
+                        /* An InvalidOperationException gets thrown when we fail to read the score from memory.
+                         * Sometimes this is just a transient error that happens during gameplay when switching between levels.
+                         * If this is just a transient error, then return the previous score; otherwise we should let the exception bubble up.
+                         */
+                        if (_gameManager.GameIsRunning()) {
+                            return _previousScore;
+                        }
+                        throw;
+                    }
                 }
                 if (_personalBestBuilder != null) {
                     var score = _personalBestBuilder.GetOutput().EndingSegment.Score;
@@ -238,6 +252,7 @@ namespace TouhouSplits.UI.Model
             }
 
             IsPolling = false;
+            _previousScore = Constants.UNSET_SCORE;
             if (_personalBestBuilder == null) {
                 return null;
             }

@@ -472,7 +472,27 @@ namespace TouhouSplits.UI.UnitTests.Model
         }
 
         [Fact]
-        public void Polling_Is_Stopped_If_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        public void Get_CurrentScore_Returns_Previous_Score_If_MemoryRead_Fails()
+        {
+            var facade = DefaultSplitsFacade();
+            var model = new PersonalBestTracker(facade);
+            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
+            model.StartScorePoller();
+            Thread.Sleep(500);
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .GetCurrentScore()
+                .Returns(12345);
+            Thread.Sleep(500);
+
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new InvalidOperationException());
+            Assert.Equal(12345, model.CurrentScore);
+        }
+
+        [Fact]
+        public void Polling_Is_Stopped_If_Process_Is_Stopped_While_Polling()
         {
             var facade = DefaultSplitsFacade();
             var model = new PersonalBestTracker(facade);
@@ -482,79 +502,61 @@ namespace TouhouSplits.UI.UnitTests.Model
 
             facade.LoadGameManager(Arg.Any<GameId>())
                 .When(n => n.GetCurrentScore())
-                .Throw(new Exception());
+                .Throw(new InvalidOperationException());
+            facade.LoadGameManager(Arg.Any<GameId>()).GameIsRunning().Returns(false);
             Thread.Sleep(500);
+
             Assert.False(model.IsPolling);
         }
 
         [Fact]
-        public void HasError_Returns_True_If_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        public void Fires_NotifyPropertyChanged_Event_For_HasError_When_GameManager_GetCurrentScore_Throws_Error_At_Game_Start()
         {
             var facade = DefaultSplitsFacade();
             var model = new PersonalBestTracker(facade);
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
-
-            model.StartScorePoller();
-            Thread.Sleep(500);
             facade.LoadGameManager(Arg.Any<GameId>())
                 .When(n => n.GetCurrentScore())
-                .Throw(new Exception());
-
-            Thread.Sleep(500);
-            Assert.True(model.HasError);
-        }
-
-        [Fact]
-        public void Fires_NotifyPropertyChanged_Event_For_HasError_When_GameManager_GetCurrentScore_Throws_Error_While_Polling()
-        {
-            var facade = DefaultSplitsFacade();
-            var model = new PersonalBestTracker(facade);
-            model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
-            model.StartScorePoller();
-            Thread.Sleep(500);
+                .Throw(new InvalidOperationException());
 
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            facade.LoadGameManager(Arg.Any<GameId>())
-                .When(n => n.GetCurrentScore())
-                .Throw(new Exception());
+            model.StartScorePoller();
             Thread.Sleep(500);
             Assert.True(eventCatcher.CaughtProperties.Contains("HasError"));
         }
 
         [Fact]
-        public void LastError_Returns_Exception_Thrown_From_GameManager_GetCurrentScore_While_Polling()
+        public void LastError_Returns_Exception_Thrown_From_GameManager_GetCurrentScore_At_Game_Start()
         {
             var facade = DefaultSplitsFacade();
             var model = new PersonalBestTracker(facade);
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
-            model.StartScorePoller();
-            Thread.Sleep(500);
 
-            Exception expectedException = new Exception("Some error message");
+            Exception expectedException = new InvalidOperationException("Some error message");
             facade.LoadGameManager(Arg.Any<GameId>())
                 .When(n => n.GetCurrentScore())
                 .Throw(expectedException);
-            Thread.Sleep(500);
+
+            model.StartScorePoller();
             Assert.Equal(expectedException.Message, model.LastError.Message);
         }
 
         [Fact]
-        public void Fires_NotifyPropertyChanged_Event_For_LastError_When_GameManager_GetCurrentScore_Throws_Error_While_Polling()
+        public void Fires_NotifyPropertyChanged_Event_For_LastError_When_GameManager_GetCurrentScore_Throws_Error_At_Game_Start()
         {
             var facade = DefaultSplitsFacade();
             var model = new PersonalBestTracker(facade);
             model.LoadPersonalBest(new GameId("Game Id"), "Splits Name", GetDefaultSplitsBuilder(1));
-            model.StartScorePoller();
-            Thread.Sleep(500);
+            facade.LoadGameManager(Arg.Any<GameId>())
+                .When(n => n.GetCurrentScore())
+                .Throw(new InvalidOperationException());
 
             var eventCatcher = new NotifyPropertyChangedCatcher();
             model.PropertyChanged += eventCatcher.CatchPropertyChangedEvents;
 
-            facade.LoadGameManager(Arg.Any<GameId>())
-                .When(n => n.GetCurrentScore())
-                .Throw(new Exception());
+            model.StartScorePoller();
             Thread.Sleep(500);
             Assert.True(eventCatcher.CaughtProperties.Contains("LastError"));
         }
@@ -570,7 +572,7 @@ namespace TouhouSplits.UI.UnitTests.Model
 
             facade.LoadGameManager(Arg.Any<GameId>())
                 .When(n => n.GetCurrentScore())
-                .Throw(new Exception());
+                .Throw(new InvalidOperationException());
             Thread.Sleep(500);
             model.ClearError();
             Assert.Null(model.LastError);

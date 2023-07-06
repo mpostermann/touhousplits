@@ -37,25 +37,34 @@ The following general-use hooks are provided out of the box.
 
 Reads a value directly from a given memory address.
 
-Required attributes:
+Attributes:
 * `@address`: The memory address to read from.
-* `@encoding`: How to read the bytes stored at the memory address. Supported values are `int32` and `int64`.
+* `@encoding`: How to read the bytes stored at the memory address. Supported values are `int32`, `int64`, and `arrayofnumbers`. See "Encoding Types" below.
 
 ### Kernel32PtrHookStrategy
 
 Follows a pointer to find the memory address to read.
 
-Required attributes:
-* `useThreadStack0`: true or false. Whether to resolve the memory address off of THREADSTACK0. If false, the memory address will be resolved based off the running executable.
+Attributes:
+* `useThreadStack0`: (Optional) true or false. Defaults to false. Determines whether to resolve the memory address off of THREADSTACK0. If false, the memory address will be resolved based off the running executable.
 * `@address`: The memory address of the pointer. When useThreadStack0 is true, this will be a negative address.
 * `@offsets`: The pointer offsets. Multiple offsets can be specified by separating each with a | character.
-* `@encoding`: How to read the bytes stored at the memory address. Supported values are `int32` and `int64`.
+* `@encoding`: How to read the bytes stored at the memory address. Supported values are `int32`, `int64`, and `arrayofnumbers`. See "Encoding Types" below.
 
 ### TouhouStaticHookStrategy and TouhouPtrHookStrategy
 
 Same as Kernel32StaticHookStrategy and Kernel32PtrHookStrategy, but multiplies the read value by 10 (because later Touhou games record the last digit of the score separately).
 
-### Adding a new Hook Strategy
+### Encoding Types
+
+Hook strategies each support different encoding types for reading the actual score variable. The following describes the available encoding types:
+* `int32`: A signed 4-byte integer
+* `int64`: A signed 8-byte integer
+* `arrayofnumbers`: Each digit of the score is stored as a 4-byte integer in an array. The `@length` attribute must be specified to indicate how long the array is (ie the max number of digits that can be in the score).
+For example, in an array of length 8, the score 110,434 would be stored as `[0, 0, 1, 1, 0, 4, 3, 4]`.
+
+
+## Adding a new Hook Strategy
 
 Some games games might require a custom hook to account for logic specific to that game. A new hook can be added by implementing `IHookStrategy`,
 then updating `HookStrategyFactory.Create()` to return a new instance of that hook when specified.

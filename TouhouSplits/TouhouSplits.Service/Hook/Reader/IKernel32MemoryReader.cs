@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace TouhouSplits.Service.Hook.Reader
 {
@@ -8,6 +7,7 @@ namespace TouhouSplits.Service.Hook.Reader
         IGameProcess[] GetProcessesByName(string name);
         IntPtr ProcessHandle(int dwProcessId);
         int ReadInt(IGameProcess process, int memoryAddress);
-        long ReadLong(IGameProcess proces, int memoryAddress);
+        long ReadLong(IGameProcess process, int memoryAddress);
+        long ReadArrayOfNumbers(IGameProcess process, int memoryAddress, int length);
     }
 }
