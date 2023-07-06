@@ -19,9 +19,7 @@ namespace TouhouSplits.UI.ViewModel
         public event EventHandler<RequestCloseDialogEventArgs> RequestCloseDialog;
         private void InvokeRequestCloseDialog(RequestCloseDialogEventArgs e)
         {
-            var handler = RequestCloseDialog;
-            if (handler != null)
-                handler(this, e);
+            RequestCloseDialog?.Invoke(this, e);
         }
 
         public ICommand AddSegmentCommand { get; private set; }

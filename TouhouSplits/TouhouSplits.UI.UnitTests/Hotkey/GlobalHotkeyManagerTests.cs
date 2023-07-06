@@ -1,6 +1,5 @@
 ﻿using NSubstitute;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Input;
 using TouhouSplits.UI.Hotkey;
@@ -66,6 +65,20 @@ namespace TouhouSplits.UI.UnitTests.Hotkey
             manager.RegisterHotkey(Keys.A, Substitute.For<ICommand>());
             manager.UnregisterHotkey(Keys.A);
             Assert.False(manager.RegisteredHotkeys.Contains(Keys.A));
+        }
+
+        [Fact]
+        public void UnregisterAllHotkeys_Removes_All_keys_From_RegisteredHotkeys_List()
+        {
+            var hook = DefaultKeyboardHook();
+            var manager = new GlobalHotkeyManager(hook);
+
+            manager.RegisterHotkey(Keys.A, Substitute.For<ICommand>());
+            manager.RegisterHotkey(Keys.B, Substitute.For<ICommand>());
+            manager.RegisterHotkey(Keys.C, Substitute.For<ICommand>());
+
+            manager.UnregisterAllHotkeys();
+            Assert.Equal(0, manager.RegisteredHotkeys.Count);
         }
 
         [Fact]

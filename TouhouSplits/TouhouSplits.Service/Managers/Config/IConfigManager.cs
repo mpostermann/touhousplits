@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TouhouSplits.Service.Config;
+using TouhouSplits.Service.Data;
 
 namespace TouhouSplits.Manager.Config
 {
@@ -7,5 +8,7 @@ namespace TouhouSplits.Manager.Config
     {
         IList<IGameConfig> AvailableGames { get; }
         IHotkeyConfig Hotkeys { get; }
+
+        void UpdateAndPersistHotkeys(IList<IHotkey> hotkeys);
     }
 }
