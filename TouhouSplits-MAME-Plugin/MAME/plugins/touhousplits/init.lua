@@ -1,0 +1,37 @@
+-- license:BSD-3-Clause
+-- copyright-holders:MPOstermann
+-- Something something I hope this works
+require 'winapi'
+
+local exports = {}
+exports.name = "touhousplits"
+exports.version = "0.0.1"
+exports.description = "Touhou Splits Plugin"
+exports.license = "BSD-3-Clause"
+exports.author = { name = "MPOstermann" }
+
+local touhousplits = exports
+
+function touhousplits.set_folder(path)
+	touhousplits.path = path
+end
+
+function touhousplits.startplugin()
+
+	files,err = winapi.files ('*.txt',false)
+	if not files then 
+		return print(err) 
+	end
+
+	for f in files do
+		emu.print_info(f)
+	end
+
+	emu.register_start(function()
+		emu.print_info("Lua version")
+		emu.print_info(_VERSION)
+	end)
+
+end
+
+return exports

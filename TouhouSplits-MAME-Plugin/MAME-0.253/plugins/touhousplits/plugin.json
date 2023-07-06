@@ -1,0 +1,10 @@
+{
+  "plugin": {
+	"name": "touhousplits",
+	"description": "Touhou Splits Plugin",
+	"version": "0.0.1",
+	"author": "MPOstermann",
+	"type": "plugin",
+	"start": "false"
+  }
+}
