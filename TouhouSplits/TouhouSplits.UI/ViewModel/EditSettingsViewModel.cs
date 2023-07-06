@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using TouhouSplits.Manager.Config;
+using TouhouSplits.Service.Exceptions;
 using TouhouSplits.UI.Model;
 
 namespace TouhouSplits.UI.ViewModel
@@ -66,8 +68,13 @@ namespace TouhouSplits.UI.ViewModel
 
         private void SaveAndClose()
         {
-            HotkeysConfig.PersistChanges();
-            InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+            try {
+                HotkeysConfig.PersistChanges();
+                InvokeRequestCloseDialog(new RequestCloseDialogEventArgs(true));
+            }
+            catch (ConfigurationIOException e) {
+                ShowErrorDialog($"Failed to write the configuration to {e.Filepath.ToString()}. Please make sure the file or directory is not write-protected.");
+            }
         }
 
         private void CancelAndClose()

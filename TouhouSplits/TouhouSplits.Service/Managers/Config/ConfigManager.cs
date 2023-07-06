@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using TouhouSplits.Manager.Config;
 using TouhouSplits.Service.Config;
 using TouhouSplits.Service.Data;
+using TouhouSplits.Service.Exceptions;
 
 namespace TouhouSplits.Service.Managers.Config
 {
@@ -76,21 +77,24 @@ namespace TouhouSplits.Service.Managers.Config
 
         /// <summary>
         /// Applies and persists to disk a new Hotkeys config
+        /// <exception cref="ConfigurationIOException">Thrown when unable to save the configuration to disk.</exception>
         /// </summary>
         public void UpdateAndPersistHotkeys(IList<IHotkey> hotkeys)
         {
             var newHotkeyConfig = new HotkeyConfig(hotkeys);
+            var xml = newHotkeyConfig.ToXml();
+
+            // Save the new config to file
+            FileInfo filepath = new FileInfo(Path.Combine(FilePaths.DIR_APP_CONFIG, "Hotkeys.xml"));
             try {
-                FileInfo filepath = new FileInfo(Path.Combine(FilePaths.DIR_APP_CONFIG, "Hotkeys.xml"));
-                var xml = newHotkeyConfig.ToXml();
                 filepath.Directory.Create();
                 xml.Save(filepath.FullName);
-
-                Hotkeys = newHotkeyConfig;
             }
             catch (Exception e) {
-                throw new ConfigurationErrorsException("Unable to save Hotkeys.xml configuration. " + e.Message, e);
+                throw new ConfigurationIOException("Failed to save hotkeys configuration to disk.", filepath, e);
             }
+
+            Hotkeys = newHotkeyConfig;
         }
     }
 }

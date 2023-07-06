@@ -62,7 +62,7 @@ namespace TouhouSplits.UI.Model
         {
             if (HasHotkey(originalKeys)) {
                 if (HasHotkey(newKeys)) {
-                    throw new InvalidOperationException($"Cannot set hotkey {newKeys} because it is already mapped to a method.");
+                    throw new ArgumentException($"Cannot set hotkey {newKeys} because it is already mapped to a method.");
                 }
 
                 /* Replace originalKeys with newKeys at the same index within the list */

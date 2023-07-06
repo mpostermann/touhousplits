@@ -65,6 +65,7 @@
     <Compile Include="Data\Segment.cs" />
     <Compile Include="Data\Splits.cs" />
     <Compile Include="Enums\HotkeyableMethodEnum.cs" />
+    <Compile Include="Exceptions\ConfigurationIOException.cs" />
     <Compile Include="FilePaths.cs" />
     <Compile Include="Hook\EncodingEnum.cs" />
     <Compile Include="Hook\HookStrategyFactory.cs" />
