@@ -38,6 +38,8 @@ namespace TouhouSplits.Service.Hook
                 case "touhouptrhookstrategy":
                     var thPtrConfig = new Kernel32PtrHookConfig(configElement);
                     return new TouhouPtrHookStrategy(thPtrConfig, new Kernel32MemoryReader());
+                case "mamehookstrategy":
+                    return new MameHookStrategy();
                 case "nonhookingstrategy":
                     return new NonHookingStrategy();
                 default:

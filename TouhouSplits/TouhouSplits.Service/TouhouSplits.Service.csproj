@@ -71,6 +71,7 @@
     <Compile Include="Hook\HookStrategyFactory.cs" />
     <Compile Include="Hook\IHookStrategyFactory.cs" />
     <Compile Include="Hook\Impl\Kernel32PtrHookStrategy.cs" />
+    <Compile Include="Hook\Impl\MameHookStrategy.cs" />
     <Compile Include="Hook\Impl\NonHookingStrategy.cs" />
     <Compile Include="Hook\Impl\TouhouStaticHookStrategy.cs" />
     <Compile Include="Hook\Reader\GameProcess.cs" />

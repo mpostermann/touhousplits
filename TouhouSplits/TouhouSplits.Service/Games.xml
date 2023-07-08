@@ -17,6 +17,10 @@
             <Name>Espgaluda II</Name>
             <Hook strategy="NonHookingStrategy"/>
         </Game>
+        <Game id="MAME" favoriteslist="mame.trs">
+            <Name>MAME (Experimental)</Name>
+            <Hook strategy="MameHookStrategy"/>
+        </Game>
         <Game id="MuchiMuchiPork" favoriteslist="muchimuchipork.trs">
             <Name>Muchi Muchi Pork</Name>
             <Hook strategy="NonHookingStrategy"/>
