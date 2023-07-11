@@ -1,83 +1,108 @@
 ﻿using System;
 using System.IO;
 using System.IO.Pipes;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TouhouSplits.Service.Hook.Impl
 {
     public class MameHookStrategy : IHookStrategy
     {
-        private bool _isConnected = false;
-        private NamedPipeClientStream _pipeClient;
-        private StreamReader _pipeReader;
-        private StreamWriter _pipeWriter;
+        private int _isHooked; // 1 means true, 0 means false
+        public bool IsHooked => _isHooked == 1;
 
-        private void Connect()
+        private long _lastScore;
+        private CancellationTokenSource _scoreCancellation;
+        private CancellationToken _scoreCancellationToken;
+        private Task _scoreThread;
+
+        public MameHookStrategy()
         {
-            try {
-                _pipeClient = new NamedPipeClientStream(".", @"\\.\pipe\luawinapi", PipeDirection.InOut, PipeOptions.None);
-                _pipeClient.Connect(1000);
-                _pipeReader = new StreamReader(_pipeClient);
-                _pipeWriter = new StreamWriter(_pipeClient);
-
-                _isConnected = true;
-            }
-            catch (Exception e) {
-                Disconnect();
-                throw;
-            }
-        }
-
-        private void Disconnect()
-        {
-            _pipeClient?.Dispose();
-            _pipeClient = null;
-
-            _pipeReader?.Dispose();
-            _pipeReader = null;
-
-            _pipeWriter?.Dispose();
-            _pipeWriter = null;
-
-            _isConnected = false;
+            //_pipeServer = new NamedPipeServerStream("luawinapi", PipeDirection.InOut, -1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
         }
 
         public bool GameIsRunning()
         {
-            try {
-                Connect();
-                return _isConnected;
-            }
-            catch {
-                return false;
-            }
+            return true;
         }
 
         public void Hook()
         {
-            if (!_isConnected) {
-                Connect();
-                IsHooked = true;
+            if (!IsHooked) {
+                try {
+                    _lastScore = 0;
+
+                    _scoreCancellation = new CancellationTokenSource();
+                    _scoreCancellationToken = _scoreCancellation.Token;
+                    _scoreThread = new Task(UpdateScore, _scoreCancellationToken);
+                    _scoreThread.ContinueWith(t => Unhook(), TaskContinuationOptions.OnlyOnFaulted);
+
+                    _scoreThread.Start();
+                    Interlocked.Exchange(ref _isHooked, 1);
+                }
+                catch (Exception e) {
+                    Unhook();
+                    throw;
+                }
+            }
+        }
+
+        private void UpdateScore()
+        {
+            var pipeServer = new NamedPipeServerStream("luawinapi", PipeDirection.InOut, -1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+            pipeServer.WaitForConnection();
+            var pipeReader = new StreamReader(pipeServer);
+
+            try {
+                while (true) {
+                    // Get the most recent score
+                    var readTask = Task<string>.Factory.StartNew(() => {
+                        string line = null;
+                        while (string.IsNullOrEmpty(line)) {
+                            line = pipeReader.ReadLine();
+                            Thread.Sleep(10);
+                        }
+                        return line;
+                    }, _scoreCancellationToken);
+
+                    if (!readTask.Wait(1000)) {
+                        throw new IOException("Timed out while reading from pipe.");
+                    }
+                    if (readTask.Exception != null) {
+                        throw readTask.Exception;
+                    }
+
+                    // Update the score in a thread-safe manner
+                    string result = readTask.Result;
+                    if (long.TryParse(result, out var newScore)) {
+                        Interlocked.Exchange(ref _lastScore, newScore);
+                    }
+
+                    _scoreCancellationToken.ThrowIfCancellationRequested();
+                }
+            }
+            finally {
+                pipeReader.Dispose();
+                if (pipeServer.IsConnected) {
+                    pipeServer.Disconnect();
+                }
+                pipeServer.Close();
+
+                Interlocked.Exchange(ref _isHooked, 0);
             }
         }
 
         public void Unhook()
         {
-            Disconnect();
-            IsHooked = false;
-        }
+            _scoreCancellation?.Cancel();
+            _scoreThread = null;
 
-        public bool IsHooked { get; private set; }
+            Interlocked.Exchange(ref _isHooked, 0);
+        }
 
         public long GetCurrentScore()
         {
-            if (!IsHooked) {
-                Hook();
-            }
-
-            _pipeWriter.WriteLine("ping");
-            _pipeWriter.Flush();
-
-            return long.Parse(_pipeReader.ReadLine());
+            return Interlocked.Read(ref _lastScore);
         }
     }
 }

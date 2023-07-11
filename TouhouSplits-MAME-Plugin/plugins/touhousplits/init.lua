@@ -12,85 +12,85 @@ exports.author = { name = "MPOstermann" }
 
 local touhousplits = exports
 
-local frameCount = 0
-local romName = ""
+local currentFrame = 1
+local framesBetweenCount = 3
 
-local pipe
-local wrap, yield, resume = coroutine.wrap, coroutine.yield, coroutine.resume
+local score = 1
 
 local supportedRoms = {	["donpachij"] = true }
 
--- function fwrap (f,co)
---     local obj = {}
---     local started
---     function obj:read ()
---         if not started then
---             f:read_async(co)
---             started = true
---         end
---         return yield()
---     end
---     function obj:write (s)
---         return f:write(s)
---     end
---     return obj
+-- local function handle_pipe(file)
+-- 	emu.print_info("TouhouSplits client connected")
+-- 	local readThread = file:read_async(function(line)
+-- 		emu.print_info(line)
+-- 		file:write(frameCount .. "\n")
+-- 	end)
 -- end
 
--- function winapi.make_pipe_server_async(fun)
---     winapi.make_pipe_server(function(f)
---         local co = coroutine.wrap(fun)
---         co(fwrap(f,co))
---     end)
--- end
+local pipe = nil
 
 function touhousplits.set_folder(path)
 	touhousplits.path = path
 end
 
 function touhousplits.startplugin()
-
-	files,err = winapi.files ('*.txt',false)
-	if not files then 
-		return print(err) 
-	end
-
-	for f in files do
-		emu.print_info(f)
-	end
-
 	emu.register_start(function()
 		emu.print_info("Lua version")
 		emu.print_info(_VERSION)
 
-		frameCount = 0
-		emu.print_info(emu.romname())
+		score = 0
+		-- if supportedRoms[emu.romname()] then
+		-- 	pipe = winapi.make_pipe_server(handle_pipe)
+		-- 	pipe:set_priority(2)
+		-- 	emu.print_info("Started pipe for ROM " .. emu.romname())
+		-- 	emu.print_info("Thread priority: " .. pipe:get_priority())
+		-- end
 	end)
 
 	emu.register_frame(function()
 		if supportedRoms[emu.romname()] then
-			frameCount = frameCount + 1
+			currentFrame = currentFrame + 1
+			score = score + 1
+
+			if currentFrame >= framesBetweenCount then
+				if pipe ~= nil then
+					local success, error = pcall(function() pipe:write(score .. "\n") end)
+					if not success then
+						emu.print_info("Error writing to pipe: " .. error)
+						pcall(function() pipe:close() end)
+						pipe = nil
+						emu.print_info("Closed pipe")
+					end
+				else
+					local success, result = pcall(winapi.open_pipe)
+					if success then
+						pipe = result
+						emu.print_info("Connected to TouhouSplits pipe server")
+					else
+						emu.print_info("Error opening pipe: " .. result)
+						pipe = nil
+					end
+				end
+				currentFrame = 1
+			end
 		end
 	end)
 
 	emu.register_stop(function()
-		
-	end)
-
-	pipe = winapi.make_pipe_server(function(file)
-		print("Client connected")
-		while true do
-			local line = file:read("l")
-			print(line)
-			if line == 'ping' then 
-				file:write(frameCount)
-				print("Frame: " .. frameCount)
-			elseif line == 'close' then
-				break
+		if pipe ~= nil then
+			local success, error = pcall(function() pipe:close() end)
+			if success then
+				emu.print_info("Closed TouhouSplits pipe")
+			else
+				emu.print_info(error)
 			end
-		end
 
-		file:close()
+			pipe = nil
+		end
 	end)
+
 end
+
+
 
 return exports
