@@ -6,46 +6,15 @@ namespace TouhouSplits.Service.Hook.Impl
 {
     public class MameHookStrategy : IHookStrategy
     {
-        private bool _isConnected = false;
+        private long _curerntScore = 0;
         private NamedPipeClientStream _pipeClient;
         private StreamReader _pipeReader;
-        private StreamWriter _pipeWriter;
-
-        private void Connect()
-        {
-            try {
-                _pipeClient = new NamedPipeClientStream(".", @"\\.\pipe\luawinapi", PipeDirection.InOut, PipeOptions.None);
-                _pipeClient.Connect(1000);
-                _pipeReader = new StreamReader(_pipeClient);
-                _pipeWriter = new StreamWriter(_pipeClient);
-
-                _isConnected = true;
-            }
-            catch (Exception e) {
-                Disconnect();
-                throw;
-            }
-        }
-
-        private void Disconnect()
-        {
-            _pipeClient?.Dispose();
-            _pipeClient = null;
-
-            _pipeReader?.Dispose();
-            _pipeReader = null;
-
-            _pipeWriter?.Dispose();
-            _pipeWriter = null;
-
-            _isConnected = false;
-        }
 
         public bool GameIsRunning()
         {
             try {
-                Connect();
-                return _isConnected;
+                Hook();
+                return IsHooked;
             }
             catch {
                 return false;
@@ -54,19 +23,31 @@ namespace TouhouSplits.Service.Hook.Impl
 
         public void Hook()
         {
-            if (!_isConnected) {
-                Connect();
-                IsHooked = true;
+            if (!IsHooked) {
+                try {
+                    _curerntScore = 0;
+                    _pipeClient = new NamedPipeClientStream(".", @"luawinapi", PipeDirection.InOut, PipeOptions.Asynchronous);
+                    _pipeClient.Connect(1000);
+
+                    _pipeReader = new StreamReader(_pipeClient);
+                }
+                catch (Exception e) {
+                    Unhook();
+                    throw;
+                }
             }
         }
 
         public void Unhook()
         {
-            Disconnect();
-            IsHooked = false;
+            _pipeReader?.Dispose();
+            _pipeReader = null;
+
+            _pipeClient?.Dispose();
+            _pipeClient = null;
         }
 
-        public bool IsHooked { get; private set; }
+        public bool IsHooked => _pipeClient != null && _pipeClient.IsConnected;
 
         public long GetCurrentScore()
         {
@@ -74,10 +55,10 @@ namespace TouhouSplits.Service.Hook.Impl
                 Hook();
             }
 
-            _pipeWriter.WriteLine("ping");
-            _pipeWriter.Flush();
-
-            return long.Parse(_pipeReader.ReadLine());
+            if (long.TryParse(_pipeReader.ReadLine(), out long newScore)) {
+                _curerntScore = newScore;
+            }
+            return _curerntScore;
         }
     }
 }
