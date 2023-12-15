@@ -19,7 +19,7 @@ namespace TouhouSplits.Service.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -65,7 +65,9 @@ namespace TouhouSplits.Service.Properties {
         ///&lt;Hotkeys&gt;
         ///	&lt;Hotkey method=&quot;ToggleHotkeys&quot; keys=&quot;Add&quot; /&gt;
         ///	&lt;Hotkey method=&quot;StartOrStopRecordingSplits&quot; keys=&quot;NumPad7&quot; /&gt;
-        ///	&lt;Hotkey method=&quot;SplitToNextSegment&quot; keys=&quot;NumPad0&quot; /&gt;
+        ///    &lt;Hotkey method=&quot;StartOrStopRecordingSplits&quot; keys=&quot;Home&quot; /&gt;
+        ///    &lt;Hotkey method=&quot;SplitToNextSegment&quot; keys=&quot;NumPad0&quot; /&gt;
+        ///    &lt;Hotkey method=&quot;SplitToNextSegment&quot; keys=&quot;Insert&quot; /&gt;
         ///&lt;/Hotkeys&gt;
         ///
         ///.
